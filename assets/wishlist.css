@@ -1,0 +1,61 @@
+.wishlist-section .action--wishlist .ti-heart {
+	 display: none;
+}
+.wishlist_exists .grid-view-item__image-wrapper {
+	 max-width: 80px !important;	
+}
+ .wishlist-btn {
+	 background-color: transparent;
+	 border: none;
+}
+ .wishlist-btn a {
+	 vertical-align: middle;
+}
+ .wishlist-btn i {
+	 font-size: 18px;
+	 padding-left: 10px;
+	 margin-left: 15px;
+	 transition: all 0.5s ease;
+}
+ .wishlist-btn span.fill-icon {
+	 display: none;
+}
+ .wishlist-btn.active .icon {
+	 display: none;
+}
+ .wishlist-btn.active .fill-icon {
+	 display: inline;
+}
+ .wishlist-btn:hover i {
+	 transition: all 0.5s ease;
+}
+ .cart-section tbody tr td h2, .cart-section tbody tr td p, .wishlist-section tbody tr td h2, .wishlist-section tbody tr td p {
+	 text-align: center;
+}
+ .cart-section tfoot tr td:first-child, .wishlist-section tfoot tr td:first-child {
+	 padding-right: 0;
+	 padding-left: 10px;
+	 text-align: left;
+}
+ .cart-section .cart-buttons > div:last-child, .wishlist-section .cart-buttons > div:last-child {
+	 text-align: left;
+	 padding-left: 59px;
+	 padding-right: 0;
+}
+ .cart-section .cart-buttons > div:first-child .btn-outline, .cart-section .cart-buttons > div:first-child .btn-solid, .wishlist-section .cart-buttons > div:first-child .btn-outline, .wishlist-section .cart-buttons > div:first-child .btn-solid {
+	 float: right;
+}
+ .cart, .remove_btn_wislist, .update_cart {
+	 background: 0 0;
+	 border: none;
+}
+.wishlist__grid .wishlist-error {
+	text-align: center;
+    margin-bottom: 80px;
+}
+.wishlist__grid .product-card .product-img .media img {
+	position: relative;
+}
+.wishlist__grid .product-card .product-img .media img:nth-child(2) {
+	position: absolute;
+}
