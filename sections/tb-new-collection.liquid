@@ -1,0 +1,138 @@
+<link rel="stylesheet" href="{{ 'TB-new-collection.css' | asset_url }}" >
+
+<div class="best-offer-section {% if section.settings.section_width == 'standard-width' %}page-width{% else %}container-fluid{% endif %}" >
+  <div class="offer-image">
+     <img src="{{ section.settings.image1 | img_url: 'master' }}" >
+  </div> 
+  <div class="offer-content" style="background:{{ section.settings.banner_content_bg_clr }};color:{{ section.settings.banner_content_text_clr }};padding: 25px;">
+    <duv class="banner-section {{ section.settings.position }}">
+      <div class="banner_heading">{{ section.settings.banner_heading }}</div>
+      <div class="banner_sub_heading">{{ section.settings.banner_sub_heading }}</div>
+      <div class="banner_title">{{ section.settings.banner_title  }}</div>      
+        <a href="{{ section.settings.link_btn1 }}" class="btn btn-link">
+          {{ section.settings.btn-text1 }}
+        </a> 
+    </duv>
+  </div> 
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.new_collection.name",
+    "settings": [
+      {
+       "type":"select",
+       "id":"section_width",
+       "label":"t:sections.new_collection.settings.section_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.new_collection.settings.section_width.options_1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.new_collection.settings.section_width.options_2.label"
+          }
+       ],
+       "default":"standard-width"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "t:sections.new_collection.settings.image1.label"
+      },
+      {
+        "type":"select",
+        "id":"position",
+        "label":"t:sections.new_collection.settings.position.label",
+        "options":[
+          {
+             "value":"p-top-left",
+             "label":"t:sections.new_collection.settings.position.options_1.label"
+          },
+          {
+             "value":"p-top-center",
+             "label":"t:sections.new_collection.settings.position.options_2.label"
+          },
+          {
+             "value":"p-top-right",
+             "label":"t:sections.new_collection.settings.position.options_3.label"
+          },
+          {
+             "value":"p-center-left",
+             "label":"t:sections.new_collection.settings.position.options_4.label"
+          },
+          {
+             "value":"p-center-center",
+             "label":"t:sections.new_collection.settings.position.options_5.label"
+          },
+          {
+             "value":"p-center-right",
+             "label":"t:sections.new_collection.settings.position.options_6.label"
+          },
+          {
+             "value":"p-bottom-left",
+             "label":"t:sections.new_collection.settings.position.options_7.label"
+          },
+          {
+             "value":"p-bottom-center",
+             "label":"t:sections.new_collection.settings.position.options_8.label"
+          },
+          {
+             "value":"p-bottom-right",
+             "label":"t:sections.new_collection.settings.position.options_9.label"
+          }
+       ],
+       "default":"p-bottom-left"
+      },
+      {
+        "type":"header",
+        "content":"t:sections.new_collection.settings.header_content.content"
+      },
+      {
+        "type":"checkbox",
+        "id":"banner_content_show",
+        "label":"t:sections.new_collection.settings.banner_content_show.label",
+        "default":false
+      },
+      {
+        "type":"color",
+        "id":"banner_content_bg_clr",
+        "label":"t:sections.new_collection.settings.banner_content_bg_clr.label",
+        "default":"#fff"
+      },
+      {
+        "type":"color",
+        "id":"banner_content_text_clr",
+        "label":"t:sections.new_collection.settings.banner_content_text_clr.label",
+        "default":"#fff"
+      },
+      {
+        "type":"text",
+        "id":"banner_heading",
+        "label":"t:sections.new_collection.settings.banner_heading.label"
+      },
+      {
+        "type":"text",
+        "id":"banner_sub_heading",
+        "label":"t:sections.new_collection.settings.banner_sub_heading.label"
+      },
+      {
+        "type":"text",
+        "id":"banner_title",
+        "label":"t:sections.new_collection.settings.banner_title.label"
+      }
+    ],
+    "presets": [
+      {
+      "name": "t:sections.new_collection.presets.name",
+      "category": "Image"
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

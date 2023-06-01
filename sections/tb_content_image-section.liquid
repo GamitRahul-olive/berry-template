@@ -1,0 +1,543 @@
+<link rel="stylesheet" href="{{ 'section-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-banner.css' | asset_url }}</noscript>
+
+{% style %}  
+  .tb_content_{{ section.id }}{
+    padding: {{ section.settings.section_padding }}
+  }
+ @media (max-width: 767px) {
+   .tb_content_{{ section.id }}{
+      padding: {{ section.settings.m_section_padding }} !important;
+   }
+  }
+{% endstyle %}
+<div class="tb_content_{{ section.id }} banner-padding banner_outer trendy_categories {% if section.settings.banner_layout == 'mesonary_layout' %}masonry_main{% endif %} {% if section.settings.banner_layout == 'box_layout' %} absolute-banner{% endif %}">
+  <div class="{% if section.settings.section_width == 'standard-width' %}page-width{% else %}container-fluid{% endif %}{% if section.settings.banner_layout == 'box_layout' %} absolute-bg{% endif %}">
+    <div class="section-header">
+        {% if section.settings.sub_title != blank %}
+          <h4 class="sub-title">{{ section.settings.sub_title | escape }}</h4>
+        {% endif %}
+        <h2 class="main-title">{{ section.settings.title | escape }}</h2>
+        <div class="description">{{ section.settings.description }}</div>
+      </div>
+    <div class="row banner-inner {% if section.settings.banner_layout == 'mesonary_layout' %}grid{% endif %}">      
+      {% assign block_size = section.settings.grid_per_row %}
+      {% if block_size == '1'  %}
+        {% assign col_width = '100' %}      
+      {% elsif block_size == '2' %}
+        {% assign col_width = '50' %}
+      {% elsif block_size == '3' %}
+        {% assign col_width = '33.33' %}
+      {% elsif block_size == '4' %}
+        {% assign col_width = '25' %}
+      {% elsif block_size == '5' %}
+        {% assign col_width = '20' %}
+      {% elsif block_size == '6' %}
+        {% assign col_width = '16.667' %}
+      {% endif %}
+      
+      {% assign i = 1 %}
+      {% for block in section.blocks %}
+        {% capture blockId %}{{ block.id }}{% endcapture %}
+  
+        {% if section.settings.banner_layout == 'mesonary_layout' %}
+          {% capture thecycle %}{% cycle 'odd', 'even' %}{% endcapture %}
+          {% if thecycle == 'odd' %}
+            {% assign col_grid = 'grid__item grid__sizer col_width' %}
+          {% else %}
+            {% assign col_grid = 'grid__item grid__sizer col_width' %}
+          {% endif %}
+          {% else %}
+            {% assign col_grid = 'col_width' %}
+        {% endif %}
+
+      <div class="{{ col_grid }} {% if forloop.last %}last_col_div{% endif %}" style="padding: {{ block.settings.block_padding }};">
+        <a href="{{ block.settings.link_img }}" aria-label="banner">
+          <div class="banner-section {{ block.settings.position }} {{ block.settings.alignment }}">
+            <div class="banner-img">
+              {% if block.settings.image == blank %}
+              {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+              {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              {% else %}
+
+              {% assign block_image = block.settings.image %}
+              {% assign img_url = block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+              <img src="{{ block_image | img_url: 'master' }}" 
+                   data-src="{{ img_url }}" 
+                   data-widths="[157, 270, 303, 370, 377, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]" 
+                   data-aspectratio="{{ block_image.aspect_ratio }}" 
+                   data-sizes="auto" 
+                   class="lazyload {% if settings.enable_blur_lazy_load %} blur-up {% endif %} img-fluid" alt="{{block_image.alt}}">
+              {% endif %}
+            </div>
+            {% if block.settings.enabled_info %}
+            <div class="contain-banner ">
+              <div {% if  block.settings.position == 'absolute-btm' %}class="absolute-contain"{% else %}class="banner-text-main{{i}}"{% endif %}>
+                {% if block.settings.title != blank %}
+                <h2 style="color: {{ block.settings.title_color }};{% if  block.settings.position == 'absolute-btm' %} margin-bottom: 0;{% endif %}">
+                  {{ block.settings.title }}
+                </h2>
+                {% endif %}
+                {% if block.settings.subtitle != blank %}
+                <h4 style="color: {{ block.settings.subtitle_color }};">
+                  {{ block.settings.subtitle }}
+                </h4>
+                {% endif %}
+                
+                {% if block.settings.btn-text != blank %}
+                  <a href='{% if block.settings.link_btn != blank %} {{ block.settings.link_btn }}{% else %}#{% endif %}' class='btn btn-link banner-btn{{i}}' {% if block.settings.btn_space == false %} style='padding: 0px;'{% endif %}>{{ block.settings.btn-text }}{% if block.settings.btn_arrow == true %}<i class='fa fa-angle-right' aria-hidden='true'></i>{% endif %}</a>
+                {% endif %}
+                
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+      {% assign i = i | plus: 1 %}
+      {% endfor %}
+        <div class="banner-btn">
+          <a href="#">{{ section.settings.banner_linktext }}</a>
+        </div> 
+    </div>
+  </div>
+</div>
+
+
+<style>
+
+  .trendy_categories .banner-inner .banner-btn a {
+    background-color: {{ section.settings.banner_btn_background }};
+    color: {{ section.settings.banner_btn_color }};
+    border: 1px solid {{ section.settings.banner_btn_border }};
+    padding: {{ section.settings.button_range_padding }}px;
+  }
+  
+  {% assign i = 1 %}
+  {% for block in section.blocks %}
+    .banner-btn{{i}} {
+      color: {{ block.settings.button_text_color }};
+       background-color: {{ block.settings.button_bg_color }};
+       border-color: {{ block.settings.button_border_color }};
+    }
+    .banner-btn{{i}}:not([disabled]):hover, .banner-btn{{i}}:focus {
+      color: {{ block.settings.buttonh_text_color }};
+      background-color: {{ block.settings.buttonh_bg_color }};
+      border-color: {{ block.settings.buttonh_border_color }};
+    }
+    .col_width {
+      width:{{ col_width }}%;
+    }
+  	.banner_outer .banner-text-main{{i}} {
+      background-color: {{ block.settings.box_bgcolor }};
+      border: 16px solid {{ block.settings.box_bordercolor }};
+   	}
+    {% assign i = i | plus: 1 %}
+  {% endfor %}
+
+
+  .banner_outer .grid {
+    align-items: center;
+    justify-content: center;
+  }
+  .banner_outer .grid .grid__sizer,
+  .grid__item {
+    position: relative;
+  }
+  .banner_outer .grid .grid__item {
+    margin-bottom: 30px;
+    overflow: hidden;
+    padding: 0 15px;
+    float: left;
+  }
+  .banner_outer .grid .grid__item--high,
+  .banner_outer .grid .grid__item--high img {height: 30rem;}
+  .banner_outer .grid img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }  
+  @media(max-width: 991px) and (min-width: 768px) {
+    .banner_outer .grid .grid__item { margin-bottom: 15px; }
+  }
+  
+  @media(max-width: 991px){
+    .trendy_categories .banner-inner{justify-content: center; row-gap: 30px;}
+    .trendy_categories .banner-inner .col_width{width:50%!important;}
+    .trendy_categories .section-header{margin-bottom:0px!important;}
+    .trendy_categories .section-header .sub-title{margin-bottom:10px!important;}
+    .trendy_categories .banner-inner{margin-top:30px!important;}
+    .trendy_categories .row.banner-inner div.col_width:last-child {width: 100%!important;}
+    .trendy_categories .banner-inner .banner-btn{margin-top: 20px;}
+  }
+  
+  @media(max-width: 767px) {
+    .banner_outer .grid {
+      height: auto !important; 
+    }
+    .trendy_categories .banner-inner{row-gap: 0px;}
+    .banner_outer .grid .grid__sizer,
+    .banner_outer .grid__item {
+      width: 100%;
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: auto !important;
+      right: auto !important;
+    }
+    .banner_outer .grid .grid__item {
+      float: none;
+    }
+    .banner_outer .grid .grid__item:last-child {
+      margin-bottom: 0;
+    }
+    .masonry_main {
+       padding-top: 0px !important;
+    }
+
+  
+      
+  }
+
+  @media(max-width: 575px) {
+  .trendy_categories .banner-inner .col_width{width:100%!important;}
+  .trendy_categories .last_col_div .banner-section{max-height:100%;}
+  .trendy_categories .banner-inner .banner-btn{margin-top: 5px;}
+  } 
+</style>
+
+{% schema %}
+{
+   "name":"t:sections.content-image.name",
+   "class":"single_banner_section_main",
+   "max_blocks":6,
+   "settings":[
+      {
+         "type": "text",
+         "id": "section_padding",
+         "label": "t:sections.content-image.settings.section_padding.label",
+         "default": "60px 0px 0px 0px"
+      },
+      {
+         "type": "text",
+         "id": "m_section_padding",
+         "label": "t:sections.content-image.settings.m_section_padding.label",
+         "default": "60px 0px 0px 0px"
+      },
+      {
+         "type":"text",
+         "id":"banner_linktext",
+         "label":"Categories Button",
+         "default":"Explore Styles"
+      },
+     {
+        "type":"color",
+        "id":"banner_btn_background",
+        "label":"Button Background Color",
+        "default":"#FFFFFF"
+     },
+     {
+        "type":"color",
+        "id":"banner_btn_color",
+        "label":"Button Text Color",
+        "default":"#2196F3"
+     },
+     {
+        "type":"color",
+        "id":"banner_btn_border",
+        "label":"Button Border Color"
+     },
+     {
+       "type": "range",
+       "id": "button_range_padding",
+       "min": 5,
+       "max": 25,
+       "step": 1,
+       "unit": "px",
+       "label": "Button Padding",
+       "default": 10
+     },
+     {
+         "type":"select",
+         "id":"section_width",
+         "label":"t:sections.content-image.settings.section_width.label",
+         "options":[
+            {
+               "value":"full-width",
+               "label":"t:sections.content-image.settings.section_width.option_1.label"
+            },
+            {
+               "value":"standard-width",
+               "label":"t:sections.content-image.settings.section_width.option_2.label"
+            }
+         ],
+         "default":"standard-width"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.content-image.settings.title.label",
+        "default": "Latest Categories"
+      },
+      {
+        "type": "text",
+        "id": "sub_title",
+        "label": "t:sections.content-image.settings.sub_title.label",
+        "default": "Trendy Styles"
+      },
+      {
+        "type":"richtext",
+        "id":"description",
+        "label":"t:sections.content-image.settings.description.label",
+        "default":"<p>Selling a wide selection of athletic and lifestyle apparel</p>"
+      },
+      {
+         "type":"select",
+         "id":"banner_layout",
+         "label":"t:sections.content-image.settings.banner_layout.label",
+         "options":[
+            {
+               "value":"normal_layout",
+               "label":"t:sections.content-image.settings.banner_layout.option_1.label"
+            }
+         ],
+         "default":"normal_layout"
+      },
+      {
+         "type":"select",
+         "id":"grid_per_row",
+         "label":"t:sections.content-image.settings.grid_per_row.label",
+         "options":[
+            {
+               "value":"1",
+               "label":"t:sections.content-image.settings.grid_per_row.option_1.label"
+            },
+            {
+               "value":"2",
+               "label":"t:sections.content-image.settings.grid_per_row.option_2.label"
+            },
+            {
+               "value":"3",
+               "label":"t:sections.content-image.settings.grid_per_row.option_3.label"
+            },
+            {
+               "value":"4",
+               "label":"t:sections.content-image.settings.grid_per_row.option_4.label"
+            },
+            {
+               "value":"5",
+               "label":"t:sections.content-image.settings.grid_per_row.option_5.label"
+            },
+            {
+               "value":"6",
+               "label":"t:sections.content-image.settings.grid_per_row.option_6.label"
+            }
+         ],
+         "default":"1"
+      },
+      {
+        "type":"text",
+        "id":"categories_button",
+        "label":"Button"
+      }
+   ],
+   "blocks":[
+      {
+         "type":"banner",
+         "name":"t:sections.content-image.blocks.banner.name",
+         "limit":3,
+         "settings":[
+            {
+               "type":"image_picker",
+               "id":"image",
+               "label":"t:sections.content-image.blocks.banner.settings.image.label"
+            },
+            {
+              "type": "url",
+              "id": "link_img",
+              "label": "t:sections.content-image.blocks.banner.settings.link_img.label"
+            },
+            {
+               "type": "text",
+               "id": "block_padding",
+               "label": "t:sections.content-image.blocks.banner.settings.block_padding.label",
+               "default": "0px 15px 0px 15px"
+            },
+            {
+               "type":"select",
+               "id":"alignment",
+               "label":"t:sections.content-image.blocks.banner.settings.alignment.label",
+               "options":[
+                  {
+                     "value":"text-left",
+                     "label":"t:sections.content-image.blocks.banner.settings.alignment.options_1.label"
+                  },
+                  {
+                     "value":"text-center",
+                     "label":"t:sections.content-image.blocks.banner.settings.alignment.options_2.label"
+                  },
+                  {
+                     "value":"text-right",
+                     "label":"t:sections.content-image.blocks.banner.settings.alignment.options_3.label"
+                  }
+               ],
+               "default":"text-left"
+            },
+            {
+               "type":"select",
+               "id":"position",
+               "label":"t:sections.content-image.blocks.banner.settings.position.label",
+               "options":[
+                  {
+                     "value":"p-left",
+                     "label":"t:sections.content-image.blocks.banner.settings.position.options_1.label"
+                  },
+                  {
+                     "value":"p-center",
+                     "label":"t:sections.content-image.blocks.banner.settings.position.options_2.label"
+                  },
+                  {
+                     "value":"p-right",
+                     "label":"t:sections.content-image.blocks.banner.settings.position.options_3.label"
+                  },
+                  {
+                     "value":"p-top",
+                     "label":"t:sections.content-image.blocks.banner.settings.position.options_4.label"
+                  },
+                  {
+                     "value":"p-bottom",
+                     "label":"t:sections.content-image.blocks.banner.settings.position.options_5.label"
+                  }
+               ],
+               "default":"p-left"
+            },
+            {
+               "type":"checkbox",
+               "id":"enabled_info",
+               "default":false,
+               "label":"t:sections.content-image.blocks.banner.settings.enabled_info.label"
+            },
+			{
+              "type": "color",
+              "id": "box_bgcolor",
+              "label": "t:sections.content-image.blocks.banner.settings.box_bgcolor.label",
+              "default": "#FBEDEB"
+            },
+			{
+              "type": "color",
+              "id": "box_bordercolor",
+              "label": "t:sections.content-image.blocks.banner.settings.box_bordercolor.label",
+              "default": "#ffffff"
+            },
+            {
+               "type":"text",
+               "id":"title",
+               "label":"t:sections.content-image.blocks.banner.settings.title.label",
+               "default":"Main Title"
+            },
+            {
+               "type": "color",
+               "id": "title_color",
+               "label": "t:sections.content-image.blocks.banner.settings.title_color.label",
+               "default": "#222"
+            },
+            {
+               "type":"textarea",
+               "id":"subtitle",
+               "label":"t:sections.content-image.blocks.banner.settings.subtitle.label",
+               "default":"Save 15% Off"
+            },
+            {
+               "type": "color",
+               "id": "subtitle_color",
+               "label": "t:sections.content-image.blocks.banner.settings.subtitle_color.label",
+               "default": "#fff"
+            },
+            {
+               "type":"text",
+               "id":"btn-text",
+               "label":"t:sections.content-image.blocks.banner.settings.btn-text.label",
+               "default":"Shop Now"
+            },            
+            {
+               "type":"checkbox",
+               "id":"btn_arrow",
+               "default":false,
+               "label":"t:sections.content-image.blocks.banner.settings.btn_arrow.label"
+            },
+            {
+               "type":"checkbox",
+               "id":"btn_space",
+               "default":true,
+               "label":"t:sections.content-image.blocks.banner.settings.btn_space.label"
+            },
+            {
+              "type": "url",
+              "id": "link_btn",
+              "label": "t:sections.content-image.blocks.banner.settings.link_btn.label"
+            },
+            {
+              "type": "header",
+              "content": "t:sections.content-image.blocks.banner.settings.button_header.content"
+            },
+            {
+              "type": "color",
+              "id": "button_bg_color",
+              "label": "t:sections.content-image.blocks.banner.settings.button_bg_color.label",
+              "default": "#000"
+            },
+            {
+              "type": "color",
+              "id": "button_text_color",
+              "label": "t:sections.content-image.blocks.banner.settings.button_text_color.label",
+              "default": "#fff"
+            },
+            {
+              "type": "color",
+              "id": "button_border_color",
+              "label": "t:sections.content-image.blocks.banner.settings.button_border_color.label",
+              "default": "#000"
+            },
+            {
+              "type": "color",
+              "id": "buttonh_bg_color",
+              "label": "t:sections.content-image.blocks.banner.settings.buttonh_bg_color.label",
+              "default": "#fff"
+            },
+            {
+              "type": "color",
+              "id": "buttonh_text_color",
+              "label": "t:sections.content-image.blocks.banner.settings.buttonh_text_color.label",
+              "default": "#000"
+            },
+            {
+              "type": "color",
+              "id": "buttonh_border_color",
+              "label": "t:sections.content-image.blocks.banner.settings.buttonh_border_color.label",
+              "default": "#fff"
+            }
+         ]
+      }
+   ],
+   "presets":[
+      {
+         "name":"t:sections.content-image.presets.name",
+         "category":"banner",
+         "blocks":[
+            {
+               "type":"banner"
+            },
+            {
+               "type":"banner"
+            }
+         ]
+      }
+   ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

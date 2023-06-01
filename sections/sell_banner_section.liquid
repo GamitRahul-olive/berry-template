@@ -1,0 +1,444 @@
+<link rel="stylesheet" href="{{ 'section-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-banner.css' | asset_url }}</noscript>
+
+<div class="banner_outer banner_custome banner_v2_section two_banner_main {% if section.settings.section_width == 'standard-width' %}page-width{% else %}container-fluid{% endif %}" style="padding: {{ section.settings.section_padding }};">
+  <div class="row banner-inner">
+    <div class="col banner-main-inner content_{{ section.settings.text_style }}">
+      <div class="row">
+        <div class="{{ section.settings.left_width }} banner-img-inner show_{{ section.settings.text_style }}">
+          <div class="banner_full_1">
+            <a href="{{ section.settings.link1 }}">
+              <div class="banner-section {{ section.settings.position }}">
+                <div class="banner-img">
+                  {% if section.settings.image1 == blank %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% else %}
+                    {% assign block_image = section.settings.image1 %}
+                    {% assign img_url = block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                    <img src="{{ section.settings.image1 | img_url: 'master' }}" 
+                         data-src="{{ img_url }}" 
+                         data-widths="[157, 270, 303, 361, 377, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                         data-sizes="auto" 
+                         class="lazyload img-fluid" alt="banner">
+                  {% endif %}
+                </div>                
+                <div class="contain-banner text-{{ section.settings.alignment }}" style="text-align: {{ section.settings.alignment }};">
+                  {% if section.settings.bdesc1 != blank  and section.settings.text_style == "style1" %}
+                    <h4 style="color: {{ section.settings.bdesc1_bgcolor }};">
+                      {{ section.settings.bdesc1 }}
+                    </h4>
+                  {% endif %}
+                  {% if section.settings.btitle1 != blank %}
+                    <h3 style="background-color: {{ section.settings.btitle1_bgcolor }}; color: {{ section.settings.btitle1_color }};">
+                      {{ section.settings.btitle1 }}
+                    </h3>
+                  {% endif %}
+                  {% if section.settings.bdesc1 != blank  and section.settings.text_style == "style2" %}
+                    <h4 style="color: {{ section.settings.bdesc1_bgcolor }};">
+                      {{ section.settings.bdesc1 }}
+                    </h4>
+                  {% endif %}
+                  {% if section.settings.boffer1 != blank %}
+                    <h3 class="offer" style="color: {{ section.settings.boffer1_bgcolor }};">
+                      {{ section.settings.boffer1 }}
+                    </h3>
+                  {% endif %}
+                  {% if section.settings.btn-text1 != blank %}
+                    <a href="{{ section.settings.link_btn1 }}" class="btn btn-link">
+                      {{ section.settings.btn-text1 }}
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </a>              
+          </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+  "name": "t:sections.discount-banner.name",
+  "class": "bottom-space-0 two_banner_section_main",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_padding",
+      "label": "t:sections.discount-banner.settings.section_padding.label",
+      "default": "70px 10px 0px 10px"
+    },
+	{
+       "type":"select",
+       "id":"section_width",
+       "label":"t:sections.discount-banner.settings.section_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.discount-banner.settings.section_width.options_1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.discount-banner.settings.section_width.options_2.label"
+          }
+       ],
+       "default":"standard-width"
+    },
+	{
+       "type":"select",
+       "id":"left_width",
+       "label":"t:sections.discount-banner.settings.left_width.label",
+       "options":[
+		  {
+             "value":"col-md-3",
+             "label":"t:sections.discount-banner.settings.left_width.options_1.label"
+          },
+          {
+             "value":"col-md-4",
+             "label":"t:sections.discount-banner.settings.left_width.options_2.label"
+          },
+          {
+             "value":"col-md-5",
+             "label":"t:sections.discount-banner.settings.left_width.options_3.label"
+          },
+          {
+             "value":"col-md-6",
+             "label":"t:sections.discount-banner.settings.left_width.options_4.label"
+          },
+		  {
+             "value":"col-md-7",
+             "label":"t:sections.discount-banner.settings.left_width.options_5.label"
+          },
+          {
+             "value":"col-md-8",
+             "label":"t:sections.discount-banner.settings.left_width.options_6.label"
+          },
+          {
+             "value":"col-md-9",
+             "label":"t:sections.discount-banner.settings.left_width.options_7.label"
+          },
+          {
+             "value":"col-md-12",
+             "label":"t:sections.discount-banner.settings.left_width.options_8.label"
+          }
+       ],
+       "default":"col-md-12"
+    },
+    {
+       "type":"select",
+       "id":"right_width",
+       "label":"t:sections.discount-banner.settings.right_width.label",
+       "options":[
+		  {
+             "value":"col-md-3",
+             "label":"t:sections.discount-banner.settings.right_width.options_1.label"
+          },
+          {
+             "value":"col-md-4",
+             "label":"t:sections.discount-banner.settings.right_width.options_2.label"
+          },
+          {
+             "value":"col-md-5",
+             "label":"t:sections.discount-banner.settings.right_width.options_3.label"
+          },
+          {
+             "value":"col-md-6",
+             "label":"t:sections.discount-banner.settings.right_width.options_4.label"
+          },
+		  {
+             "value":"col-md-7",
+             "label":"t:sections.discount-banner.settings.right_width.options_5.label"
+          },
+          {
+             "value":"col-md-8",
+             "label":"t:sections.discount-banner.settings.right_width.options_6.label"
+          },
+          {
+             "value":"col-md-9",
+             "label":"t:sections.discount-banner.settings.right_width.options_7.label"
+          }
+       ],
+       "default":"col-md-4"
+    },
+	{
+       "type":"select",
+       "id":"text_style",
+       "label":"t:sections.discount-banner.settings.text_style.label",
+       "options":[
+          {
+             "value":"style1",
+             "label":"t:sections.discount-banner.settings.text_style.options_1.label"
+          },
+          {
+             "value":"style2",
+             "label":"t:sections.discount-banner.settings.text_style.options_2.label"
+          }
+       ],
+       "default":"style1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.discount-banner.settings.header_banner_1.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "t:sections.discount-banner.settings.image1.label"
+    },
+    {
+      "type": "url",
+      "id": "link1",
+      "label": "t:sections.discount-banner.settings.link1.label"
+    },
+    {
+       "type":"select",
+       "id":"position",
+       "label":"t:sections.discount-banner.settings.position.label",
+       "options":[
+          {
+             "value":"p-top-left",
+             "label":"t:sections.discount-banner.settings.position.options_1.label"
+          },
+          {
+             "value":"p-top-center",
+             "label":"t:sections.discount-banner.settings.position.options_2.label"
+          },
+          {
+             "value":"p-top-right",
+             "label":"t:sections.discount-banner.settings.position.options_3.label"
+          },
+          {
+             "value":"p-center-left",
+             "label":"t:sections.discount-banner.settings.position.options_4.label"
+          },
+          {
+             "value":"p-center-center",
+             "label":"t:sections.discount-banner.settings.position.options_5.label"
+          },
+          {
+             "value":"p-center-right",
+             "label":"t:sections.discount-banner.settings.position.options_6.label"
+          },
+          {
+             "value":"p-bottom-left",
+             "label":"t:sections.discount-banner.settings.position.options_7.label"
+          },
+          {
+             "value":"p-bottom-center",
+             "label":"t:sections.discount-banner.settings.position.options_8.label"
+          },
+          {
+             "value":"p-bottom-right",
+             "label":"t:sections.discount-banner.settings.position.options_9.label"
+          }
+       ],
+       "default":"p-bottom-left"
+    },
+    {
+       "type":"select",
+       "id":"alignment",
+       "label":"t:sections.discount-banner.settings.alignment.label",
+       "options":[
+          {
+             "value":"left",
+             "label":"t:sections.discount-banner.settings.alignment.options_1.label"
+          },
+          {
+             "value":"center",
+             "label":"t:sections.discount-banner.settings.alignment.options_2.label"
+          },
+          {
+             "value":"right",
+             "label":"t:sections.discount-banner.settings.alignment.options_3.label"
+          }
+       ],
+       "default":"left"
+    },
+    {
+       "type":"text",
+       "id":"btitle1",
+       "label":"t:sections.discount-banner.settings.btitle1.label",
+       "default":"Main Title"
+    },
+    {
+       "type": "color",
+       "id": "btitle1_color",
+       "label": "t:sections.discount-banner.settings.btitle1_color.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"bdesc1",
+       "label":"t:sections.discount-banner.settings.bdesc1.label",
+       "default":"Description"
+    },
+    {
+       "type": "color",
+       "id": "bdesc1_bgcolor",
+       "label": "t:sections.discount-banner.settings.bdesc1_bgcolor.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"boffer1",
+       "label":"t:sections.discount-banner.settings.boffer1.label",
+       "default":"Offer",
+	   "info": "t:sections.discount-banner.settings.boffer1.info"
+    },
+    {
+       "type": "color",
+       "id": "boffer1_bgcolor",
+       "label": "t:sections.discount-banner.settings.boffer1_bgcolor.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"btn-text1",
+       "label":"t:sections.discount-banner.settings.btn-text1.label",
+       "default":"Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link_btn1",
+      "label": "t:sections.discount-banner.settings.link_btn1.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.discount-banner.settings.header_banner_2.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "t:sections.discount-banner.settings.image2.label"
+    },
+    {
+      "type": "url",
+      "id": "link2",
+      "label": "t:sections.discount-banner.settings.link2.label"
+    },
+    {
+       "type":"select",
+       "id":"position2",
+       "label":"t:sections.discount-banner.settings.position2.label",
+       "options":[
+          {
+             "value":"p-top-left",
+             "label":"t:sections.discount-banner.settings.position2.options_1.label"
+          },
+          {
+             "value":"p-top-center",
+             "label":"t:sections.discount-banner.settings.position2.options_2.label"
+          },
+          {
+             "value":"p-top-right",
+             "label":"t:sections.discount-banner.settings.position2.options_3.label"
+          },
+          {
+             "value":"p-center-left",
+             "label":"t:sections.discount-banner.settings.position2.options_4.label"
+          },
+          {
+             "value":"p-center-center",
+             "label":"t:sections.discount-banner.settings.position2.options_5.label"
+          },
+          {
+             "value":"p-center-right",
+             "label":"t:sections.discount-banner.settings.position2.options_6.label"
+          },
+          {
+             "value":"p-bottom-left",
+             "label":"t:sections.discount-banner.settings.position2.options_7.label"
+          },
+          {
+             "value":"p-bottom-center",
+             "label":"t:sections.discount-banner.settings.position2.options_8.label"
+          },
+          {
+             "value":"p-bottom-right",
+             "label":"t:sections.discount-banner.settings.position2.options_9.label"
+          }
+       ],
+       "default":"p-bottom-left"
+    },
+    {
+       "type":"select",
+       "id":"alignment2",
+       "label":"t:sections.discount-banner.settings.alignment2.label",
+       "options":[
+          {
+             "value":"left",
+             "label":"t:sections.discount-banner.settings.alignment2.options_1.label"
+          },
+          {
+             "value":"center",
+             "label":"t:sections.discount-banner.settings.alignment2.options_2.label"
+          },
+          {
+             "value":"right",
+             "label":"t:sections.discount-banner.settings.alignment2.options_3.label"
+          }
+       ],
+       "default":"left"
+    },
+    {
+       "type":"text",
+       "id":"btitle2",
+       "label":"t:sections.discount-banner.settings.btitle2.label",
+       "default":"Main Title"
+    },
+    {
+       "type": "color",
+       "id": "btitle2_color",
+       "label": "t:sections.discount-banner.settings.btitle2_color.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"bdesc2",
+       "label":"t:sections.discount-banner.settings.bdesc2.label",
+       "default":"Description"
+    },
+    {
+       "type": "color",
+       "id": "bdesc2_bgcolor",
+       "label": "t:sections.discount-banner.settings.bdesc2_bgcolor.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"boffer2",
+       "label":"t:sections.discount-banner.settings.boffer2.label",
+       "default":"Offer",
+	   "info": "t:sections.discount-banner.settings.boffer2.info"
+    },
+    {
+       "type": "color",
+       "id": "boffer2_bgcolor",
+       "label": "t:sections.discount-banner.settings.boffer2_bgcolor.label",
+       "default": "#0E2640"
+    },
+    {
+       "type":"text",
+       "id":"btn-text2",
+       "label":"t:sections.discount-banner.settings.btn-text2.label",
+       "default":"Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link_btn2",
+      "label": "t:sections.discount-banner.settings.link_btn2.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.discount-banner.presets.name",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+{% endjavascript %}

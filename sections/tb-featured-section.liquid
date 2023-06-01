@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="{{ 'TB-featured-section.css' | asset_url }}">
+
+{% style %}
+  .newsection-{{ section.id }} {
+    padding: {{ section.settings.section_padding_setting }}
+  }
+  @media (max-width: 767px) {
+    .newsection-{{ section.id }} {
+      padding: {{ section.settings.mobile_padding }}
+    }
+  }
+{% endstyle %}
+<section class="tb-featured newsection-{{ section.id }}">
+  <div class="page-width">
+      <ul class="tb-featured-list">
+         {% for block in section.blocks %}
+        <li>
+          <div class="img-box" style="background-color: {{ block.settings.icon-bg_color }}" >
+            <img src="{{ block.settings.featured-list-icon | img_url: 'small' }}" alt="">
+          </div>
+          <div class="content-box">
+            <h4 class="tb-featured-list-title">{{ block.settings.tb-featured-list-title }}</h4>
+            <div class="tb-featured-content">{{ block.settings.tb-featured-list-detail }}</div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "t:sections.featured-section.name",
+    "settings":[
+      {
+       "type": "text",
+       "id": "section_padding_setting",
+       "label": "t:sections.featured-section.settings.section_padding_setting.label",
+        "default":"100px 20px 10px 0px"
+     },
+      {
+        "type":"text",
+        "id":"mobile_padding",
+        "label":"t:sections.featured-section.settings.mobile_padding.label",
+        "default":"100px 20px 10px 0px"
+      }
+    ],
+    "max_blocks" : 4,
+    "blocks" : [
+            {
+              "name" : "t:sections.featured-section.blocks.slide-it-box.name",
+              "type" : "slide-it-box",
+              "settings": [
+                {
+                  "type" : "color",
+                  "id" : "icon-bg_color",
+                  "label" : "t:sections.featured-section.blocks.slide-it-box.settings.icon-bg_color.label",
+                  "default" : "#efefef"
+                },
+                {
+                  "type" : "image_picker",
+                  "id" : "featured-list-icon",
+                  "label" : "t:sections.featured-section.blocks.slide-it-box.settings.featured-list-icon.label"
+                },
+                {
+                  "type" : "text",
+                  "id" : "tb-featured-list-title",
+                  "label" : "t:sections.featured-section.blocks.slide-it-box.settings.tb-featured-list-title.label",
+                  "default" : "Set List Title"
+                },
+                {
+                  "type" : "textarea",
+                  "id" : "tb-featured-list-detail",
+                  "label" : "t:sections.featured-section.blocks.slide-it-box.settings.tb-featured-list-detail.label",
+                  "default" : "Set List Detail"
+                }
+          ]
+      }
+    ],
+    "presets" : [{
+      "name": "t:sections.featured-section.presets.name"
+    }]
+  }
+  
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

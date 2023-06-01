@@ -1,0 +1,226 @@
+<link rel="stylesheet" href="{{ 'section-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-banner.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div class="banner_outer banner_custome banner_v2_section two_banner_main {% if section.settings.section_width == 'standard-width' %}page-width{% else %}container-fluid{% endif %}" style="padding: {{ section.settings.section_padding }};">
+  <div class="row banner-inner">
+    <div class="col banner-main-inner content_{{ section.settings.text_style }}">
+      <div class="row">
+        <div class="banner-img-inner show_{{ section.settings.text_style }}">
+          <div class="banner_full_1">
+            <a href="{{ section.settings.link1 }}">
+              <div class="banner-section {{ section.settings.position }}">
+                <div class="banner-img">
+                  {% if section.settings.image1 == blank %}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% else %}
+                  {% assign block_image = section.settings.image1 %}
+                  {% assign img_url = block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                  <img src="{{ section.settings.image1 | img_url: 'master' }}" 
+                       data-src="{{ img_url }}" 
+                       data-widths="[157, 270, 303, 361, 377, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                       data-sizes="auto" 
+                       class="lazyload img-fluid" alt="banner" >
+                  {% endif %}
+                </div>                
+                <div class="contain-banner text-{{ section.settings.alignment }}" style="text-align: {{ section.settings.alignment }};">
+                  {% if section.settings.bdesc1 != blank  and section.settings.text_style == "style1" %}
+                    <p style="color: {{ section.settings.bdesc1_bgcolor }};">
+                      {{ section.settings.bdesc1 }}
+                    </p>
+                  {% endif %}
+                  {% if section.settings.btitle1 != blank %}
+                    <h4 style="background-color: {{ section.settings.btitle1_bgcolor }}; color: {{ section.settings.btitle1_color }};">
+                      {{ section.settings.btitle1 }}
+                    </h4>
+                  {% endif %}
+                  {% if section.settings.bdesc1 != blank  and section.settings.text_style == "style2" %}
+                    <p style="color: {{ section.settings.bdesc1_bgcolor }};">
+                      {{ section.settings.bdesc1 }}
+                    </p>
+                  {% endif %}
+                  {% if section.settings.boffer1 != blank %}
+                    <h3 class="offer" style="color: {{ section.settings.boffer1_bgcolor }};">
+                      {{ section.settings.boffer1 }}
+                    </h3>
+                  {% endif %} 
+                  {% if section.settings.banner_content_show != blank %}
+                    <div class="banner_content_details" style="background:{{ section.settings.banner_content_bg_clr }};color:{{ section.settings.banner_content_text_clr }};padding: 25px;">
+                      <h4>{{ section.settings.banner_headeing }}</h4>
+                      <h4>{{ section.settings.banner_sub_heading }}</h4>
+                      <h4>{{ section.settings.banner_title  }}</h4>
+                      {% if section.settings.btn-text1 != blank %}
+                        <a href="{{ section.settings.link_btn1 }}" class="btn btn-link">
+                          {{ section.settings.btn-text1 }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </a>              
+          </div>
+        </div>       
+      </div>      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+  "name": "t:sections.best-offer.name",
+  "class": "bottom-space-0 two_banner_section_main",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_padding",
+      "label": "t:sections.best-offer.settings.section_padding.label",
+      "default": "70px 10px 0px 10px"
+    },
+	{
+       "type":"select",
+       "id":"section_width",
+       "label":"t:sections.best-offer.settings.section_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.best-offer.settings.section_width.options_1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.best-offer.settings.section_width.options_2.label"
+          }
+       ],
+       "default":"standard-width"
+    },	
+    {
+      "type": "header",
+      "content": "t:sections.best-offer.settings.header_banner_1.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "t:sections.best-offer.settings.image1.label"
+    },
+    {
+      "type": "url",
+      "id": "link1",
+      "label": "t:sections.best-offer.settings.link1.label"
+    },
+    {
+       "type":"select",
+       "id":"position",
+       "label":"t:sections.best-offer.settings.position.label",
+       "options":[
+          {
+             "value":"p-top-left",
+             "label":"t:sections.best-offer.settings.position.options_1.label"
+          },
+          {
+             "value":"p-top-center",
+             "label":"t:sections.best-offer.settings.position.options_2.label"
+          },
+          {
+             "value":"p-top-right",
+             "label":"t:sections.best-offer.settings.position.options_3.label"
+          },
+          {
+             "value":"p-center-left",
+             "label":"t:sections.best-offer.settings.position.options_4.label"
+          },
+          {
+             "value":"p-center-center",
+             "label":"t:sections.best-offer.settings.position.options_5.label"
+          },
+          {
+             "value":"p-center-right",
+             "label":"t:sections.best-offer.settings.position.options_6.label"
+          },
+          {
+             "value":"p-bottom-left",
+             "label":"t:sections.best-offer.settings.position.options_7.label"
+          },
+          {
+             "value":"p-bottom-center",
+             "label":"t:sections.best-offer.settings.position.options_8.label"
+          },
+          {
+             "value":"p-bottom-right",
+             "label":"t:sections.best-offer.settings.position.options_9.label"
+          }
+       ],
+       "default":"p-bottom-left"
+    },
+    {
+       "type":"text",
+       "id":"boffer1",
+       "label":"t:sections.best-offer.settings.boffer1.label",
+       "default":"Offer",
+	   "info": "t:sections.best-offer.settings.boffer1.info"
+    },
+    {
+       "type": "color",
+       "id": "boffer1_bgcolor",
+       "label": "t:sections.best-offer.settings.boffer1_bgcolor.label",
+       "default": "#0E2640"
+    },
+    {
+      "type":"header",
+      "content":"t:sections.best-offer.settings.header__content.content"
+    },
+    {
+      "type":"checkbox",
+      "id":"banner_content_show",
+      "label":"t:sections.best-offer.settings.banner_content_show.label",
+      "default":false
+    },
+    {
+      "type":"color",
+      "id":"banner_content_bg_clr",
+      "label":"t:sections.best-offer.settings.banner_content_bg_clr.label",
+      "default":"#fff"
+    },
+    {
+      "type":"color",
+      "id":"banner_content_text_clr",
+      "label":"t:sections.best-offer.settings.banner_content_text_clr.label",
+      "default":"#fff"
+    },
+    {
+      "type":"text",
+      "id":"banner_headeing",
+      "label":"t:sections.best-offer.settings.banner_headeing.label"
+    },
+    {
+      "type":"text",
+      "id":"banner_sub_heading",
+      "label":"t:sections.best-offer.settings.banner_sub_heading.label"
+    },
+    {
+      "type":"text",
+      "id":"banner_title",
+      "label":"t:sections.best-offer.settings.banner_title.label"
+    },
+    {
+       "type":"text",
+       "id":"btn-text1",
+       "label":"t:sections.best-offer.settings.btn-text1.label",
+       "default":"Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link_btn1",
+      "label": "t:sections.best-offer.settings.link_btn1.label"
+    }    
+  ],
+  "presets": [
+    {
+      "name": "t:sections.best-offer.presets.name",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+{% endjavascript %}

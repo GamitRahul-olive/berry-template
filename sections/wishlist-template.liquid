@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'component-product-grid.css' | asset_url }}">
+
+<div class="wishlist page-width" >
+  <div class="grid" grid-wishlist>
+    {% comment %} Sample loading element {% endcomment %}
+    <p>Loading...</p>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "templates": ["page"]
+  }
+{% endschema %}

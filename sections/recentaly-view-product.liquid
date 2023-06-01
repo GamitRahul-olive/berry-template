@@ -1,0 +1,41 @@
+<div class="main-recent-view">
+  <div class="page-width">
+    {% render 'recently-viewed' %}
+  </div>
+</div>
+  
+{% schema %}
+  {
+    "name": "t:sections.pr-recent-view.name",
+    "settings": [
+      {
+        "type":"text",
+        "id":"recentaly_view_title",
+        "label":"t:sections.pr-recent-view.settings.recentaly_view_title.label"
+      },
+      {
+        "type": "number",
+        "id": "products_per_page",
+        "label": "t:sections.pr-recent-view.settings.products_per_page.label",
+        "default": 4
+      },
+      {
+        "type": "checkbox",
+        "id": "show_slider",
+        "default": false,
+        "label": "Show Slider"
+      }
+    ],
+    "presets":[
+      {
+        "name":"t:sections.pr-recent-view.presets.name"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
