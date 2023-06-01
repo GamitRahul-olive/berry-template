@@ -1,0 +1,89 @@
+{%- unless template == 'index' or template == 'template_blog' or template == '404' or template.name == 'reset_password' or template.name == 'account' or template.name == 'register' or template.name == 'activate_account' or template.name == 'addresses' or template.name == 'order' -%}
+ {% assign manage_breadcrum = false %}
+   {% if template.name == 'collection' or template.name == 'page' or template.name == 'login' %}
+    {% assign manage_breadcrum = true %}
+   {% endif %}  
+{% assign temp = template | split: '.' | first  %}
+{%- assign block_image = settings.bread_back_img -%}
+<div class="breadcrumb-section pet-parallax lazyload parallax__image" data-bg="{{ block_image | img_url: 'master' }}" data-bgset="{% render 'bgset', image: block_image %}" data-sizes="auto" data-parent-fit="cover" 
+     style="padding: {{ settings.bread_section_padding }}; {% if settings.bread_back_img == blank %}background: {{ settings.bread_back_color }};{% else %} background-image: url({{ block_image | img_url: 'master' }}; {% endif %}">
+  <div class="page-width">
+    <div class="row bread-inner {% if manage_breadcrum %} center_mode_breadcrumb {% endif %}">
+     {% if manage_breadcrum %}
+      <div class="manage_breadcrumn">
+        {% if template.name == 'login' %}
+          <h3 class="login"> {{ 'customer.login_page.title' | t }}</h3>
+        {% else %}
+           <h3>{{ page_title }}</h3>
+        {% endif %}
+       
+      </div>
+     {% endif %}  
+      <div>  
+      </div>      
+      {% case temp %}
+      <div>
+        <nav aria-label="breadcrumb" class="theme-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ routes.root_url }}" style="color: {{ settings.bsub_title }};">
+              <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.99984 0.833984L0.589844 2.24398L5.16984 6.83398L0.589844 11.424L1.99984 12.834L7.99984 6.83398L1.99984 0.833984Z" fill="#616161"/>
+              </svg>
+              {{ 'general.breadcrumb.home' | t }}</a>
+            </li>
+            <li class="breadcrumb-item active" style="color: {{ settings.bsub_title }};">
+              <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.99984 0.833984L0.589844 2.24398L5.16984 6.83398L0.589844 11.424L1.99984 12.834L7.99984 6.83398L1.99984 0.833984Z" fill="#616161"/>
+              </svg>
+              {{ 'general.search.subtitle' | t }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      {% else %}
+      <div>
+        <nav aria-label="breadcrumb" class="theme-breadcrumb test">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ routes.root_url }}" style="color: {{ settings.bsub_title }};">
+        <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.66683 12.1673V8.16732H8.3335V12.1673H11.6668V6.83398H13.6668L7.00016 0.833984L0.333496 6.83398H2.3335V12.1673H5.66683Z" fill="#673AB7"/>
+        </svg>
+        Home</a></li>
+            {% assign data_title = page_title | split: '|' | first %}
+            {% assign data_json = page_title | split: '|' | last %}
+            
+            {% if template.name =='product' or template.name == 'collection'%}
+            	<li class="breadcrumb-item" style="color: {{ settings.bsub_title }};">
+                  <svg width="13" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.99984 0.833984L0.589844 2.24398L5.16984 6.83398L0.589844 11.424L1.99984 12.834L7.99984 6.83398L1.99984 0.833984Z" fill="#616161"/>
+                  </svg>
+              		<a href="/collections">Collections</a>
+            	</li>
+            {% endif %}
+            <li class="breadcrumb-item active" style="color: {{ settings.bmain_title }};">
+              <svg width="13" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.99984 0.833984L0.589844 2.24398L5.16984 6.83398L0.589844 11.424L1.99984 12.834L7.99984 6.83398L1.99984 0.833984Z" fill="#616161"/>
+                  </svg>
+              {%- if request.page_type == 'search' and search.performed == true -%}
+                {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+              {%- else -%}
+                {% if template.name == 'login' %}
+                  {{ 'customer.login_page.title' | t }}
+                {% else %} 
+                  {{ page_title }}
+                {% endif %}
+              {% endif %}
+            </li>
+            {% if settings.enable_lang_switcher %}
+            <span class="hide" id="{{ data_title | handleize }}_breadcrumb_active_page_title" style="color: {{ settings.bsub_title }};">{{ data_json | raw }}</span>
+            {% endif %}
+          </ol>
+        </nav>
+      </div>
+      {% endcase %}      
+    </div>
+  </div>
+</div>
+
+{%- endunless -%}  

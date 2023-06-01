@@ -1,0 +1,25 @@
+{% liquid
+  assign ed_in = block.settings.ed_in
+  assign ed_delay = block.settings.ed_delay
+  assign ed_additional = block.settings.ed_additional                              
+  
+  assign range = ed_delay | times: 24 | times: 60 | times: 60
+  assign deliver_in = ed_in | times: 24 | times: 60 | times: 60
+  assign now = 'now' | date: "%s"
+  assign from = now | plus: deliver_in | minus: range | date: "%b %d"
+  assign to = now | plus: deliver_in | plus: range | date: "%b %d"
+%}
+<div class="estimated_delivery">
+  {% render 'calender' %}
+  <p class="ml-3.75 font-normal">
+    {{ block.settings.ed_text }}: <span>{{ from }} - {{ to }} </span>
+  </p>
+</div>
+<div class="tp-trust-badge mb-5">
+  {% if block.settings.ed_badges_image != blank %}
+    <img src="{{ block.settings.ed_badges_image | image_url: width: block.settings.ed_badges_image.width, height: block.settings.ed_badges_image.height }}"
+      alt="{{ block.settings.ed_badges_image.alt }}"
+      width="{{ block.settings.ed_badges_image.width }}"
+      height="{{ block.settings.ed_badges_image.height }}" loading="lazy">
+  {% endif %}
+ </div> 

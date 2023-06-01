@@ -1,0 +1,38 @@
+ {% assign parent_class ='' %}
+ 
+ {% if section.settings.product_gallery_layout == 'one_column_grid' %}
+   
+   {% assign parent_class = 'main-product-grid product grid grid-1-column' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'two_column_grid' %}
+   
+   {% assign parent_class = 'grid-2-column grid--2-col-tablet' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_1' %}
+   
+   {% assign parent_class = 'slider-1-column' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_2' %}
+   
+   {% assign parent_class = 'slider-2-column slider-1-column product-bottom-slider grid--1-col' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_full_width' %} 
+   
+   {% assign parent_class = 'product-slider-full-width slider-1-column product-bottom-slider' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_verticle_thumbnail' %}
+   
+   {% assign parent_class = 'product-verticle-slider slider-1-column product-bottom-slider' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_horizontal_thumbnail' %}
+   
+   {% assign parent_class = 'product-bottom-slider' %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_thumbnail_count' %}
+   
+   {% assign parent_class = 'slider_with_thumbnail_count' %}
+   
+ {% else %}
+   
+ {% endif %}
+ {{ parent_class }}

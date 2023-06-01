@@ -1,0 +1,28 @@
+{% if block.settings.enable_count_down != blank %}
+  {% assign starting_date = block.settings.start_count_down %}
+  {% assign final_starting_date = starting_date | date: '%s' %}
+  {% assign end_date = block.settings.end_count_down %}
+  {% assign final_end_date = end_date | date: '%s' %}
+  {% assign today_date = 'today' | date: '%s' %}
+  
+  <style>
+    .set_countdown .countdown-area .single-countdown{
+      background-color:{{ block.settings.bg_cd_color }};
+    }
+    .countdown-area .single-countdown .count-number{
+      color: {{ block.settings.cd_text_color }};
+    }
+  </style>
+  
+  {% if final_starting_date >= today_date %} 
+    <div class="product-grid-countdown" style="color:{{ block.settings.title_color }}">
+      <div class="prd-variant count_time"><span>{% if block.settings.count_down_title != blank %} {{ block.settings.count_down_title }} {% else %} {{ 'products.product.count_time' | t }} {% endif %}</span></div>
+      <div data-countdown="{{ starting_date }}" class="set_countdown"></div>                  
+    </div>  
+  {% else %}
+    <div class="product-grid-countdown" style="color:{{ block.settings.title_color }}">
+      <div class="prd-variant count_time"><span>{% if block.settings.count_down_title != blank %} {{ block.settings.count_down_title }} {% else %} {{ 'products.product.count_time' | t }} {% endif %}</span></div>
+      <div data-countdown="{{ end_date }}" class="set_countdown"></div>                  
+    </div>
+  {% endif %}     
+{% endif %} 

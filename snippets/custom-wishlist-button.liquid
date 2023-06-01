@@ -1,0 +1,10 @@
+{%- if product.handle != blank -%}
+<a class="action-wishlist tile-actions--btn flex wishlist-btn wishlist wishlist-3 {%if product_class %} {{ product_class }} {% endif %}" aria-label="{{ product.title }}" href="javascript: void(0)" data-product-handle="{{ product.handle }}" tabindex="0" data-button-wishlist>
+  <span class="icon">
+    {% render 'icon-favorite-outline' %} 
+  </span>
+  <span class="icon fill-icon">
+    {% render 'icon-favorite-fill' %}
+  </span>
+</a>
+{% endif %} 

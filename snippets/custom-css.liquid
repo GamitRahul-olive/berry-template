@@ -1,0 +1,44 @@
+{% style %}
+
+ /*  Product detail main slider arrow  */
+  .product-bottom-slider .slick-prev:before{background-image:url( {{ 'product-main-left-arrow.svg' | asset_url }} )!important;}
+  .product-bottom-slider .slick-next:before{background-image:url( {{ 'product-main-right-arrow.svg' | asset_url }} )!important}
+
+  
+/* Product detail page :- related product section and Recently view section slider arrow css ---- start */
+  .product-recommendations .recommendation_product_slider .slick-prev:before,
+  .collection .you_may_like_product_slider .slick-prev:before{
+    background-image:url( {{ 'prd-left-arrow.svg' | asset_url }} );   
+  }
+
+  .product-recommendations .recommendation_product_slider .slick-prev:hover:before,
+  .collection .you_may_like_product_slider .slick-prev:hover:before{
+    background-image:url( {{ 'prd-left-hover-arrow.svg' | asset_url }} );
+  }
+
+  .product-recommendations .recommendation_product_slider .slick-next:before,
+  .collection .you_may_like_product_slider .slick-next:before{
+    background-image:url( {{ 'prd-right-arrow.svg' | asset_url }} );
+  }
+
+  .product-recommendations .recommendation_product_slider .slick-next:hover:before,
+  .collection .you_may_like_product_slider .slick-next:hover:before{
+    background-image:url( {{ 'prd-right-hover-arrow.svg' | asset_url }} ); 
+  }
+
+
+  /*----------- Product Detail Page --- Compare Product - Popup icon ---------- */
+  .modal-dialog--compare .close_button{
+    background-image:url( {{ 'compare-close-icon.svg' | asset_url }} );
+  }
+
+  /* ----------- Product Detail Page --- Frequantly bought toghther section ---------- */
+  .Frequently_product_checkbox input[type="checkbox"]:checked{
+      background-image:url( {{ 'freq-check.png' | asset_url }} );
+  }
+      
+  .product__custom_selection input[type="checkbox"]:checked{
+      background-image:url( {{ 'freq-custom-check.png' | asset_url }} );
+  }
+  
+{% endstyle %}

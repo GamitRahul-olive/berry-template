@@ -1,0 +1,41 @@
+{%- liquid
+   assign cdn_text_clr = block.settings.cdn_text_clr
+   assign cdn_bg_clr = block.settings.cdn_bg_clr
+   assign mg_top_desktop = block.settings.mg_top_desktop
+   assign mg_buttom_desktop = block.settings.mg_buttom_desktop
+   assign mg_top_mobile = block.settings.mg_top_mobile
+   assign mg_buttom_mobile = block.settings.mg_buttom_mobile
+   assign starting_date = block.settings.start_count_down
+   assign final_starting_date = starting_date | date: '%s'
+   assign end_date = block.settings.end_count_down
+   assign final_end_date = end_date | date: '%s'
+   assign today_date = 'today' | date: '%s'
+-%}
+<style>
+  .cdn__section_{{ section.id }} .product-grid-countdown .countdown-area .single-countdown{
+    background-color: {{ cdn_bg_clr }} !important;
+    color: {{ cdn_text_clr }} !important;
+    margin-bottom: {{ mg_buttom_desktop | append: 'px' }};
+    margin-top: {{ mg_top_desktop | append: 'px' }};
+  }
+   @media (max-width: 767px) {
+     .cdn__section_{{ section.id }} .product-grid-countdown .countdown-area .single-countdown{
+       margin-bottom: {{ mg_buttom_desktop | append: 'px' }};
+       margin-top: {{ mg_top_desktop | append: 'px' }};       
+     }
+   }  
+</style>
+
+<div class="cdn__section_{{ section.id }}  {{ style }} count_down_section">
+  {% if final_starting_date >= today_date %}
+    <div class="product-grid-countdown" style="color:{{ block.settings.title_color }}">
+      <div class="prd-variant count_time"><span>{% if block.settings.count_down_title != blank %} {{ block.settings.count_down_title }} {% else %} {{ 'products.product.count_time' | t }} {% endif %}</span></div>
+      <div data-countdown="{{ starting_date }}" class="set_countdown"></div>
+    </div>
+  {% else %}
+    <div class="product-grid-countdown" style="color:{{ block.settings.title_color }}">
+      <div class="prd-variant count_time"><span>{% if block.settings.count_down_title != blank %} {{ block.settings.count_down_title }} {% else %} {{ 'products.product.count_time' | t }} {% endif %}</span></div>
+      <div data-countdown="{{ end_date }}" class="set_countdown"></div>
+    </div>
+  {% endif %}
+</div>  
