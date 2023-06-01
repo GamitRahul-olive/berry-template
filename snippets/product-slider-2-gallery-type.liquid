@@ -1,0 +1,35 @@
+<div class="grid__item product__media-wrapper gsgssgssgsgsssgs">
+  <div class="row">
+    <div class="product_feature_image product_two_slider Product_Slide" 
+      id="Product_{{ section.id }}"
+      data-count="{{ section.settings.grid }}" 
+      data-row="{{ section.settings.rows }}" 
+      data-autoplay="{{ section.settings.use_autoplay }}" 
+      data-autoSpeed="{{ section.settings.slider_speed }}000" 
+      data-infinite="{{section.settings.use_loop}}" 
+      data-arrows="{{section.settings.use_arrows}}" 
+      data-dots="{{section.settings.use_dots}}" 
+      data-lgup="{{ section.settings.slidetoshow }}" 
+      data-lgdown="{{ section.settings.slidetoshow_1200}}" 
+      data-mddown="{{ section.settings.slidetoshow_992}}" 
+      data-smdown="{{ section.settings.slidetoshow_768}}" 
+      data-mobile="{{ section.settings.slidetoshow_543 }}"
+    >
+    {%- for media in product.media -%}
+      {% assign wishlist_setup = true %}
+      {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+        <div id="Slide-{{ section.id }}-{{ media.id }}" class="col-md-12 product__media-item product__media-item grid__item slider__slide{% if product.selected_or_first_available_variant.featured_media == null and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+          {%- liquid
+             assign media_position = media_position | default: 0 | plus: 1
+             assign lazy_load = false
+             if media_position > 1
+               assign lazy_load = true
+             endif
+             render 'custom-product-thumbnail',product:product, wishlist_setup:true,fancy_box:true, media: media, position: media_position, loop: section.settings.enable_video_looping, modal_id: section.id, xr_button: true, media_width: media_width, lazy_load: lazy_load
+          -%}
+        </div>
+      {%- endunless -%}
+    {%- endfor -%}
+   </div>  
+  </div>
+</div>

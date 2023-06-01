@@ -1,0 +1,273 @@
+<div class="product-single__meta">
+{%- for block in section.blocks -%}
+ 
+  {%- case block.type -%}     
+    {%- when '@app' -%}
+      {% render block %}
+    {%- when 'title' -%}
+      <h2 class="product-single__title main-title">{{ product.title }}</h2>
+    {%- when 'price' -%}
+      <div class="product_price_review">
+        <div class="product__price">
+          {% render 'price', variant: current_variant_desc %}
+        </div>
+        <div class="rating custom_rating_two">
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>     
+        </div>
+      </div>
+    {%- when 'description' -%}
+      {% if product.description != blank %}
+      	<div class="prd-variant overview"><span>{{ 'products.product.over' | t }}</span>{{ product.description | truncate: 150 }}</div>
+      {% endif %}
+    {%- when 'show_available' -%}
+    	<div class="prd-variant stock">
+          <span>{{ 'products.product.availa' | t }}</span>
+          {% if product.available %}
+            {{ 'products.product.instock' | t }}
+          {% else %}
+            {{ 'products.product.outstock' | t }}
+          {% endif %}
+       </div>
+    {%- when 'show_type' -%}
+    	<div class="prd-variant type">
+          <span>{{ 'products.product.type' | t }}</span>
+          {{ product.type }}
+        </div>
+  
+    {%- when 'show_vendor' -%}
+    	<div class="prd-variant vendor">
+          <span>{{ 'products.product.vendor' | t }}</span>
+          {{ product.vendor }}
+         </div>
+  {%- endcase -%}
+  
+{%- endfor -%}
+  
+    {% capture "form_classes" -%}
+    	product-form product-form-{{ section.id }}
+    {%- unless section.settings.show_variant_labels %} product-form--hide-variant-labels {% endunless %}
+      {%- if section.settings.enable_payment_button and product.has_only_default_variant %} product-form--payment-button-no-variants {%- endif -%}
+    	{%- if current_variant_desc.available == false %} product-form--variant-sold-out {%- endif -%}
+    {%- endcapture %}
+
+    {% form 'product', product, data-productid: product.id,id: "AddToCartForm", class:form_classes, novalidate: 'novalidate', data-product-form: '' %}
+    	<input type="hidden" value="{{ product.handle }}" data-product-handle="{{ product.handle }}" data-product-id="{{ product.id }}" class="products_details">
+    	<input type="hidden" value="{{ product.id }}" class="productID" >
+    	<input type="hidden" value="{{ section.id }}" class="section-id" >
+    	<input type="hidden" value="single_product" id="single_product">
+      
+        <!--- swatch section start  -->       
+        {%- unless product.has_only_default_variant -%}
+          <div class="product-form__controls-group {% if settings.prd_variants == "box" %}product_box_variant{% else %}product_drop_variant{% endif %}">           
+            {%- if settings.prd_variants == 'box' -%} <!-- swatch -->      	              
+              {% if product.available and product.variants.size > 1 %}
+                {% for option in product.options %}          
+                  {% render 'swatch' with option %}
+                {% endfor %}
+              {% endif %}<!-- end swatch -->      	
+            {%- else -%}
+        		{% for option in product.options_with_values %}
+          		<div class="selector-wrapper js product-form__item">
+              		<label {% if option.name == 'default' %}class="label--hidden"{% endif %} for="SingleOptionSelector-{{ forloop.index0 }}">
+            				{{ option.name }}
+          				</label>
+                      <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+                              id="SingleOptionSelector-{{ forloop.index0 }}"
+                              data-index="option{{ forloop.index }}"
+                              >
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                      </select>
+        			</div>
+        		{% endfor %}
+        	{%- endif -%}
+        </div>
+     	{%- endunless -%}
+
+    <!--- end swatch section -->
+   	<div class="qty_cart">   
+      <div class="product-form__controls-group product-form__controls-group--submit">
+        <div class="product_cart_main product-form__item product-form__item--submit {%- if section.settings.enable_payment_button %} product-form__item--payment-button {%- endif -%} {%- if product.has_only_default_variant %} product-form__item--no-variants {%- endif -%}" >
+          {% if section.settings.show_quantity_selector %}
+          	<div class="product-form__controls-group">
+              <div class="product-form__item">
+                <label for="Quantity-{{ section.id }}" class="qty_title">{{ 'products.product.quantity.label' | t }}</label>
+                <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" pattern="[0-9]*" class="product-form__input product-form__input--quantity" data-quantity-input >
+              </div>
+           </div>
+          {% endif %}      
+          {% if section.settings.show_cart %}
+          	<button type="submit" name="add"
+                  {% unless current_variant_desc.available %} aria-disabled="true"{% endunless %}
+                  aria-label="{% unless current_variant_desc.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
+                  class="{% if current_variant_desc.available %}AddToCart{% endif %} btn product-form__cart-submit btn-prinmary"
+                  data-add-to-cart data-product_id="{{ product.variants.first.id }}" id="AddToCart"><!---donot remove data-product_id and AddToCart id-->
+                <span class="cart_lable_text" data-add-to-cart-text>                 
+                  {% unless current_variant_desc.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}
+                </span>
+                <span class="hide" id='data-loader' data-loader>
+                  {% render 'icon-spinner' %}
+                </span>
+          	</button>
+          {% endif %}         
+          {% if section.settings.show_wish == true %}
+            <div class="quick-list">
+              <div class="prd-btns">
+                <div class="product-tile--tile-actions flex wish-btn">
+                  <div class="wish-btn product-tile--tile-actions flex wislist-heart">
+                    {% render 'wishlist-button2'%}                 
+                  </div>
+                </div>
+              </div>
+            </div>                                                           
+          {% endif %}
+          {% if section.settings.enable_payment_button %}
+          	{{ form | payment_button }}
+          {% endif %}
+        </div>
+      </div>
+    </div>	  
+  {% if section.settings.show_countdown == true %}
+    {%- if product.description contains '[countdown]' -%}
+    {%- assign count_down_first = product.description | split:'[/countdown]' | first -%}
+    {%- assign count_down_final = count_down_first | split:'[countdown]' | last -%}                     
+    {% assign specific_date = count_down_final | date: '%s' %}            
+    {% assign today_date = 'today' | date: '%s' %}            
+    {% if specific_date > today_date %}
+    {% if specific_date != blank %}
+    <div class="product-grid-countdown">
+      <div class="prd-variant count_time"><span>{{ 'products.product.count_time' | t }}</span></div>                  
+      <div data-countdown="{{ count_down_final }}" class="set_countdown"></div>                  
+    </div>
+    {%- endif -%}                
+    {% endif %}                           
+    {%- endif -%}
+  {%- endif -%}
+  {% if section.settings.show_best_offer != blank %}
+   <div class="product_best_offer">
+      <div class="offer_icon_title">
+        {% if section.settings.offer_img_icon != blank %}
+          <img src="{{ section.settings.offer_img_icon | img_url:'master' }}">
+        {% endif %}
+        {% if section.settings.offer_title != blank %}
+          <h4>{{ section.settings.offer_title }}</h4>
+        {% endif %}
+      </div>
+      <ul>
+       {% for i in (1..5) %}
+         {% capture offer_info %}offer_info{{ i }}{% endcapture %}       
+         {% if section.settings[offer_info] != blank %}
+           <li>{{ section.settings[offer_info] }}</li>
+         {% endif %}  
+       {% endfor %}  
+      </ul>
+   </div>   
+  {% endif %}
+
+   {% if section.settings.checkout_img_show != blank %}   
+     <div class="main_checkout_sate_secure">
+       {% if section.settings.checkout_safe_title != blank %}
+         <h4>{{ section.settings.checkout_safe_title }}</h4>         
+       {% endif %}
+     
+       {% if section.settings.checkout_secure_safe_img != blank %}
+          <img src="{{ section.settings.checkout_secure_safe_img | img_url:'master' }}">
+       {% endif %}
+     </div>
+   {% endif %}
+  <div class="product-form__error-message-wrapper product-form__error-message-wrapper--hidden{% if section.settings.enable_payment_button %} product-form__error-message-wrapper--has-payment-button{% endif %}"
+       data-error-message-wrapper role="alert">
+    <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+    {% render 'icon-error' %}
+    <span class="product-form__error-message" data-error-message>{{ 'products.product.quantity_minimum_message' | t }}</span>
+  </div>
+
+  <select name="id" data-productid="{{ product.id }}" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
+    {% for variant in product.variants %}
+      <option value="{{ variant.id }}" {%- if variant == current_variant_desc %} selected="selected" {%- endif -%}>
+       {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+      </option>
+    {% endfor %}
+  </select>
+
+  {% if section.settings.show_trust == true and section.settings.trust_img != blank %}
+    <div class="trust_img">
+      <div class="prd-variant count_time"><span>{{ 'products.product.payment' | t }}</span></div>
+      <a href="{{ section.settings.trust_link }}">
+        {% if section.settings.show_trust == blank %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% else %}
+          {% assign block_image = section.settings.trust_img %}
+          {% assign img_url = block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+          <img src="{{ section.settings.trust_img | img_url: '381x38' }}" data-widths="[176, 270, 303, 361, 381, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" class="lazyload img-fluid" alt="banner" >
+        {% endif %}
+      </a>
+    </div>
+  {% endif %}
+
+  {% if settings.show_size_guide == true or settings.show_shipping == true %}
+  <div class="model_popup_link">
+        {% if settings.show_size_guide == true %}
+            <button type="button" class="size_guide_link" data-bs-toggle="modal" data-bs-target="#sizeguide_id">          
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        	 width="31.883px" height="31.883px" viewBox="0 0 31.883 31.883" style="enable-background:new 0 0 31.883 31.883;"
+        	 xml:space="preserve">
+                <g>
+                  <g>
+                    <path d="M31.603,8.288l-7.449-7.725c-0.375-0.388-1.002-0.409-1.391-0.035L0.292,22.202c-0.387,0.375-0.387,1.004-0.014,1.393
+                             l7.451,7.723c0.374,0.392,1.002,0.413,1.39,0.037L31.59,9.679C31.978,9.304,31.979,8.676,31.603,8.288z M9.336,28.419
+                             c-0.23,0.223-0.539,0.345-0.859,0.339c-0.32-0.007-0.624-0.14-0.846-0.369l-4.432-4.595c-0.462-0.479-0.449-1.243,0.03-1.705
+                             l2.039,2.113c0.28,0.291,0.741,0.299,1.032,0.021c0.291-0.281,0.297-0.741,0.016-1.034l-2.037-2.11l0.543-0.523l2.037,2.111
+                             c0.28,0.291,0.742,0.302,1.033,0.021c0.291-0.278,0.296-0.737,0.016-1.03l-2.037-2.111l0.542-0.523l2.038,2.112
+                             c0.28,0.29,0.742,0.3,1.032,0.021c0.291-0.281,0.297-0.74,0.016-1.033l-2.037-2.11l0.542-0.521l2.038,2.111
+                             c0.281,0.291,0.742,0.301,1.033,0.021c0.29-0.281,0.297-0.742,0.016-1.033l-2.037-2.111l0.543-0.522l3.393,3.516
+                             c0.28,0.292,0.741,0.301,1.033,0.022c0.291-0.281,0.297-0.742,0.016-1.033l-3.392-3.519l0.542-0.523l2.038,2.112
+                             c0.281,0.291,0.741,0.302,1.032,0.021s0.297-0.742,0.017-1.032l-2.038-2.111l0.543-0.523l2.038,2.112
+                             c0.281,0.29,0.742,0.301,1.033,0.021c0.291-0.279,0.296-0.742,0.016-1.033l-2.037-2.112l0.542-0.523l2.037,2.112
+                             c0.279,0.291,0.742,0.301,1.033,0.021s0.295-0.741,0.016-1.032l-2.037-2.112l0.542-0.523L18,11.921
+                             c0.281,0.29,0.741,0.301,1.032,0.02c0.291-0.279,0.297-0.74,0.018-1.032l-2.037-2.112l0.543-0.523l3.391,3.518
+                             c0.281,0.291,0.761,0.284,1.053,0.004c0.291-0.282,0.314-0.76,0.035-1.05L18.64,7.227l3.906-3.769
+                             c0.229-0.222,0.539-0.344,0.858-0.338c0.32,0.006,0.625,0.138,0.847,0.369l4.434,4.594c0.221,0.229,0.344,0.539,0.338,0.858
+                             c-0.006,0.32-0.14,0.624-0.369,0.847L9.336,28.419z"/>
+                    <path d="M22.351,9.433c0.938,0.973,2.49,1,3.463,0.062c0.975-0.938,1-2.492,0.062-3.464c-0.938-0.973-2.491-1-3.463-0.062
+                             C21.439,6.908,21.412,8.462,22.351,9.433z M23.429,7.023c0.391-0.377,1.018-0.364,1.396,0.025
+                             c0.376,0.392,0.364,1.017-0.026,1.395c-0.394,0.378-1.019,0.366-1.396-0.024C23.025,8.026,23.037,7.4,23.429,7.023z"/>
+                  </g>
+                </g>
+              </svg>
+              {{ settings.size_guide }}
+            </button>
+        {% endif %}
+        {% if settings.show_shipping == true %}
+          <button type="button" class="size_guide_link" data-bs-toggle="modal" data-bs-target="#shipping_id">          
+            <svg xmlns="http://www.w3.org/2000/svg" width="25.313" height="17.147" viewBox="0 0 25.313 17.147">
+              <path id="shipping" d="M25.1,91.148l-4.254-4.4a.741.741,0,0,0-.533-.226H17.6v-3.2a.742.742,0,0,0-.742-.742H3.083a.742.742,0,0,0-.742.742v2.226H1.78a.742.742,0,1,0,0,1.483h.561v1.484H.742A.742.742,0,0,0,.742,90h1.6v6.811a.742.742,0,0,0,.742.742H4.662a3.063,3.063,0,0,0,5.863.008h7.082a3.062,3.062,0,0,0,5.858,0h1.108a.742.742,0,0,0,.742-.742V91.664a.742.742,0,0,0-.209-.516Zm-2.283-.226H17.578V88.009H20ZM3.825,90h3.86a.742.742,0,1,0,0-1.483H3.825V87.035h4.4a.742.742,0,0,0,0-1.483h-4.4V84.068H16.116L16.095,96.08H10.6a3.063,3.063,0,0,0-6.01-.008H3.825Zm4.888,7.784a1.58,1.58,0,1,1,0-2.235A1.57,1.57,0,0,1,8.713,97.786Zm12.94,0a1.58,1.58,0,1,1,.463-1.117,1.57,1.57,0,0,1-.463,1.117ZM23.54,96.08a3.061,3.061,0,0,0-5.962-.2V92.405H23.83V96.08Z" transform="translate(0 -82.585)"/>
+            </svg>
+            {{ settings.shipping_title }}
+          </button>
+        {% endif %}
+  </div>
+  {% endif %}
+
+      {% if section.settings.show_share_buttons == true %}
+        <div class="prd-variant share">
+          <span>{{ 'products.product.share' | t }}</span>
+          <div class="prd-share">
+            {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
+          </div>
+        </div>
+      {% endif %}
+  {% endform %}
+</div>        
+
+<p class="visually-hidden" data-product-status
+   aria-live="polite"
+   role="status"
+   ></p>
+
+<p class="visually-hidden" data-loader-status
+   aria-live="assertive"
+   role="alert"
+   aria-hidden="true"
+   >{{ 'products.product.loader_label' | t }}</p>

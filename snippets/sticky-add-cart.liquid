@@ -1,0 +1,254 @@
+{% if section.settings.enable_sticky_cart != blank %}
+  {% if template contains 'product' %}
+    <div id="huratips-addtocart-sticky">
+      <div class="new_colse_button">
+        <p>Close</p>
+      </div>
+    
+      <div class="page-width">
+         <form method="post" action="/cart/add">
+           <div class="row sticky_product_close_arrow">
+             <div class="col-xxl-6 col-xl-5 col-lg-4 col-md-4 col-sm-12 col-12 addcart-details">
+                <div class="addcart-image">
+                   {% if section.settings.enable_show_product %}
+                    <img class="sticky-product-img" src="{{ product.featured_image | img_url: 'original' }}" alt="">
+                   {% endif %}
+                </div>
+                <div class="addcart-content">
+                 {% if section.settings.enable_show_title %} 
+                   <h4>{{ product.title }}</h4>
+                 {% endif %}
+                 {% if section.settings.enable_show_price %} 
+                   <span class="money">{{ product.price | money }}</span>
+                 {% endif %}
+                 {% if section.settings.enable_show_des %} 
+                   {{ product.enable_show_des }}
+                 {% endif %}
+                </div>
+             </div>
+             <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-8 col-sm-12 col-12 add-cart-content">
+                {% if section.settings.enable_show_variant %}
+                  {% unless product.has_only_default_variant %}
+                    <div class="frequently_product_selection">
+                      <div class="frequently_product_selection_default sticky_v_label"><span>{{ product.first_available_variant.title | escape }}</span>
+                        {% render 'sticky-cart-down-arrow' %}
+                      </div>
+                      <ul class="sticky_cart_variants">
+                        {%- for variant in product.variants -%}
+                          {% if variant.available %}
+                            <li data-variant-title="{{variant.title}}">
+                              <span class="money" style="display:none;">{{ variant.price | money_with_currency }}</span>
+                              <span value="{{variant.id}}">{{variant.title}}</span>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                {% endunless %}
+              {% endif %}
+    
+               {% if section.settings.enable_show_quantity%}
+                 <div class="qtydiv">
+                   <div class="qtybox">
+                     <span class="btnqty qtyminus icon icon-minus">-</span>
+                     <input type="text" id="quantity" name="quantity" value="1" class="quantity-selector quantity-input quantity-input-qty" readonly="">
+                     <span class="btnqty qtyplus icon icon-plus">+</span> 
+                  </div> 
+                </div>
+               {% endif %}  
+                <button type="submit" class="custom-add-to-cart">
+                 {%- liquid
+                    if cart == empty
+                       render 'icon-cart-empty'
+                    else
+                       render 'icon-cart'
+                    endif
+                 -%} Add to Cart
+                </button>           
+             </div> 
+            </div>
+          </form>
+        </div>
+       </div>
+      <style>
+      .sticky-product-img{ width:auto; max-width:70px; max-height: 70px !important; }
+      .qtydiv label{ display: block; margin-bottom: 12px; color: #747a7b; }
+      .qtydiv .quantity-input { text-align: center;width: 100%; outline: none;border: none; min-height: unset !important;line-height: 35px;border-radius: 0;margin: 0;height: unset !important;background: transparent;}
+      .qtydiv .btnqty { display: inline-block; cursor: pointer; user-select: none; min-height: 48px;line-height: 48px;width: 40px;text-align: center; font-size: 25px; color: #b39ddb;}
+      .qtydiv .icon-minus{font-size:33px!important;}
+      .product-form__item .qtydiv { margin: 0; }
+      .qtybox { width: max-content; height: 48px;display: flex; background:#f2f2f4; border-radius: 12px;}
+      .product-form__item .qtybox span.btnqty { min-height: 40px;line-height: 40px; }
+      .product-form__item .qtybox { height: 40px; }
+      button.shopify-payment-button__button.shopify-payment-button__button--unbranded:hover { background: #C67527 !important; }
+    </style>
+
+    {% style %}
+      
+    {% endstyle %}
+    <style>
+      #huratips-addtocart-sticky button:hover { background: #C67527; }
+      #huratips-addtocart-sticky button { padding: 0 10px; border: none;margin: auto 0px;color: #fff;}
+      .qtydiv {justify-content: center;margin: auto 20px;}
+    
+      .fixed-sticky-cart {
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        z-index: 99;
+        background-color: {{ section.settings.background }};
+        padding-top: 5px;
+        height: auto !important;
+        width: 100%;
+        max-width: 100%;
+        margin: auto;
+        left: 0;
+        right: 0;
+        transition: 0.7s all ease;
+        padding: 30px 20px 30px;
+        -webkit-box-shadow: 0 -4px 8px rgb(0 0 0 / 20%);
+        -moz-box-shadow: 0 -4px 8px rgba(0,0,0,.2);
+        box-shadow/* Start code Code */: 0 -4px 8px rgb(0 0 0 / 20%);
+      }
+    
+    .fixed-sticky-cart.sticky-toggle{ bottom:-182px; } 
+    
+    .fixed-sticky-cart .sticky_product_close_arrow {
+      position: relative;
+    }
+    
+    .fixed-sticky-cart .row .product_sticky svg {
+      max-width: 30px;
+      position: absolute;
+      top: 30%;
+      right: -70px;
+      cursor: pointer;
+    }
+    
+    .fixed-sticky-cart .new_colse_button {
+      position: absolute;
+      right: 80px;
+      top: -28px;
+      background-color: {{ section.settings.close_background }};
+      padding: 5px 20px;
+      box-shadow: rgba(0, 0, 0, 0.15) 0px -7px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .fixed-sticky-cart .new_colse_button p {
+      margin: 0;
+      color:{{ section.settings.close_text_color }};
+    }
+    
+      #huratips-addtocart-sticky select,
+      #huratips-addtocart-sticky input,
+      #huratips-addtocart-sticky button{
+        height:48px;
+        vertical-align: middle;
+      }
+      #huratips-addtocart-sticky input{
+        width: 30px;
+        text-align: center;
+        background: transparent;
+        padding: 0;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      .fixed-sticky-cart .addcart-details{display:flex; align-items: center; justify-content: start;}
+      .fixed-sticky-cart .addcart-details .addcart-content{color: {{ section.settings.body_text }}; font-weight: 700; font-size: 20px; line-height: 28px;}
+      .fixed-sticky-cart .addcart-details .addcart-content h4{color: {{ section.settings.body_text }}; margin-bottom: 7px; font-weight: 500; font-size: 16px; line-height: 21px;}
+      .fixed-sticky-cart .addcart-details .addcart-image{margin-right: 10px;}
+      .fixed-sticky-cart .addcart-details .addcart-image img{width: 90px; height: 90px; border-radius:12px; object-fit: cover; object-position: center;}
+      .fixed-sticky-cart .add-cart-content{display:flex; align-items: center; justify-content: end; color: #FFFFFF!important;}
+      .fixed-sticky-cart .add-cart-content select{margin-bottom:0px!important; padding: 14px 35px 14px 16px; border-radius: 12px; font-weight: 500; font-size: 14px; line-height: 20px;
+            appearance: none;  background-size: 13px; 
+            background-position: right 15px center;}
+      .fixed-sticky-cart .add-cart-content button{background-color: var(--secondary_btn_bg)!important; border:1px solid var(--secondary_btn_bg)!important; border-radius: 12px; 
+      font-weight: 500; font-size: 14px; line-height: 20px; padding: 11px 44px!important; transition: all 0.5s ease;}
+      .fixed-sticky-cart .add-cart-content button:hover{background-color: transparent!important; color:var(--secondary_btn_bg)!important; border:1px solid var(--secondary_btn_bg)!important;}
+      .fixed-sticky-cart .add-cart-content button:hover svg path{fill:var(--secondary_btn_bg);}
+      .fixed-sticky-cart .add-cart-content button svg{margin-right: 12px; transition: all 0.5s ease;}
+      .fixed-sticky-cart .add-cart-content button svg path{fill:#FFFFFF; transition: all 0.5s ease; }
+
+      .fixed-sticky-cart .frequently_product_selection{position:relative;}
+      .fixed-sticky-cart .frequently_product_selection ul{box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.06); background-color: #FFFFFF; border-radius: 12px; border: 1px solid #e8e8e8;
+                                                         position: absolute; bottom:55px; left: 0; right: 0; z-index: 9; width: 270px;  padding: 10px 0px; display:none;}
+      .fixed-sticky-cart .frequently_product_selection ul li{ padding: 8px 5px; background-color: #FFFFFF; border: 0px; font-weight: 500; font-size: 14px; line-height: 20px;}
+      .fixed-sticky-cart .frequently_product_selection ul li:hover{background-color: rgb(237, 231, 246); color: rgb(94, 53, 177); border-radius:0px!important;}
+      .fixed-sticky-cart .frequently_product_selection .frequently_product_selection_default{width: 220px; display: flex; justify-content: space-between; align-items: center; 
+       background-color: #FFFFFF; color: #212121; border: 1px solid #dedede; padding: 0px 18px; font-weight: 500; font-size: 14px; line-height: 20px; height: 48px;}
+
+  @media screen and (max-width:1399px){
+      .fixed-sticky-cart .new_colse_button{right: 15px;}
+  }
+      
+  @media screen and (max-width:991px){
+    .fixed-sticky-cart .add-cart-content button{padding: 12px!important;}
+    .fixed-sticky-cart .add-cart-content button svg{margin-right: 5px;}
+    .fixed-sticky-cart .frequently_product_selection .frequently_product_selection_default{width: 190px;}
+  }
+      
+    @media screen and (max-width:750px){
+      .qtydiv .btnqty {
+        width: 30px;
+      }
+      #huratips-addtocart-sticky {
+        padding: 15px 13px 15px;
+      }
+    }
+      @media screen and (max-width:767px){
+      .fixed-sticky-cart .addcart-details{justify-content: center; margin-bottom: 15px;}
+      .fixed-sticky-cart .add-cart-content{justify-content: center;}
+      .fixed-sticky-cart.sticky-toggle { bottom: -205px; }
+    }
+      @media screen and (max-width:575px){
+      .fixed-sticky-cart .add-cart-content select{padding: 14px 0px 14px 10px; background-position: right 10px center;}
+      .fixed-sticky-cart .qtydiv{margin: auto 10px;}
+      .fixed-sticky-cart .qtydiv .btnqty{font-size: 20px;}
+      .fixed-sticky-cart .qtydiv .icon-minus {font-size: 30px!important;}
+      .fixed-sticky-cart .add-cart-content button svg {margin-right: 0px;}
+      .fixed-sticky-cart .add-cart-content button{padding: 12px 14px!important; font-size: 0px;}
+      .qtydiv .btnqty {width: 30px;}
+      #huratips-addtocart-sticky input{width: 15px;}
+      .fixed-sticky-cart .frequently_product_selection .frequently_product_selection_default{font-size: 12px; padding: 0px 10px;}
+      .fixed-sticky-cart .frequently_product_selection ul li{font-size: 12px;}
+    }
+    </style>
+  {% endif %}
+
+  <script>
+   // click close button on sticky product in product page
+  jQuery(document).ready(function(){
+   jQuery(".new_colse_button").click(function(){
+      jQuery(".fixed-sticky-cart").addClass("sticky-toggle"); 
+   }); 
+  });
+ 
+  function aliFunction(ali) {
+    if (ali.matches) { // If media query matches
+      jQuery(window).scroll(function(){
+        if ($(window).scrollTop() >= 600) {
+          jQuery('#huratips-addtocart-sticky').addClass('fixed-sticky-cart');
+        }else {
+          jQuery('#huratips-addtocart-sticky').removeClass('fixed-sticky-cart');
+        }
+      });
+    } else {
+      jQuery(window).scroll(function(){
+        if (jQuery(window).scrollTop() >= 300) {
+          jQuery('#huratips-addtocart-sticky').addClass('fixed-sticky-cart');
+        }else {
+          jQuery('#huratips-addtocart-sticky').removeClass('fixed-sticky-cart');
+        }
+      });
+    }
+  }
+
+  var ali = window.matchMedia("(max-width: 700px)")
+  aliFunction(ali) // Call listener function at run time
+  ali.addListener(aliFunction) // Attach listener function on state changes  
+    </script>
+{% endif %}

@@ -1,0 +1,223 @@
+<div class="pop-up-modal productID size_chart">
+  <div class="pop-up-content">
+    <span class="close-button">&times;</span>
+    <span class="size-chart-content">
+      {% if product.metafields.custom.size_chart != blank %}
+        <img src="{{ product.metafields.custom.size_chart | img_url: 'master'}}">   
+      {% else %}
+        <!-- {{ pages.size-chart.content }} -->
+        <div class="size_chat_html">
+          <div class="size_chat_content">
+            <div class="size_chat_full_detail">
+              <div class="size_chat_grid_content">
+                <div class="size_chat_produt_detail">
+                  <div class="size_chat_product_image_bar">
+                    <img src="{{ product.featured_image | img_url: 'master' }}" class="size_chat_product_image">
+                  </div>
+                  <div class="size_chat_product_content">
+                    <div class="size_chat_product_background">
+                      <div class="size_chat_product_title">
+                        <h3>{{ product.title }}</h3>
+                      </div>
+                      <div class="size_chat_product_description">
+                        {{ product.description }}
+                      </div>
+                      <div class="size_chat_product_price">
+                        <span>{{ product.price | money }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="size_chat_tab_bar">
+                  <div class="size_chat_tab_button_bar">
+                    <div class="size_chat_1st_button size_button">
+                      <div class="size_chat_1st_button_icon">
+                        <img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/Vector_5_45669f95-2da7-44c1-a069-6f80924792dc.png?v=1684737698">
+                      </div>
+                      <div class="size_chat_1st_button_title">
+                        <h4 class="size_chart_btn">Size Chart</h4>
+                        <h5 class="size_chart_des">Comman size chart available</h5>
+                      </div>
+                    </div>
+                    <div class="size_chat_2nd_button size_button">
+                      <div class="size_chat_2st_button_icon">
+                        <img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/Vector_5_45669f95-2da7-44c1-a069-6f80924792dc.png?v=1684737698">
+                      </div>
+                      <div class="size_chat_2st_button_title">
+                        <h4 class="size_chart_btn_title">How to Measure</h4>
+                        <h5 class="size_chart_des">How to measure yourself</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="first_button_content">
+                    <div class="first_button_content_detail">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Size</th>
+                            <th>To Fit Bust (in)</th>
+                            <th>To Fit Waist (in)</th>
+                            <th>Front Length (in)</th>
+                            <th>To Fit Hip (in)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                              <span>
+                                <span class="fi fi-af"></span>
+                              </span>
+                              <span>Small</span>
+                            </td>
+                            <td>34.0</td>
+                            <td>30.0</td>
+                            <td>37.0</td>
+                            <td>34.0</td>
+                          </tr>
+                          <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                              <span>
+                                <span class="fi fi-al"></span>
+                              </span>
+                              <span>Medium</span>
+                            </td>
+                            <td>36.0</td>
+                            <td>32.0</td>
+                            <td>38.0</td>
+                            <td>36.0</td>
+                          </tr>
+                          <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                              <span>
+                                <span class="fi fi-dz"></span>
+                              </span>
+                              <span>Large</span>
+                            </td>
+                            <td>38.0</td>
+                            <td>34.0</td>
+                            <td>39.0</td>
+                            <td>38.0</td>
+                          </tr>
+                          <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                              <span>
+                                <span class="fi fi-dz"></span>
+                              </span>
+                              <span>XL</span>
+                            </td>
+                            <td>40.0</td>
+                            <td>36.0</td>
+                            <td>40.0</td>
+                            <td>41.0</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="second_button_content">
+                    <img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/Vector_6_8f78d94b-b7bf-4b30-9ecb-f850fb67851f.png?v=1684743830">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+<script>  
+  const modal = document.querySelector('.pop-up-modal');
+  const trigger = document.querySelector('.trigger-pop-up');
+  const closeButton = document.querySelector('.close-button');
+  
+  function toggleModal() {
+    modal.classList.toggle('show-pop-up');
+  }
+
+  function windowOnClick(event) {
+    if (event.target === modal) {
+      toggleModal();
+    }
+  }
+  
+  if( trigger !== null ){
+    trigger.addEventListener('click', toggleModal);
+  }
+  
+  if( closeButton !== null ){
+    closeButton.addEventListener('click', toggleModal);
+  }  
+  window.addEventListener('click', windowOnClick);
+</script>
+
+<style>
+  .pop-up-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: none;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  }
+  .pop-up-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: auto;
+    border-radius: 0.5rem;
+  }
+  .pop-up-content table {
+    table-layout: auto;
+  }
+  .close-button {
+    float: right;
+    width: 1.7rem;
+    line-height: 2.0rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    font-size: 34px;
+    margin-bottom: 10px;
+    color: #212121;
+  }
+  .close-button:hover {
+  }
+  .show-pop-up {
+    z-index: 12;
+    opacity: 1;
+    display: block;
+    transform: scale(1);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+  }
+  .trigger-pop-up {
+    margin: 10px 0 10px 0;
+    width: 100%;
+  }
+  @media only screen and (max-width: 749px) {
+    .size-chart-content table {
+      width: 100%;
+    }
+    .pop-up-content{
+      width: 90%;
+    }
+    .size-chart-content th,
+    .size-chart-content td {
+      padding: 10px;
+    }
+    .size-chart-content .size_guide{overflow-y: scroll;}
+  }
+</style>

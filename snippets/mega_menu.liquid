@@ -1,0 +1,174 @@
+<nav class="grid__item nav-menu navbar col" id="nav_menu">
+  <div id="menu_back" class="menu-back">
+    <i class="fa fa-angle-left" aria-hidden="true"></i>
+  </div>
+  <ul id="main-menu-outer" class="navbar sm mega-menu-outer sm-horizontal {% if block.settings.sub_menu %}accordion{% endif %} {{ class_name }}">  
+    {% for block in section.blocks %}
+    {% capture blockId %}{{ block.id }}{% endcapture %}
+    {% if block.type == 'megamenu' %}
+    {% assign count = count | plus: 1 %}
+    <li class="mega-menu hover-cls {% if block.settings.sub_menu %}col-li{% endif %}">
+      <span class="sub-nav" {% if block.settings.sub_menu %}id="heading-{{count}}"{% endif %}>
+        <span {% if block.settings.sub_menu %}class="cat-main-title cat-sub" data-bs-target="#collapse-{{count}}" aria-expanded="false" aria-controls="collapse-{{count}}" role="main"{% endif %}></span>
+      </span>
+      <a href="{{ block.settings.menu_link }}">
+        <span>
+          {{ block.settings.menu_name }}                  
+        </span>
+        {% if block.settings.show_label %}
+        <span class="lable-nav {{ block.settings.label_text }}">
+          <span>
+            {{ block.settings.label_text }}
+          </span>
+        </span>
+        {% endif %}
+        
+        {% if block.settings.sub_menu %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+        {% endif %}
+        
+      </a>
+      {% if block.settings.sub_menu %}
+      <ul class="sub-mega-menu show-menu 
+         {% if section.blocks.size > 0 %}{% assign i = 1 %}{% for i in (1..6) %}{% assign for_index = forloop.index | times: 1 -%}{% capture linklist_grid %}linklist_{{ i }}{% endcapture %}
+          {% if block.settings[linklist_title] != blank or block.settings[linklist_grid] != blank %} {{linklist_grid}} {% endif %}{% assign i = i | plus: 1 %}
+            {% assign megamenu_grid = block.settings[linklist_grid] -%}{% for megamenu_link in linklists[megamenu_grid].links %}{%- for childlink in megamenu_link.links -%} {%- if childlink.links != blank -%}child_link{%- endif -%}{%- endfor -%}{%- endfor -%}
+          {% endfor %}{% endif %}                 
+          {% if block.settings.sub_menu %}collapse{% endif %} {{ block.settings.menu_name }}" {% if block.settings.sub_menu %}id="collapse-{{count}}" aria-labelledby="heading-{{count}}" data-parent="#main-menu-outer"{% endif %}>
+        <li class="sub-li">
+          {% if block.settings.menu_banner_setup %}
+             {% if block.settings.menu_banner_img != blank %}
+               <img src="{{ block.settings.menu_banner_img | img_url: 'master' }}">
+             {% endif %}  
+           {% endif %}
+          {% if section.blocks.size > 0 %}
+          {% assign i = 1 %}
+          {% for i in (1..6) %}
+          {% assign for_index = forloop.index | times: 1 -%}
+          {% capture linklist_grid %}linklist_{{ i }}{% endcapture %}
+          {% capture linklist_url %}linklist_url_{{ i }}{% endcapture %}
+          {% capture linklist_title %}linklist_title_{{ i }}{% endcapture %}
+          {% capture template_layout_img %}template_layout_img_{{ i }}{% endcapture %}          
+          {% assign megamenu_grid = block.settings[linklist_grid] -%}
+          {% if block.settings[linklist_title] != blank or block.settings[linklist_grid] != blank %}
+          <div class="mega-box {{linklist_grid}}">
+            <div class="link-section">
+              {% if block.settings[linklist_title] != blank or block.settings[template_layout_img] != blank %}
+                <div class="menu-title">
+                  <a class="menu-link-main" href="{{ block.settings[linklist_url] }}">
+                    <h5>                  
+                        {{ block.settings[linklist_title] }}
+                    </h5>
+                    {% if block.settings.for_layout_img %}
+                    <div class="layout_template">                    
+                      <img src="{{ block.settings[template_layout_img] | img_url: 'master' }}">
+                    </div>
+                    {% endif %}
+                  </a>
+                </div>
+              {% endif %}
+              <div class="menu-content">                
+                <ul class="level-1">
+                  {% for megamenu_link in linklists[megamenu_grid].links %}
+                  <li> 
+					{%- for childlink in megamenu_link.links -%}
+                      {%- if childlink != blank and forloop.first == true -%}
+                        {% assign count_sub = count_sub | plus: 1 %}
+                        <span class="sub-nav" {% if block.settings.sub_menu %}id="heading-0{{count_sub}}"{% endif %}>
+                          <span {% if block.settings.sub_menu %}class="cat-main-title cat-sub" data-bs-target="#collapse-0{{count_sub}}" aria-expanded="false" aria-controls="collapse-0{{count_sub}}" role="main"{% endif %}></span>
+                        </span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                    
+                    {% assign data_title = megamenu_link.title | split: '|' | first %}
+                    {% assign data_json = megamenu_link.title | split: '|' | last %}
+                    <a href="{{ megamenu_link.url }}">
+                      {{ data_title }}
+                      {%- for childlink in megamenu_link.links -%}
+                        {%- if childlink != blank and forloop.first == true -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </a>
+
+                    {%- for childlink in megamenu_link.links -%}
+                        {%- if childlink != blank and forloop.first == true -%}
+                          <ul class="header__submenu list-menu level-2 collapse" id="collapse-0{{count_sub}}" aria-labelledby="heading-0{{count_sub}}" data-parent="#main-menu-outer" role="list" tabindex="-1">
+                            {%- for childlink in megamenu_link.links -%} 
+                            <li>
+                              
+                              {%- for grandchildlink in childlink.links -%}
+                                {%- if grandchildlink != blank and forloop.first == true -%}
+                                  {% assign count_sub = count_sub | plus: 1 %}
+                                  <span class="sub-nav" {% if block.settings.sub_menu %}id="heading-01{{count_sub}}"{% endif %}>
+                                    <span {% if block.settings.sub_menu %}class="cat-main-title cat-sub" data-bs-target="#collapse-01{{count_sub}}" aria-expanded="false" aria-controls="collapse-01{{count_sub}}" role="main"{% endif %}></span>
+                                  </span>
+                                {%- endif -%}
+                              {%- endfor -%}
+                              
+                              <a href="{{ childlink.url }}" class="header__menu-item link link--text list-menu__item focus-inset caption-large">
+                                {{ childlink.title }}
+
+                                {%- for grandchildlink in childlink.links -%}
+                                {%- if grandchildlink != blank and forloop.first == true -%}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                                {%- endif -%}
+                                {%- endfor -%}
+                              </a>
+
+                              {%- for grandchildlink in childlink.links -%}
+                                {%- if grandchildlink != blank and forloop.first == true -%}
+                                  <ul class="header__submenu list-menu level-3 collapse" id="collapse-01{{count_sub}}" aria-labelledby="heading-01{{count_sub}}" data-parent="#main-menu-outer" role="list" tabindex="-1">
+                                    {%- for grandchildlink in childlink.links -%}
+                                    <li>
+                                      <a href="{{ grandchildlink.url }}" class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if grandchildlink.current %} list-menu__item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                        {{ grandchildlink.title }}
+                                      </a>
+                                    </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </li>
+                            {%- endfor -%}
+                          </ul>
+                    	{%- endif -%}
+                   {%- endfor -%}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% assign i = i | plus: 1 %}
+          {% endfor %} 
+          {% endif %}
+        </li>
+        {% if block.settings.img_1 != blank or block.settings.img_2 != blank %}
+        <li class="banner-padding row">
+          {% for i in (1..2) %}
+          {% assign for_index = forloop.index | times: 1 -%}
+          {% capture menu_img %}img_{{ i }}{% endcapture %}
+          {% capture menu_img_url %}img_url_{{ i }}{% endcapture %}
+          <div class="{% if block.settings.full_banner %}col-xl-12 banner2-hide p-0{% else %}col-xl-6{% endif %} menu-banner{{ i }}">
+            <a href="{{ block.settings[menu_img_url] }}" class="mega-menu-banner">
+              <img src="{{ block.settings[menu_img] | img_url: 'master' }}" class="img-fluid d-xl-block " alt="banner">
+            </a>
+          </div>
+          {% endfor %}
+        </li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</nav>

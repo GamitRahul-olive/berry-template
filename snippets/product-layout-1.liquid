@@ -1,0 +1,36 @@
+
+ {% if section.settings.product_gallery_layout == 'one_column_grid' %}
+   
+   {% render 'product-grid-1-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'two_column_grid' %}
+   
+   {% render 'product-grid-2-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_1' %}
+   
+   {% render 'product-slider-1-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_2' %}
+   
+   {% render 'product-slider-2-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_full_width' %}
+   
+   {% render 'product-slider-full-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_verticle_thumbnail' %}
+   
+   {% render 'product-verticle-thumbnail-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_horizontal_thumbnail' %}
+   
+   {% render 'product-horizontal-thumbnail-gallery-type', product:product %}
+   
+ {% elsif section.settings.product_gallery_layout == 'slider_with_thumbnail_count' %}
+   
+   {% render 'product-slider-thumbnail-count-gallery-type', product:product %}
+   
+ {% else %}
+   
+ {% endif %}

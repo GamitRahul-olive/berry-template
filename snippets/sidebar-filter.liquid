@@ -1,0 +1,623 @@
+<link rel="stylesheet" href="{{ 'sidebar.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+<style>.not_clearall_show{display:none;}</style>
+<noscript>{{ 'sidebar.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'section-banner.css' | asset_url | stylesheet_tag }}</noscript>
+<div id="collection_url" data-collection_url="{{ collection.url }}"></div><!-- Get collection url into jquery filtering -->
+  <div data-section-id="{{ section.id }}" data-section-type="sidebar-section" class="sidebar-section">
+    <div class="coll_sidebar">
+    {% if section.settings.filter_by_category_enable and template.name == 'collection' %}
+      <h2 class="filter_btn" style="margin-bottom: 12px;">
+      <span>Filter By</span>
+      {% if collection.handle %}
+        {% if current_tags != black  %}
+          <a href="{{ routes.root_url }}collections/{{collection.handle}}" class="clear btner btn-prinmarye">All Clear</a>
+        {% else %}
+          <a href="{{ routes.root_url }}collections/{{collection.handle}}" class="clear not_clearall_show btner btn-prinmarye js_settings">All Clear</a>
+        {% endif %}
+      {% else %}
+        <a href="{{ routes.root_url }}collections/all" class="clear btnere btn-prinmarye">All Clear</a>
+      {% endif %}
+      <!--<a href="{{ routes.root_url }}collections/{{collection.handle}}" class="clear btner btn-prinmarye">All Clear</a> -->
+      </h2>
+      
+      <form class="search" action="/search">
+        <input type="text" placeholder="Search" name="q" value="{{ search.terms | escape }}"  />
+        <button type="submit"> {% render 'icon-search' %} </button>
+      </form>          
+    <!-- silde-bar colleps block start here -->   
+      
+    <div class="coll-filter-block custom_filter">
+      <div class="coll-filter-inner collapse show" id="catfiltermaincollapse-1" aria-labelledby="catfiltermain-1" data-parent="#catcollaps">     
+      <!-- gender filter start here -->
+       {% if section.settings.filter_option_enable == true %}
+          <div class="filter-top-space collection-collapse-block open">
+            {% if section.settings.gender_title != blank %}
+              <h3 id="catfilter-2" class="collapse-block-title">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltercollapse-1" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.gender_title }}
+                </span>
+              </h3>
+            {% endif %}
+             <div class="collection-collapse-block-content collapse show" id="catfiltercollapse-1" aria-labelledby="catfilter-1" data-parent="#catcollaps">
+              <div class="gender-selectord" id="gender-selector">
+                {% assign genders = section.settings.filter_by_gender_option | split: ',' -%}
+                <ul class="sidebar_filter_cls sidebar_gender" data-collection="{{collection.id}}">
+                {% assign crnt_tags = current_tags | downcase %}
+                {% for gender in genders %}
+                  {% assign gender = gender | strip | downcase %}
+                  {%- if crnt_tags contains gender -%}
+                    <li class="check_link_outer advance-checkbox active advanced-filter {{gender}} advanced-filter " data-value="{{ gender | handleize }}" data-group="{{ gender }}" data-toggle="tooltip" data-placement="top" title="{{gender}}" data-value="{{gender}}" data-link-collection>
+                      
+                      <a href="{{ gender | handleize | prepend:'/' | within: collection }}"><span class="check_link show"></span> {{ gender }}</a>
+                    </li>
+                  {% else %}
+                    <li class="check_link_outer advance-checkbox advanced-filter {{gender}} advanced-filter rt size-all" data-value="{{ gender | handleize }}" data-group="{{ gender }}" data-toggle="tooltip" data-placement="top" title="{{gender}}" data-value="{{gender}}" data-link-collection>
+                      
+                      <a href="{{ gender | handleize | prepend:'/' | within: collection }}"><span class="check_link"></span> {{ gender }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+             </div>
+           </div>
+          </div>
+         {% endif %}
+
+       <!-- Brand filter start here -->              
+        {% if section.settings.filter_by_brand_enable == true %}
+          <div class="filter-top-space collection-collapse-block open">
+            {% if section.settings.filter_brand_title != blank %}
+              <h3 id="catfilter-4" class="collapse-block-title">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltercollapse-4" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.filter_brand_title }}
+                </span>
+              </h3>
+            {% endif %}
+            {% assign vendors = section.settings.brand_options | split: ',' -%}
+            <div class="collection-collapse-block-content collapse show" id="catfiltercollapse-4" aria-labelledby="catfilter-4" data-parent="#catcollaps">
+              <div class="collection-brand-filter" id="collection-brand-filter">
+                <ul class="sidebar_filter_cls sidebar_brand">
+                  {% for product_vendor in vendors %}
+                  {% assign vendor = product_vendor | lstrip | rstrip -%}
+                   {% assign tag = vendor | strip %} 
+                   {% assign tag = tag | downcase %}                         
+                    {%- if current_tags contains tag -%}                                                               
+                     <li class="{{ vendor }} check_link_outer advance-checkbox advanced-filter active" data-value="{{ vendor | handleize }}" data-link-collection>
+                      <a href="{{ tag | handleize | prepend:'/' | within: collection }}"><span class="check_link show"></span> {{ tag }}</a>
+                     </li>
+                   {% else %} 
+                      <li class="{{ vendor }} check_link_outer advance-checkbox advanced-filter" data-value="{{ vendor | handleize }}" data-link-collection>
+                       <a href="{{ tag | handleize | prepend:'/' | within: collection }}"><span class="check_link"></span> {{ tag }}</a>
+                     </li>
+                    {% endif %}                                                                  
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- size filter start here -->              
+        {% if section.settings.filter_by_size_enable == true %}
+          <div class="filter-top-space collection-collapse-block open">                  
+            {% if section.settings.filter_size_title != blank %}
+              <h3 id="catfilter-2" class="collapse-block-title">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltercollapse-2" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.filter_size_title }}
+                </span>
+              </h3>
+            {% endif %}
+
+            <div class="collection-collapse-block-content collapse show" id="catfiltercollapse-2" aria-labelledby="catfilter-2" data-parent="#catcollaps">
+              <div class="collection-brand-filter" id="collection-size-filter">
+                {% assign sizes = section.settings.filter_by_size_option | split: ',' -%}
+                <ul class="sidebar_filter_cls sidebar_size">
+                  {% for size in sizes %}                        
+                    {% assign newsize = size | downcase %}
+                    {% assign current_tags = current_tags | downcase %} 
+                    {%- if current_tags contains newsize -%}                            
+                      <li class="check_link_outer advance-checkbox active advanced-filter {{size}} {% if settings.variant_radious == true %}radious{% endif %} advanced-filter " data-value="{{ size | handleize }}" data-group="{{ size }}" data-toggle="tooltip" data-placement="top" title="{{size}}" data-value="{{size}}" data-link-collection style="background-color: {{size}}">                    
+                        <a href="{{ size | handleize | prepend:'/' | within: collection }}"><span class="check_link show"></span> {{ size }}</a>                               
+                      </li>
+                    {%- else -%}                            
+                      <li class="check_link_outer advance-checkbox advanced-filter {{size}} {% if settings.variant_radious == true %}radious{% endif %} advanced-filter rt size-all" data-value="{{ size | handleize }}" data-group="{{ size }}" data-toggle="tooltip" data-placement="top" title="{{size}}" data-value="{{size}}" data-link-collection style="background-color: {{size}}">                    
+                        <a href="{{ size | handleize | prepend:'/' | within: collection }}" ><span class="check_link"></span> {{ size }}</a>
+                      </li>
+                    {%- endif -%}
+                  {% endfor %}                                                                                    
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      
+        <!--   color filter option -->
+        {% if section.settings.filter_by_color_enable == true %}
+          <div class="filter-top-space collection-collapse-block open">
+            {% if section.settings.color_title != blank %}
+              <h3 id="catfilter-1" class="collapse-block-title">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltercollapse-1" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.color_title }}
+                </span>
+              </h3>
+            {% endif %}
+             <div class="collection-collapse-block-content collapse show" id="catfiltercollapse-1" aria-labelledby="catfilter-1" data-parent="#catcollaps">
+              <div class="color-selector" id="color-selector">
+                {% assign colors = section.settings.filter_by_color_option | split: ',' -%}
+                <ul class="sidebar_filter_cls sidebar_color {% if section.settings.variant_radious == true %}radious_layout{% endif %}" data-collection="{{collection.id}}">
+                {% assign crnt_tags = current_tags | downcase %}
+                {% for color in colors %}
+                  {% assign color = color | strip | downcase %}
+                  {%- if crnt_tags contains color -%}
+                    <li class="check_link_outer active advanced-filter {{color}} {% if section.settings.variant_radious == true %}radious{% endif %} advanced-filter " data-value="{{ color | handleize }}" data-group="{{ color }}" data-toggle="tooltip" data-placement="top" title="{{color}}" data-value="{{color}}" data-link-collection style="background-color: {{color}}">
+                      
+                      <a href="{{ color | handleize | prepend:'/' | within: collection }}"><span class="check_link show"></span> {{ color }}</a>
+                    </li>
+                  {% else %}
+                    <li class="check_link_outer advanced-filter {{color}} {% if section.settings.variant_radious == true %}radious{% endif %} advanced-filter rt size-all" data-value="{{ color | handleize }}" data-group="{{ color }}" data-toggle="tooltip" data-placement="top" title="{{color}}" data-value="{{color}}" data-link-collection style="background-color: {{color}}">
+                      
+                      <a href="{{ color | handleize | prepend:'/' | within: collection }}"><span class="check_link"></span> {{ color }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+             </div>
+           </div>
+          </div>
+             {% endif %}               
+
+          <!-- price filter start here -->
+          {% if section.settings.filter_by_price_enable == true %}
+            <div class="filter-top-space price_tag collection-collapse-block open">
+              {% assign pro_price = section.settings.filter_by_price_option | split: ',' -%}
+              {% if section.settings.filter_price_title != blank %}
+                <h3 id="catfilter-3" class="collapse-block-title">
+                  <span data-bs-toggle="collapse" data-bs-target="#catfiltercollapse-3" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                    {{ section.settings.filter_price_title }}
+                  </span>
+                </h3>
+              {% endif %}
+              <div class="collection-collapse-block-content collapse show" id="catfiltercollapse-3" aria-labelledby="catfilter-3" data-parent="#catcollaps">
+                <div class="collection-brand-filter" id="collection-price-filter">
+                  <ul class="sidebar_filter_cls sidebar_price" id="price_filters">
+                   {% for product_price in pro_price limit: section.settings.collection_price_limit %}
+                     {% assign price = product_price | lstrip | rstrip -%}
+                     {% if price contains "-" %}
+                        {% assign original_price = price %}
+                        {% assign newprice = price | split: "-" %}
+                        {% assign price1 = newprice[0] | remove: "$" %}
+                        {% assign price2 = newprice[1] | remove: "$" %}
+                        {% assign new_price = price1 | append: '-' | append: price2 %}
+                     {% else %} 
+                        {% assign new_price = price | remove: "$" %}
+                        {% assign original_price = price %}
+                     {% endif %}
+                      {% assign tag = price | strip %} 
+
+                      {%- if current_tags contains new_price -%}
+                        <li class="{{ price }} check_link_outer advance-checkbox advanced-filter active" data-value="{{ price | handleize }}" data-handle="{{ price | handle }}" data-link-collection>                              
+                          <a href="{{ new_price | handleize | prepend:'/' | within: collection }}"><span class="check_link show"></span> {{ original_price }}</a>                                
+                        </li>                                                                                     
+                      {%- else -%}
+                        <li class="{{ price }} check_link_outer advance-checkbox advanced-filter" data-value="{{ price | handleize }}" data-handle="{{ price | handle }}" data-link-collection>
+                          <a href="{{ new_price | handleize | prepend:'/' | within: collection }}"><span class="check_link"></span> {{ original_price }}</a>                              
+                        </li>
+                      {%- endif -%}
+                    {% endfor %}                                                                                                                                                          
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {% endif %}           
+            </div>
+          </div>
+       {% endif %}
+    
+      <!-- side-bar product start here -->
+      {% if template.name == 'collection' or template.name == 'product' %}
+        {% if section.settings.show_new_pro %}
+          <div class="theme-card sidebar-prd">
+
+            {% if section.settings.filter_new_pro_title != blank %}
+              <h3 class="collapse-block-title" id="catfiltermain-2">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltermaincollapse-2" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.filter_new_pro_title }}
+                </span>
+              </h3>
+            {% endif %}
+
+            {% assign col_prd = collections[section.settings.select_new_pro_coll] %}
+            <div class="offer-slider slide-1 collapse show" id="catfiltermaincollapse-2" aria-labelledby="catfiltermain-2" data-parent="#catcollaps">
+              <div>
+                {% if col_prd.empty? %}
+                {% capture current %}{% cycle 1,2,3,4,1,2 %}{% endcapture %}
+                {% for i in (1..3) %}
+                <div class="media">
+                  <a href="#">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </a>
+                  <div class="media-body align-self-center">
+                    <div class="rating">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                    <a href="#"><h6>{{ 'homepage.onboarding.product_title' | t }}</h6> </a>
+                    <h4>{{ '$20.00' }}</h4>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                {% for product in col_prd.products limit: 4 %}
+                {% if forloop.index == 4 %}
+                {% break %}
+                {% else %}
+                <div class="media">
+                  <a href="{{ product.url | within: collection }}" >
+                    <img class="lazyload img-fluid" src="{{ product.featured_image | img_url:'master' }}" alt="{{ product.title | split: '|' | first }}" >
+                  </a>
+                  <div class="media-body prd-detail align-self-center">
+                    <div class="rating">
+                      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                    </div>
+                    <a href="{{ product.url | within: collection }}">
+                      {% assign cat_title = product.title | split: '|' | first %}
+                      {% assign cat_ltitle = product.title | split: '|' | last %}
+                      <h6>
+                        {{ cat_title | truncatewords: 10 }}
+                      </h6>
+                    </a>
+                    <h4>{{ product.price | money }}</h4>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- side-bar banner start here -->        
+        {% if section.settings.sidebar_bnr_img != blank %}
+          <div class="collection-sidebar-banner banner_outer">
+            <a href="{{ section.settings.sidebar_banner_link }}" class="banner-section">
+              <div class="banner-img">
+                <img src="{{ section.settings.sidebar_bnr_img | img_url: '320x370' }}" alt="Banner" class="lazyload {% if settings.enable_blur_lazy_load %} blur-up {% endif %} img-fluid w-100">
+              </div>
+            </a>
+          </div>
+        {% endif %}
+
+      <!-- side-bar product start here -->
+        {% if section.settings.show_new_pro2 %}
+          <div class="theme-card sidebar-prd sidebar-prd2">
+
+            {% if section.settings.filter_new_pro_title2 != blank %}
+              <h3 class="collapse-block-title" id="catfiltermain-3">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltermaincollapse-3" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  {{ section.settings.filter_new_pro_title2 }}
+                </span>
+              </h3>
+            {% endif %}
+
+            {% assign col_prd2 = collections[section.settings.select_new_pro_coll2] %}
+            <div class="offer-slider slide-1 collapse show" id="catfiltermaincollapse-3" aria-labelledby="catfiltermain-3" data-parent="#catcollaps">
+              <div>
+                {% if col_prd2.empty? %}
+                {% capture current %}{% cycle 1,2,3,4,1,2 %}{% endcapture %}
+                {% for i in (1..3) %}
+                <div class="media">
+                  <a href="#">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </a>
+                  <div class="media-body align-self-center">
+                    <div class="rating">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                    <a href="#"><h6>{{ 'homepage.onboarding.product_title' | t }}</h6> </a>
+                    <h4>{{ '$20.00' }}</h4>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                {% for product in col_prd2.products limit: 4 %}
+                {% if forloop.index == 4 %}
+                {% break %}
+                {% else %}
+                <div class="media 2">
+                  <a href="{{ product.url | within: collection }}" >
+                    <img class="lazyload img-fluid" src="{{ product.featured_image | img_url:'master' }}" alt="{{ product.title | split: '|' | first }}" >
+                  </a>
+                  <div class="media-body prd-detail align-self-center">
+                    <div class="rating">
+                      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                    </div>
+                    <a href="{{ product.url | within: collection }}">
+                      {% assign cat_title = product.title | split: '|' | first %}
+                      {% assign cat_ltitle = product.title | split: '|' | last %}
+                      <h6>
+                        {{ cat_title | truncatewords: 10 }}
+                      </h6>
+                    </a>
+                    <h4>{{ product.price | money }}</h4>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %} 
+    
+    <!--++ Blog sidebar ++-->
+    
+    {% if template.name == 'blog' or template.name == 'article' %}     
+    
+      <div class="theme-card sidebar-blog">                    
+          <div class="offer-slider slide-1">            
+            <div> 
+              <div class="search">
+              <!---For the Search-->            
+                <form action="/search" method="get" role="search">
+                  <input type="hidden" name="type" value="article" />
+                  <div class="input-group--underline search_outer">
+                    <input class="input-group__field" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+                      <button type="submit" class="btn btn--clear btn--square btn_search">
+                        {% render 'icon-search' %}
+                        <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+                      </button>
+                  </div>
+                </form>
+              </div>
+              <!---End for the search-->
+              <h2 class="collapse-block-title" id="catfiltermain-4">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltermaincollapse-4" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  Recent Post
+                </span>
+              </h2>
+             {%- if blog.articles_count > 0 -%}
+              <ul class="blog_recent_post collapse show" id="catfiltermaincollapse-4" aria-labelledby="catfiltermain-4" data-parent="#catcollaps">
+                {%- for article in blog.articles limit: section.settings.post_limit -%}
+                  <li>
+                    <a href="{{ article.url }}">
+                      {%- if article.image -%}
+                        {{ article | img_url: '150x150', scale: 2 | img_tag: '' }}
+                      {%- endif -%}
+                      <div class="blog_content">
+                        <h2>{{ article.title }}</h2>
+                        <div class="date_publice">may 8 ,2021</div>
+                      </div>
+                    </a>
+
+                    {%- if section.settings.blog_show_author -%}
+                      <span>
+                        By {{ article.author }}
+                      </span>
+                    {%- endif -%}
+
+                    {%- if section.settings.blog_show_date -%}
+                      <span>
+                        {{ article.published_at | time_tag: format: 'month_day_year' }}
+                      </span>
+                    {%- endif -%}           
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        </div> 
+          <!---subscribe button-->
+          <div class="sibebar_subscribe_button">
+            <h2 class="subscribe_btn_titale collapse-block-title" id="catfiltermain-5">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltermaincollapse-5" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                  SUBSCRIBE TO MY NEWSLETTER
+                </span>
+              </h2>
+            <div class="news_form_outer collapse show" id="catfiltermaincollapse-5" aria-labelledby="catfiltermain-5" data-parent="#catcollaps">
+              {% form 'customer'%}
+              
+                {%- if form.posted_successfully? -%}
+                <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                  {{ 'general.newsletter_form.confirmation' | t }}
+                </p>
+                {%- endif -%}
+                <!---<form action="{{ settings.form_url }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>-->
+                <div id="mc_embed_signup_scroll">
+                  <div class="form-group">
+                    <input id="contact_email" class="required email form-control" name="contact[email]" type="text" placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}" required/>                         
+                    <button type="submit" class="btn btn-secondary btn-link" name="subscribe" id="mc-embedded-subscribe">
+                      <span class="mobile-up">{{ 'general.newsletter_form.submit' | t }}</span>
+                    </button>
+                  </div>
+                  <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                  </div>
+                  <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                  <div style="position: absolute; left: -5000px;" hidden>
+                    <input type="text" name="b_17af379706d80b694776f991f_9ebb72e4d2" tabindex="-1" value="">
+                  </div>                        
+                </div>
+                <!---</form>-->
+              {%- endform -%} 
+            </div>
+          </div>
+          <!---end subscribe button-->
+          
+          <!----sidebar_tags-->
+          
+          <div class="sidebar_tags">
+            <h2 class="blg_tag_name collapse-block-title" id="catfiltermain-6">
+                <span data-bs-toggle="collapse" data-bs-target="#catfiltermaincollapse-6" aria-expanded="true" role="main" class="cat-main-title cat-sub">
+                TAGS 
+              </span>
+            </h2>
+             <ul class="blog_tags collapse" id="catfiltermaincollapse-6" aria-labelledby="catfiltermain-6" data-parent="#catcollaps">      
+                {% for tag in blog.tags %}
+                    <li><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a></li>
+                {% endfor %}
+            <ul>
+          </div>
+               
+         <!---end sidebar tags-->
+      </div>
+    {% endif %}
+        
+   <!--++ End Blog sidebar ++--> 
+        
+</div>
+
+ </div>
+<script>
+  var ajaxLoadPage = function (url) {
+    console.log( 'Url =>'+ url);
+    $(".sidebar_filter_loader").show();
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: {},
+      complete: function (data) {
+        $('#ProductGridContainer').html($("#ProductGridContainer", data.responseText).html());
+        history.pushState({
+          page: url
+        }, url, url);
+        $(".sidebar_filter_loader").hide();
+      }
+    });
+  }
+    
+  {% capture pathUrl %}{% if collection.handle %}{% capture url %}/collections/{{ collection.handle }}{% endcapture %}{{ url }}{% elsif collection.all_products_count > 0 and collection.products.first.type == collection.title %}{{ link_to_type }}{% elsif collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}{{ link_to_vendor }}{% endif %}{% endcapture %}
+  var collectionUrl = window.location.protocol+'//'+window.location.hostname+'{{ pathUrl}}';
+  //console.log("collectionUrl=> "+ collectionUrl );
+  $("#color-selector ul li a, #collection-size-filter ul li a, #collection-price-filter ul li a, #collection-brand-filter ul li a, #gender-selector ul li a").click(function (event) {
+    event.preventDefault();
+    $(".js_settings").show();
+    
+    if( $( this ).find('.check_link').hasClass('show') ){
+      $( this ).find('.check_link').removeClass('show');
+    } else{
+      $( this ).find('.check_link').addClass('show');
+    }
+    
+    var title = $( this ).attr("title");
+    var self = this;
+    var isRemoveFilter = false;
+
+    // gender option filter
+    var activeGender = '', activeGender_arr = [];
+    $('#gender-selector ul li.active a').each( function(){
+     activeGender_arr.push( $(this).parent().data('value').trim() );
+    });
+    activeGender = activeGender_arr.join('+');
+    
+    //color option filter
+    var activeColor = '', activeColor_arr = [];
+    $('#color-selector ul li.active a').each( function() {
+      console.log( $(this).parent().data('value') );
+      activeColor_arr.push( $(this).parent().data('value').trim() );
+    });
+    activeColor = activeColor_arr.join('+');
+    
+    //size option filter
+    var activeSize = '', activeSize_arr = [];
+    $('#collection-size-filter ul li.active a').each( function() {
+      activeSize_arr.push( $(this).parent().data('value').trim() );
+    });
+    
+    activeSize = activeSize_arr.join('+');
+    //Price option filter
+    var activePrice = '', activePrice_arr = [];
+    $('#collection-price-filter ul li.active a').each( function() {
+      activePrice_arr.push( $(this).parent().data('value').trim() );
+    });
+    
+    activePrice = activePrice_arr.join('+');
+    //Brand option filter
+    var activeBrand = '', activeBrand_arr = [];
+    $('#collection-brand-filter ul li.active a').each( function() {
+      activeBrand_arr.push( $(this).parent().data('value').trim() );
+    });
+    
+    activeBrand = activeBrand_arr.join('+');
+    $( document ).on('click','.advanced-filter', function(){
+      if( !$('.advanced-filter' ).hasClass("active") ){
+        $(".clear").hide();
+      }else{
+        $(".clear").show();
+      }
+    });
+    
+    var url = $(this).attr('href');
+    var newGender = activeGender;
+    var newColor = activeColor;
+    var newSize =  activeSize;
+    var newPrice =  activePrice;
+    var newBrand = activeBrand;
+    
+    url = collectionUrl+"/";
+    if (newBrand != '' && newColor != '' && newPrice != '' && newSize != '' && newGender != '' ) {
+      url += newBrand + "+" + newColor + "+" + newPrice + "+" + newSize + "+" + newGender ;
+    } else if ( newColor !='' && newSize != '' && newPrice != '' && newGender != '' ) {
+      url += newColor + "+" + newSize + "+" + newPrice + "+" + newGender;
+    } else if ( newColor !='' && newSize != '' && newBrand != '' && newGender != '' ) {
+      url += newColor + "+" + newSize + "+" + newBrand + "+" + newGender;
+    } else if ( newColor !='' && newPrice != '' && newBrand != '' && newGender != '' ) {
+      url += newColor + "+" + newPrice + "+" + newBrand + "+" + newGender;
+    } else if ( newPrice !='' && newSize != '' && newBrand != '' && newGender != '' ) {
+      url += newPrice + "+" + newSize + "+" + newBrand + "+" + newGender;
+    }else if ( newPrice !='' && newSize != '' && newBrand != '' && newColor != '' ) {
+      url += newPrice + "+" + newSize + "+" + newBrand + "+" + newColor;
+    }
+    else if (newBrand != '' && newColor != '' && newGender != '' ) {
+      url +=newColor +"+"+newBrand + "+" + newGender;
+    } else if (newColor != '' && newPrice != '' && newGender != '' ) {
+      url +=newColor +"+"+newPrice + "+" + newGender;
+    } else if (newColor != '' && newSize != '' && newGender != '') {
+      url +=newColor +"+"+newSize + "+" + newGender;
+    }else if (newPrice != '' && newSize != '' && newGender != '') {
+      url +=newPrice +"+"+newSize + "+" + newGender;
+    } else if (newBrand != '' && newPrice != '' && newGender != '') {
+      url +=newBrand +"+"+newPrice + "+" + newGender;
+    } else if (newBrand != '' && newSize != '' && newGender != '') {
+      url +=newBrand +"+"+newSize + "+" + newGender;
+    }else if (newBrand != '' && newSize != '' && newColor != '') {
+      url +=newBrand +"+"+newSize + "+" + newGender;
+    }
+      
+    else if (newBrand != '' && newGender != '') {
+      url +=newBrand + "+" + newGender;
+    } else if (newColor != '' && newGender != '') {
+      url +=newColor + "+" + newGender;
+    } else if (newPrice != '' && newGender != '') {
+      url +=newPrice + "+" + newGender;
+    } else if( newSize != '' && newGender != '' ){
+      url +=newSize + "+" + newGender;
+    }
+    else if (newBrand != '') {
+      url +=newBrand;
+    } else if (newColor != '') {
+      url +=newColor;
+    } else if (newPrice != '') {
+      url +=newPrice ;
+    } else if( newSize != ''){
+      url +=newSize;
+    } else if( newGender != '' ){
+      url +=newGender;
+    }
+    url = url.trim();
+    
+    ajaxLoadPage(url);
+  });
+  
+  $(".sidebar_filter_cls li.active a").removeAttr("href");      
+</script>

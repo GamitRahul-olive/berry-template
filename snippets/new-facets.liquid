@@ -1,0 +1,626 @@
+<link rel="stylesheet" href="{{ 'new-facet.css' | asset_url }}">
+
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  assign total_active_values = 0
+  if results.url
+    assign results_url = results.url
+  else
+    assign terms = results.terms | escape
+    assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+  endif
+-%}
+
+{%- style -%}
+  .facets-vertical.container { display: flex; }
+  aside#main-collection-filters { max-width: 30%; width: 100%; }
+  div#ProductGridContainer { max-width: 70%; width: 100%; }
+{%- endstyle -%}
+
+<div class="facets-container">
+  <div class="facet_collection_search_field">
+    <div class="filter-close">
+      <div class="product-grid__head-right--filter-toggle sidebar_filter_toggle desktop_filter_icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.288752 1.61C2.60875 4.59 6.03875 9 6.03875 9V14C6.03875 15.1 6.93875 16 8.03875 16C9.13875 16 10.0388 15.1 10.0388 14V9C10.0388 9 13.4688 4.59 15.7888 1.61C16.2988 0.95 15.8288 0 14.9888 0H1.07875C0.248752 0 -0.221248 0.95 0.288752 1.61Z" fill="#B39DDB"></path>
+        </svg>
+        <p>Filter</p>
+      </div>
+      <div class="close_icon_btn"> {% render 'icon-close-small'%} </div>
+    </div>
+    
+    <form class="search" action="/search">
+      {% render 'collection-search-filter' %}
+      <input class="facet_collection_input" type="text" placeholder="Search" name="q" value="{{ search.terms | escape }}">
+    </form>
+  </div>
+ {%- if filter_type == 'vertical' or filter_type == 'vertical-right' %}
+   <details id="Details-1a-{{ section.id }}" class="facets__disclosure-vertical js-filter" data-index="{{ forloop.index }}" open>
+     <summary class="facets__summary caption-large focus-offset mb-5">
+       {% if section.settings.collection_list != blank %}
+         <span class="facet-title">
+           <span>Collection</span>
+           {% render 'icon', icon_name: 'menu-down' %}
+         </span>
+       {% endif %}
+     </summary>
+     <ul class="collection__menu testcollection">
+     {%- for collection in collections -%}
+       <li class="list-menu__item facets__item">
+         <a href="{{ collection.url }}">
+           <label class="facet-checkbox">
+             <span aria-hidden="true">
+               <small class="item-name">{{ collection.title }}</small>
+               <small>
+                 {% if collection.products_count > 9 %}
+                   {{ collection.products_count }}
+                 {% elsif collection.products_count > 99 %}
+                   99+
+                 {% else %}
+                   0{{ collection.products_count }}
+                 {% endif %}
+               </small>
+             </span>
+           </label>
+         </a>
+       </li>
+     {% endfor %}
+    </ul>
+   </details>
+  {%- endif -%}
+  <facet-filters-form class="facets">
+    <form class="facets__form-vertical" id="FacetFiltersForm" data-price-has-apply="{{ section.settings.enable_apply_button }}">
+      {%- if results.terms -%}
+        <input type="hidden" name="q" value="{{ results.terms | escape }}">
+        <input name="options[prefix]" type="hidden" value="last">
+      {%- endif -%}
+
+      {% if enable_filtering %}
+        <div id="FacetsWrapperDesktop">
+          {%- for filter in results.filters -%}
+            {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
+            {% case filter.type %}
+              {% when 'boolean' or 'list' %}
+                <details id="Details-{{ forloop.index }}-{{ section.id }}" class="facets__disclosure-vertical custom_new_filter js-filter" data-index="{{ forloop.index }}" {% if filter_type == 'horizontal' and filter.label == 'Product type' %} style="display:none" {% endif %} open>
+                  <summary class="facets__summary caption-large focus-offset mb-5" aria-label="{{ filter.label }} ({{ 'products.facets.filters_selected.one' | t: count: filter.active_values.size }})">
+                    <span class="facet-title">
+                      <span>
+                        {{ filter.label | escape }}
+                      </span>
+                      {% render 'icon', icon_name: 'menu-down' %}
+                    </span>
+                  </summary>
+
+                <!-- Size filter collection page -->
+                  <div class="parent-display facets__display-vertical" id="Facet-{{ forloop.index }}-{{ section.id }}">
+                    <fieldset class="facets-wrap parent-wrap facets-wrap-vertical">
+              
+                      <ul class="list-unstyled no-js-hidden{% if filter.label == 'color' or filter.label == 'Color' %} list-variant-color{% endif %} {% if filter.label == 'Size' %} {% if section.settings.size_selection == 'button' %}custom_selection Best_{{ section.settings.size_selection }}{% endif %} {% endif %}">
+                        {%- for value in filter.values -%}
+                          {% if value.value contains 'frequently_'  %}
+                          {% else %}
+                           {% if filter.label == 'Size' %}
+                             {% if section.settings.size_selection == 'checkbox' %}
+                               <li class="Devtest {% if value.param_name == 'filter.p.vendor' %}item-variant-brand{% endif %} list-menu__item facets__item{% if value.active %} active {% endif %}{% if forloop.index > 5 and filter_type == 'vertical' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %} show-more-item{% endif %} {% if value.param_name == 'filter.v.option.size' %} list-variant-normal {% endif %}">
+                                 <label class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}" for="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color:{{ value.value }}"{% endif %}>
+                                      
+                                   <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if filter.label == 'color' or filter.label == 'Color' %} class="item-variant-color" {% endif %} id="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if value.active %} checked {% endif %} {% if value.count == 0 and value.active == false %}  {% endif %}>
+                                    <svg aria-hidden="true" focusable="false" height="1.6rem" viewbox="0 0 16 16" width="1.6rem">
+                                      <rect fill="none" height="16" stroke-width="1" stroke="currentColor" width="16"></rect>
+                                    </svg>
+                                    <svg class="icon icon-checkmark" fill="none" height="0.7rem" viewbox="0 0 11 7" width="1.1rem" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" stroke="currentColor"></path>
+                                    </svg>
+                                    <span aria-hidden="true" {% if filter.label != 'color' and filter.label != 'Color' %} {% if value.active %} class="active-facet" {% endif %} {% endif %} {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color: {{ value.label }};" {% endif %}>
+                                      {% if filter.label != 'color' and filter.label != 'Color' %}
+                                        <small class="item-name mr-0.5">{{ value.label | escape }}</small>
+                                          {% if value.param_name == 'filter.v.option.size' or value.param_name == 'filter.p.product_type' or value.param_name == 'filter.v.availability' %}
+                                            {% if filter_type == 'vertical' or  filter_type == 'vertical-right' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %}
+                                              <small>
+                                                {% if value.count > 99 %}
+                                                  99+
+                                                {% else %}
+                                                  {{ value.count }}
+                                                {% endif %}
+                                              </small>
+                                            {% else %}
+                                              <small>
+                                                {% if value.count > 99 %}
+                                                  (99+)
+                                                {% else %}
+                                                  ({{ value.count }})
+                                                {% endif %}
+                                              </small>
+                                            {% endif %}
+                                         {% endif %}
+                                      {% endif %}
+                                    </span>
+                                  </label>
+                                </li>
+                             {% else section.settnigs.size_selection == 'button' %}
+                               <div class="custom_size_buttons">
+                                 <div class="custom_size_buttons_selection">
+                                     <li class="new_filter {% if value.param_name == 'filter.p.vendor' %}item-variant-brand{% endif %} list-menu__item facets__item{% if value.active %} active {% endif %}{% if forloop.index > 5 and filter_type == 'vertical' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %} show-more-item{% endif %} {% if value.param_name == 'filter.v.option.size' %} list-variant-normal {% endif %}">
+                                      <label class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}" for="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color:{{ value.value }}"{% endif %}>
+                                        <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if filter.label == 'color' or filter.label == 'Color' %} class="item-variant-color" {% endif %} id="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if value.active %} checked {% endif %} {% if value.count == 0 and value.active == false %}  {% endif %}>
+                                        <svg aria-hidden="true" focusable="false" height="1.6rem" viewbox="0 0 16 16" width="1.6rem">
+                                          <rect fill="none" height="16" stroke-width="1" stroke="currentColor" width="16"></rect>
+                                        </svg>
+                                        <svg class="icon icon-checkmark" fill="none" height="0.7rem" viewbox="0 0 11 7" width="1.1rem" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" stroke="currentColor"></path>
+                                        </svg>
+                                        <span aria-hidden="true" {% if filter.label != 'color' and filter.label != 'Color' %} {% if value.active %} class="active-facet" {% endif %} {% endif %} {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color: {{ value.label }};" {% endif %}>
+                                          {% if filter.label != 'color' and filter.label != 'Color' %}
+                                            <small class="item-name mr-0.5">{{ value.label | escape }}</small>
+                                              {% if value.param_name == 'filter.v.option.size' or value.param_name == 'filter.p.product_type' or value.param_name == 'filter.v.availability' %}
+                                                {% if filter_type == 'vertical' or  filter_type == 'vertical-right' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %}
+                                                  
+                                                {% endif %}
+                                             {% endif %}
+                                          {% endif %}
+                                        </span>
+                                      </label>
+                                    </li>
+                                 </div>              
+                               </div>
+                             {% endif %}
+                           {% else %}
+                             <li class="Devtest {% if value.param_name == 'filter.p.vendor' %}item-variant-brand{% endif %} list-menu__item facets__item{% if value.active %} active {% endif %}{% if forloop.index > 5 and filter_type == 'vertical' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %} show-more-item{% endif %} {% if value.param_name == 'filter.v.option.size' %} list-variant-normal {% endif %} 
+                             ">
+                             
+                              <label class="facet-checkbox{% if value.count == 0 and value.active == false %} facet-checkbox--disabled{% endif %}" for="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color:{{ value.value }}"{% endif %}>
+
+                               <div class="custom_color_tooltip">
+                                 {% if filter.label == 'color' or filter.label == 'Color' %}
+                                   <span class="color_tooltip">{{ value.value }}</span>
+                                 {% endif %}
+                               </div>
+                             
+                               <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if filter.label == 'color' or filter.label == 'Color' %} class="item-variant-color" {% endif %} id="Filter-{{ filter.label | remove:" " }}-{{ forloop.index }}" {% if value.active %} checked {% endif %} {% if value.count == 0 and value.active == false %}  {% endif %}>
+                                  <svg aria-hidden="true" focusable="false" height="1.6rem" viewbox="0 0 16 16" width="1.6rem">
+                                    <rect fill="none" height="16" stroke-width="1" stroke="currentColor" width="16"></rect>
+                                  </svg>
+                                  <svg class="icon icon-checkmark" fill="none" height="0.7rem" viewbox="0 0 11 7" width="1.1rem" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" stroke="currentColor"></path>
+                                  </svg>
+                                  <span aria-hidden="true" {% if filter.label != 'color' and filter.label != 'Color' %} {% if value.active %} class="active-facet" {% endif %} {% endif %} {% if filter.label == 'color' or filter.label == 'Color' %} style="background-color: {{ value.label }};" {% endif %}>
+                                    {% if filter.label != 'color' and filter.label != 'Color' %}
+                                        <small class="item-name mr-0.5">{{ value.label | escape }}</small>
+                                        {% if value.param_name == 'filter.v.option.size' or value.param_name == 'filter.p.product_type' or value.param_name == 'filter.v.availability' %}
+                                          {% if filter_type == 'vertical' or  filter_type == 'vertical-right' or filter_type == 'drawer-left' or filter_type == 'drawer-right' %}
+                                            <small>
+                                                {% if value.count > 99 %}
+                                                  99+
+                                                {% else %}
+                                                  {{ value.count }}
+                                                {% endif %}
+                                              </small>
+                                          {% else %}
+                                            <small>
+                                                {% if value.count > 99 %}
+                                                  (99+)
+                                                {% else %}
+                                                  ({{ value.count }})
+                                                {% endif %}
+                                              </small>
+                                          {% endif %}
+                                      {% endif %}
+                                    {% endif %}
+                                  </span>
+                                </label>
+                            </li>
+                           {% endif %} 
+                          {% endif %}
+                        {%- endfor -%}
+                      </ul>
+                    </fieldset>
+                  </div>
+                </details>
+              {% when 'price_range' %}
+                {% liquid
+                  assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                  assign uses_comma_decimals = false
+                  if currencies_using_comma_decimals contains cart.currency.iso_code
+                    assign uses_comma_decimals = true
+                  endif
+                %}
+                <details id="Details-{{ forloop.index }}-{{ section.id }}" class="facets__disclosure-vertical js-filter abc" data-index="{{ forloop.index }}" open>
+                  <summary class="facets__summary caption-large focus-offset mb-5">
+                    <span class="facet-title">
+                      <span>{{ filter.label | escape }}</span>
+
+                      {% render 'icon', icon_name: 'menu-down' %}
+                    </span>
+                  </summary>
+                  {% assign price_type = section.settings.price_type %}
+                  {% if price_type == "slider" %}
+                    
+                    <div class="facets__display-vertical" id="Facet-{{ forloop.index }}-{{ section.id }}">
+                    {%- assign max_price_amount = filter.range_max | money_without_trailing_zeros | strip_html | escape -%}
+                    <price-range class="facets__price">
+                      <div class="wrapper-price-filter">
+                        <div class="slider">
+                        <div class="progress"></div>
+                      </div>
+                    
+                      <div class="range-input">
+                    
+                      <!-- custom price range slider -->
+                        <div class="range_container">
+                          <div class="sliders_control">
+                            <input class="field__input range-min {% if filter.min_value.value %} active {% endif %}" id="fromSlider" onChange="fromPrice(this.value)" step="1"
+                              name="{{ filter.min_value.param_name }}"
+                              {%- if filter.min_value.value -%}
+                                {%- if uses_comma_decimals -%}
+                                  value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                                {%- else -%}
+                                  value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                                {% endif %} 
+                              {% else %} 
+                                  value="0" 
+                              {%- endif %}
+                                  type="range" 
+                                  min="0" 
+                                  {%- if uses_comma_decimals %} 
+                                    max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}" 
+                                  {%- else %} 
+                                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" 
+                                  {% endif %}
+                              >
+                    
+                            <input class="field__input range-max {% if filter.max_value.value %} active {% endif %}" onChange="toPrice(this.value)" step="1" 
+                              name="{{ filter.max_value.param_name }}" 
+                              id="toSlider"
+                              {%- if filter.max_value.value -%} 
+                                {%- if uses_comma_decimals -%} 
+                                  value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}" 
+                                {%- else -%} 
+                                  value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}" 
+                                {% endif %} 
+                              {% else %} 
+                                {%- if uses_comma_decimals -%} 
+                                  value="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}" 
+                                {%- else -%} 
+                                  value="{{ filter.range_max | money_without_currency | replace: ',', '' }}" 
+                                {% endif %} 
+                              {%- endif -%} 
+                              type="range" 
+                              min="0" 
+                              {%- if uses_comma_decimals %} 
+                                placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}" 
+                                max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}" 
+                              {%- else %}  
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" 
+                                {% endif %}
+                            >
+                          </div>
+                              <div class="form_control">
+                              {% liquid
+                                if filter.min_value.value and filter.max_value.value
+                                  assign current_min_price = filter.min_value.value | divided_by: 100
+                                  assign current_max_price = filter.max_value.value | divided_by: 100
+                                else
+                                  assign current_min_price = 0
+                                  assign current_max_price = filter.range_max | money_without_currency | replace: ',', ''
+                                endif
+                              %}                    
+                                <div class="form_control_container">
+                                    <div class="form_control_container__time">Min</div>
+                                    <input class="form_control_container__time__input" type="number" id="fromInput" value="{{ current_min_price }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" style="padding: 0; ">
+                                  </div>
+                                  <div class="form_control_container">
+                                    <div class="form_control_container__time">Max</div>
+                                    <input class="form_control_container__time__input" type="number" id="toInput" value="{{ current_max_price }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" style="padding: 0; ">
+                                  </div>
+                              </div>
+                          </div>
+                          <script>
+                            function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+                                  const [from, to] = getParsed(fromInput, toInput);
+                                  fillSlider(fromInput, toInput, '#E3F2FD', '#2196F3', controlSlider);
+                                  if (from > to) {
+                                      fromSlider.value = to;
+                                      fromInput.value = to;
+                                  } else {
+                                      fromSlider.value = from;
+                                  }
+                              }
+                                  
+                              function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+                                  const [from, to] = getParsed(fromInput, toInput);
+                                  fillSlider(fromInput, toInput, '#E3F2FD', '#2196F3', controlSlider);
+                                  setToggleAccessible(toInput);
+                                  if (from <= to) {
+                                      toSlider.value = to;
+                                      toInput.value = to;
+                                  } else {
+                                      toInput.value = from;
+                                  }
+                              }
+                              
+                              function controlFromSlider(fromSlider, toSlider, fromInput) {
+                                const [from, to] = getParsed(fromSlider, toSlider);
+                                fillSlider(fromSlider, toSlider, '#E3F2FD', '#2196F3', toSlider);
+                                if (from > to) {
+                                  fromSlider.value = to;
+                                  fromInput.value = to;
+                                } else {
+                                  fromInput.value = from;
+                                }
+                              }
+                              
+                              function controlToSlider(fromSlider, toSlider, toInput) {
+                                const [from, to] = getParsed(fromSlider, toSlider);
+                                fillSlider(fromSlider, toSlider, '#E3F2FD', '#2196F3', toSlider);
+                                setToggleAccessible(toSlider);
+                                if (from <= to) {
+                                  toSlider.value = to;
+                                  toInput.value = to;
+                                } else {
+                                  toInput.value = from;
+                                  toSlider.value = from;
+                                }
+                              }
+                              
+                              function getParsed(currentFrom, currentTo) {
+                                const from = parseInt(currentFrom.value, 10);
+                                const to = parseInt(currentTo.value, 10);
+                                return [from, to];
+                              }
+                              
+                              function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+                                  const rangeDistance = to.max-to.min;
+                                  const fromPosition = from.value - to.min;
+                                  const toPosition = to.value - to.min;
+                                  controlSlider.style.background = `linear-gradient(
+                                    to right,
+                                    ${sliderColor} 0%,
+                                    ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
+                                    ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
+                                    ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
+                                    ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+                                    ${sliderColor} 100%)`;
+                              }
+                              
+                              function setToggleAccessible(currentTarget) {
+                                const toSlider = document.querySelector('#toSlider');
+                                if (Number(currentTarget.value) <= 0 ) {
+                                  toSlider.style.zIndex = 2;
+                                } else {
+                                  toSlider.style.zIndex = 0;
+                                }
+                              }
+                              
+                              const fromSlider = document.querySelector('#fromSlider');
+                              const toSlider = document.querySelector('#toSlider');
+                              const fromInput = document.querySelector('#fromInput');
+                              const toInput = document.querySelector('#toInput');
+                              fillSlider(fromSlider, toSlider, '#E3F2FD', '#2196F3', toSlider);
+                              setToggleAccessible(toSlider);
+                              //console.log("fromSlider => "+ fromSlider.value );
+                              //console.log("toSlider => "+ toSlider.value);
+                              fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
+                              toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
+                              fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
+                              toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+                              
+                          </script>
+                          </div>
+                        </div>
+                      </price-range>
+                    </div>
+                  {% else %}
+                    <div class="facets__display-vertical" id="Facet-{{ forloop.index }}-{{ section.id }}">
+                      {%- assign max_price_amount = filter.range_max | money_without_trailing_zeros | strip_html | escape -%}
+                      <price-range class="facets__price">
+                        <ul class="wrapper-price-filter">
+                          <input class="field__input range-min" name="{{ filter.min_value.param_name }}" id="Filter-{{ filter.label | escape }}-GTE" type="hidden">
+                          <input class="field__input range-max" name="{{ filter.max_value.param_name }}" id="Filter-{{ filter.label | escape }}-LTE" type="hidden" >
+                          {% assign price_array = section.settings.price_range_config | split: "," %}
+                          {% for prices in price_array %}                            
+                            {% assign prices_split = prices | split: "-" %}
+                            {% assign active = '' %}  
+                            {% if filter.max_value.value and filter.min_value.value %}
+                              {% assign custom_max = filter.max_value.value | divided_by: 100 %}
+                              {% assign custom_min = filter.min_value.value | divided_by: 100 %}                              
+                              {% assign compare_min = prices_split[0] | plus: 0 %}
+                              {% assign compare_max = prices_split[1] | plus: 0 %}                              
+                              {% if custom_min == compare_min and custom_max == compare_max %}
+                                {% assign active = 'active' %}
+                                {% assign checked = checked %}
+                              {% endif %}
+                            {% else %}
+                                {% comment %}{% if forloop.first %} {% assign active = 'active' %} {% endif %} {% endcomment %}
+                            {% endif %}                                                        
+                            <li class="price_range--item cursor-pointer text-[#787878] hover:text-black text-sm {{ active }} {% if forloop.index > section.settings.show_filter %} price_filter_show {% endif %}">
+                              <input type="radio" name="min_max_price" class="min_max_price" {% if custom_min == compare_min and custom_max == compare_max %} checked {% endif %}>
+                              {% for item_prices in prices_split %}
+                                {% if forloop.first %}
+                                  <span class="minp" data-min-price="{{ item_prices }}">{{ cart.currency.symbol }}{{ item_prices }}</span> -
+                                {% endif %}
+                                {% if forloop.last %}
+                                  <span class="maxp" data-max-price="{{ item_prices }}">{{ cart.currency.symbol }}{{ item_prices }}</span>
+                                {% endif %}
+                              {% endfor %}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                        <div class="show_more_label">
+                          <span class="show_more_span">Show all</span>
+                        </div>
+                      </price-range>
+                    </div>
+                  {% endif %}
+                </details>
+            {% endcase %}
+          {%- endfor -%}
+        </div>
+      {% endif %}
+
+      {% if results.current_vendor or results.current_type %}
+        <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
+      {% endif %}
+    </form>
+  </facet-filters-form>
+  
+  <div class="sidebar_banner_section">
+    <div class="banner_info">
+      {% if section.settings.banner_image != blank %}
+        <div class="banner_img">
+          <img src="{{ section.settings.banner_image | image_url }}" alt="">
+        </div>
+      {% endif %} 
+      <div class="banner_btn" style="font-size: {{ section.settings.button_font_size | append :"px" }}; background-color: {{ section.settings.button_bg_clr }};">
+        <a href="{{ section.settings.button_link }}" style="color: {{ section.settings.button_text_clr }};">{{ section.settings.button_label }}</a>
+      </div>
+    </div>    
+  </div> 
+  
+  {%- if filter_type == 'vertical' or filter_type == 'vertical-right' %}
+    <details id="Details-2a-{{ section.id }}" class="facets-recently-product facets__disclosure-vertical js-filter hidden" data-recent-single="true" data-index="{{ forloop.index }}" open>
+      <summary class="facets__summary caption-large focus-offset mb-5">
+        <span class="facet-title facet-title__recent">
+          <span>
+            {{ 'listing_product.sidebar.recently_product.label' | t }}</span>
+          {% render 'icon', icon_name: 'menu-down' %}
+        </span>
+      </summary>
+      <div class="collection__menu">
+        <div class="recently-product" id="recently-product">
+          <div class="recently-product__main" id="recently-product__main"></div>
+        </div>
+      </div>
+    </details>
+  {%- endif -%}
+
+</div>
+
+<script>
+  var ajaxLoadPage = function (url) {
+    
+    $(".loading-overlay__spinner").show();
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: {},
+      complete: function (data) {        
+        //$('#ProductGridContainer').html($("#ProductGridContainer", data.responseText).html());
+        $('#main_product_listing').html($("#main_product_listing", data.responseText).html());        
+        history.pushState({
+          page: url
+        }, url, url);
+        
+        initButtons();
+        initGrid();
+        
+        $(".loading-overlay__spinner").hide();
+      }
+    });
+  }
+    
+  {% capture pathUrl %}{% if collection.handle %}{% capture url %}/collections/{{ collection.handle }}{% endcapture %}{{ url }}{% elsif collection.all_products_count > 0 and collection.products.first.type == collection.title %}{{ link_to_type }}{% elsif collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}{{ link_to_vendor }}{% endif %}{% endcapture %}
+  var collectionUrl = window.location.protocol+'//'+window.location.hostname+'{{ pathUrl}}';
+  
+    function fromPrice(value){
+      $('#toSlider').addClass('active');
+      $('#fromSlider').addClass('active');    
+      var toSliderval = $('#toSlider').val();    
+      var gte = 'filter.v.price.gte='+value+'&'+'filter.v.price.lte='+toSliderval;
+      callmeBe(gte,value);     
+    }
+    
+    function toPrice(value){
+      $('#fromSlider').addClass('active');
+      $('#toSlider').addClass('active');
+      var fromSliderval = $('#fromSlider').val();
+      var lte = 'filter.v.price.gte='+fromSliderval+'&'+'filter.v.price.lte='+value;
+      callmeBe(lte,value);
+    }
+  
+    $(document).ready(function(){
+      $(document).on('change', '#SortBy', function (e) {
+      e.preventDefault();
+        callmeBe();   
+    });
+      
+    $(document).on('click', '.price_range--item', function(e){
+      e.preventDefault();
+      $('.price_range--item').removeClass('active');
+      $('.min_max_price').prop('checked', false);
+      $(this).find('.min_max_price').prop('checked', true);
+      $(this).addClass('active');
+      let min_price = $(this).find('.minp').data('min-price');      
+      let max_price = $(this).find('.maxp').data('max-price');   
+      let gte_min = $('#Filter-Price-GTE').attr('name');
+      let lte_max = $('#Filter-Price-LTE').attr('name');
+      let range_min = 'label_price';
+      let current_slug = gte_min+'='+min_price+'&'+lte_max+'='+max_price;
+      callmeBe(current_slug, min_price);
+      
+    })
+    $(document).on('click','.facets__item', function(e){
+      e.preventDefault();
+      if( $( this ).hasClass('active') ){
+        $( this ).removeClass('active');
+        $(this).find("input[type=checkbox]").prop('checked', false);
+      } else{
+        $(this).addClass('active');
+        $(this).find("input[type=checkbox]").prop('checked', true);
+      }
+      callmeBe();
+    })
+  }); 
+  
+  function callmeBe(attrbute, getvalue){
+    var activeFilter = '', activeFilter_arr = [];    
+    $('#FacetFiltersForm ul li.facets__item.active').each( function() {
+      let value = $(this).find("input[type=checkbox]").val();
+      let nameAtt = $(this).find("input[type=checkbox]").attr("name");
+      let current_value = nameAtt+'='+value;
+      activeFilter_arr.push( current_value );
+    });
+    
+    // --- code for range price filter ---
+    
+    if( $('#Filter-Price-GTE').length > 0 && $('#Filter-Price-LTE').length > 0 ){
+      if( typeof getvalue !== 'undefined' && getvalue !='' ){
+        activeFilter_arr.push( attrbute );
+      }else{        
+        let min_price = $('#Filter-Price-GTE').closest('.wrapper-price-filter').find('.price_range--item.active').find('.minp').data('min-price'); 
+        let max_price = $('#Filter-Price-GTE').closest('.wrapper-price-filter').find('.price_range--item.active').find('.maxp').data('max-price'); 
+        let gte_min = $('#Filter-Price-GTE').attr('name');
+        let lte_max = $('#Filter-Price-LTE').attr('name');
+        
+        if( typeof min_price !== 'undefined' &&  min_price != '' && typeof max_price !== 'undefined' &&  max_price != '' ){
+          let current_slug = gte_min+'='+min_price+'&'+lte_max+'='+max_price;
+          activeFilter_arr.push( current_slug );
+        }      
+      }
+    }else{
+      if( typeof getvalue !== 'undefined' && getvalue !='' && getvalue !='label_price' ){
+        activeFilter_arr.push( attrbute );
+      }else{
+        if( $('#toSlider').hasClass('active') && $('#fromSlider').hasClass('active') ){
+          var toSliderval = $('#toSlider').val();
+          var fromSliderval = $('#fromSlider').val();
+          var glte = 'filter.v.price.gte='+fromSliderval+'&'+'filter.v.price.lte='+toSliderval;
+          activeFilter_arr.push( glte );
+        }      
+      }
+    }
+    let sortvalue = $('#SortBy').val();
+  
+    activeFilter = activeFilter_arr.join('&');
+    var url = '?'+activeFilter;
+    if( typeof sortvalue !=='undefined' && sortvalue !='' ){
+      if( activeFilter.length > 0 ){
+        url = '?sort_by='+sortvalue+'&'+activeFilter;
+      }else{
+        url = '?sort_by='+sortvalue;
+      }      
+    }
+      url = url.trim();
+      ajaxLoadPage(url);
+  }
+  
+</script>                                  

@@ -1,0 +1,44 @@
+
+<div id="product-{{ product.handle }}" class="product recent_view_ajax {% if settings.recently_product_style == 'custom_style_two' %}recently_product_style{% endif %}" data-slidersectiont>
+  <div class="image">
+    <a href="{{ product.url }}">
+      <img src="{{ product.featured_media | image_url: width: 533 }}" 
+        alt="{{ product.featured_media.alt | escape }}" 
+        class="motion-reduce"
+        width="{{ product.featured_media.width }}" 
+        height="{{ product.featured_media.height }}"
+        >
+    </a>
+  </div>
+  
+  <div class="sale_wishlist_btn">
+    <div class="card__badge {{ settings.badge_position }}">
+      <div class="product_discount">
+        {% capture discount %}
+          {{ product.compare_at_price_max | minus:product.price | times:100 | divided_by:product.compare_at_price_max }}
+        {% endcapture %}
+        
+        {% assign discount = discount | plus: 0 %}
+        {% if discount > 0 %}
+          <span id="NoMediaStandardBadge-{{ section_id }}-{{ product.id }}" 
+            class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
+            >{{ discount }}%
+          </span>
+        {% endif %}
+      </div>      
+      </div>
+    <div class="wishlist_btn">
+      <div class="wish-btn product-tile--tile-actions flex test2">
+        {% render 'new-wishlist-button2', with product:product, product_class:classRecomend %}
+      </div>
+    </div>
+  </div>
+  
+  <div class="details">
+    <a href="{{ product.url }}"><span class="title">{{ product.title }}</span> </a>
+    <div class="card-information">
+      {% assign priceId = 'price-' | append: section.id | append: '-' | append: product.id %}
+      {% render 'price', product: product, price_class: 'product-item-storepify', id: priceId %}    
+    </div>
+  </div>
+</div>

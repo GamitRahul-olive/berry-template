@@ -1,0 +1,113 @@
+
+<script src="{{ '//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'}}" defer="defer"></script>
+<script src="{{ 'jquery.products.min.js' | asset_url }}" defer="defer"></script>
+
+  <div id="recently-viewed-products" class="collection clearfix">
+    {% if section.settings.recentaly_view_title != blank %}
+      <h2>{{ section.settings.recentaly_view_title }}</h2>
+    {% endif %}
+    
+    <div class="recentaly_view_product_lists {% if section.settings.show_slider == true %} you_may_like_product_slider {% endif %}" data-grid-recentalyd></div>
+    
+  </div>
+
+  {% if section.settings.products_per_page != blank %}
+    {% assign show_product = section.settings.products_per_page %}
+  {% else %}
+    {% assign show_product = 4 %}
+  {% endif %}
+  
+  <script>
+    let recentlyViewed = jQuery.cookie("shopify_recently_viewed");
+    if (recentlyViewed != null) {
+      const RV_Product = recentlyViewed.split(" ");
+      //$(".recentaly_view_product_lists").html('');
+      if( RV_Product.length > 0 ){
+        RV_Product.forEach(function(val,i){
+          var productHandle = '/products/' + val + '?view=recentaly_data_view';
+          var resultProducts = fetch(productHandle).then(function (res) {
+            return res.text();
+          });
+          resultProducts.then(function (response) {
+          //console.log(response);
+            if (response && response.trim() != '') {
+              $(".recentaly_view_product_lists").append(response.trim());
+              //$('.js-product-list').append(response.trim( ));
+            }
+          }).catch(function(error) {
+            //addErrorStyles('Failed to perform search. Check your internet connection and try again.');
+          });
+        })
+      }      
+    }
+  </script>
+  
+<script> Shopify.Products.showRecentlyViewed( { howManyToShow:{{ show_product }} } ); </script>
+
+<style>
+/* Some styles to get you started */
+
+.collection {
+  clear: both;
+  padding-top: 50px;
+}
+
+.collection .product {
+  float: left;
+  text-align: center;
+  width: 162px; /* 160px + 1px + 1px for the borders on either side */
+  margin: 0 14px 14px 0;
+  padding: 0;
+  position: relative; /* used to display absolutely positioned sale tag */
+  overflow: hidden;
+}
+
+.collection .product.last {
+  margin-right: 0;
+}
+
+.collection .product .image {
+  border: 1px solid #E0E0E0;
+  margin-bottom: 10px;
+  height: 160px;
+  overflow: hidden;
+}
+
+.collection .product .cy {
+  display: block;
+  margin: 0 auto;
+}
+
+.collection .product .image img {
+  max-width: 160px;
+}
+
+.collection .product .title {
+  display: block;
+  line-height: 16px;
+  font-size: 12px;
+  color: #222;
+  font-weight: 700;
+}
+
+.collection .product .price {
+  display: block;
+  line-height: 16px;
+  font-size: 11px;
+  color: #777;
+  font-weight: normal;
+}
+
+/* new clearfix */
+  .clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+</style>

@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-main-product.css' | asset_url }}</noscript>
+
+<div class="modal fade rj" id="quickModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="qv-product-title main-title">Main title</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">        
+        <div class="qv-product-images" style="opacity: 0"></div>
+          <div id="quick-view-product" class="qv-content">
+            <div class="holder">              
+              <div class="review_section rating rjtest">
+                <span class="shopify-product-reviews-badge" data-id=""></span>
+              </div>
+              <div class="product__price">
+                <h5 class="qv-product-price">Price</h5>
+                <h5 class="qv-product-original-price">Original price</h5>
+              </div>
+              <span class="product_sale_price"></span>                            
+              <div class="prd-variant overview product_model_title">
+              	<div class="qv-product-description"></div>
+              </div>                              
+              <div class="qv-product-options" data-prd_variants="{{ settings.prd_variants }}" data-prd_radious="{{ settings.variant_radious }}"></div>              
+                <div class="qv-add-to-cart">                
+                  <div class="quantity">
+                    <label for="Quantity-{{ section.id }}" class="qty_label"> {{ 'products.product.quantity.label' | t }}: </label>                    
+                      <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" class="product-form__input product-form__input--quantity qty_addvalue qv-quantity" data-quantity-input>                    
+                  </div>
+                  <input type="submit" class="qv-add-button btn product-form__cart-submit btn-prinmary" value="Add to Cart">
+                  <div class="qv-add-to-cart-response"></div>
+                </div>              
+            </div>
+            <a class="view-product" href="">View Product Details</a>
+            <input type="hidden" class="qv-product-bundle">
+          </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,53 @@
+<div class="prd-page-tab">
+  <ul class="nav nav-tabs" role="tablist">
+    {% if section.settings.show_desc == true and product.description != blank %}
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#tabs-1" role="tab">{{ 'products.product.desc' | t }}</a>
+    </li>
+    {% endif %}
+    {% if section.settings.show_rate == true %}
+    <li class="nav-item">
+      <a class="nav-link {% if section.settings.show_desc == true and product.description == blank %}active{% endif %}" data-bs-toggle="tab" href="#tabs-2" role="tab">{{ 'products.product.rate' | t }}</a>
+    </li>
+    {% endif %}
+    {% if section.settings.show_ship == true %}
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#tabs-3" role="tab">{{ 'products.product.ship' | t }}</a>
+    </li>
+    {% endif %}
+    {% if section.settings.custom_tab != blank %}
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#tabs-4" role="tab">{{ section.settings.custom_tab }}</a>
+    </li>
+    {% endif %}
+  </ul><!-- Tab panes -->
+  <div class="tab-content">
+    {% if section.settings.show_desc == true and product.description != blank %}
+    <div class="tab-pane active" id="tabs-1" role="tabpanel">
+      <div class="product-single__description rte">
+        {{ product.description }}
+      </div>
+    </div>
+    {% endif %}
+    {% if section.settings.show_rate == true %}
+    <div class="tab-pane {% if section.settings.show_desc == true and product.description == blank %}active{% endif %}" id="tabs-2" role="tabpanel">
+      <div class="prd-page-review">
+        <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+      </div>
+    </div>
+    {% endif %}
+    {% if section.settings.show_ship == true %}
+    <div class="tab-pane" id="tabs-3" role="tabpanel">
+      {{ shop.refund_policy }}
+      {{ shop.privacy_policy }}
+      {{ shop.shipping_policy }}
+      {{ shop.terms_of_service }}
+    </div>
+    {% endif %}
+    {% if section.settings.custom_tab != blank %}
+    <div class="tab-pane" id="tabs-4" role="tabpanel">
+      {{ section.settings.custom_desc }}
+    </div>
+    {% endif %}
+  </div>
+</div>

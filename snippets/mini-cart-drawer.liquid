@@ -1,0 +1,51 @@
+{% assign itemStyle = '' %}{% if cart.item_count == 0 %}{% assign itemStyle = ' style="display:none;"' %}{% endif %}
+{% assign itemEmpty = '' %}{% if cart.item_count == 0 %}{% assign itemEmpty = ' style="display:block;"' %}{% else %}{% assign itemEmpty = ' style="display:none;"' %} {% endif %}
+
+{%- assign item_count = cart.item_count -%}
+
+<div class="sidebar-cart-all">
+  <button class="cart-close cart-popup__close" aria-label="{{ 'general.accessibility.close_modal' | t }}" data-cart-popup-close>{% render 'icon-close' %}Close</button>
+    <div class="cart-empty-title" {{ itemEmpty }}>
+      <h3 class="cart-title">Your cart is empty</h3>
+    </div>  
+  	<div class="cart-content" {{ itemStyle }}>
+    <h3 class="cart-title">Shopping Cart</h3>
+    <ul class="product_list_widget">
+      {% for item in cart.items %}
+        <li class="single-product-cart">
+          <div class="cart-content">
+            <div class="cart-img">
+              <a href="{{ item.url }}"><img src="{{ item | img_url: '75x93' }}" alt="product"></a>
+            </div>
+            <div class="cart-title">            		             
+              {% assign pro_title = item.title | split: "- " %}            
+              <h4><a href="{{ item.url }}">{{ pro_title[0] }}</a></h4>
+              {% unless item.product.has_only_default_variant %}
+                <ul>
+                  {% for option in item.options_with_values %}
+                    <li>{{ option.name }}: {{ option.value }}</li>
+                  {% endfor %}
+                </ul>
+              {% endunless %}	
+              <span> {{ item.quantity }} × {{ item.price | money }}	</span>
+            </div>
+          </div>
+          <div class="cart-delete">
+            <a href="javascript:void(0);" class="drawer-remove-item remove-btn close-icon" onclick="Shopify.removeItem({{ item.variant.id }})"  data-id=" {{ item.variant.id }} ">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <h4 class="minicart__total">Total : <span id="drawer_total_price" class="price shopping-cart__total">{{ cart.total_price | money }}</span></h4>
+      </div>
+      <div class="cart-checkout-btn">
+        <a class="btn-hover cart-btn-style btn btn-secondary" href="/cart">View Cart{{ section.settings.view_cart_title }}</a>
+        <a class="no-mrg btn-hover cart-btn-style btn btn-prinmary" href="/checkout">Checkout{{ section.settings.checkout_title }}</a>
+      </div>
+    </div>
+  </div>
+</div>

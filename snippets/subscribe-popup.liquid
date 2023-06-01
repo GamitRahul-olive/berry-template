@@ -1,0 +1,62 @@
+
+<link rel="stylesheet" href="{{ 'custom-popup.css' | asset_url }}">
+<div class="custom-popup">
+  <div class="popup-wrapper">
+    <a href="#" class="close-btn">X</a>
+    <div class="img-block">
+      <img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/subscribe-image.jpg?v=1668691539" alt="">
+    </div>
+    <div class="content-block">
+      <h3 class="main-title">Limited time Offer</h3>
+      <p>Sign up our newsletter and save 25% off for the next purchase!</p>
+      <h5 class="sub-title">Subscribe to our newsletters and don’t miss new arrivals, the latest fashion updates and our promotions.</h5>
+
+      {% form 'customer', class: 'newsletter-form' %}            
+			
+            <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="newsletter-form__field-wrapper">
+                
+				<div class="field">
+				  <input
+                    id="NewsletterForm--{{ section.id }}"
+                    type="email"
+                    name="contact[email]"
+                    class="field__input"
+                    value="{{ form.email }}"
+                    aria-required="true"
+                    autocapitalize="off"
+                    autocomplete="email"
+                    {% if form.errors %}
+                      autofocus
+                      aria-invalid="true"
+                      aria-describedby="Newsletter-error--{{ section.id }}"
+                    {% elsif form.posted_successfully? %}
+                      aria-describedby="Newsletter-success--{{ section.id }}"
+                    {% endif %}
+                    placeholder=" Email Address "
+                    required
+                  >
+                  <label class="field__label" for="NewsletterForm--{{ section.id }}">
+                    {{ 'newsletter.label' | t }}
+                  </label>
+                  <button type="submit" class="newsletter-form__button field__button" name="commit" id="Subscribe" aria-label="{{ 'newsletter.button_label' | t }}">
+                    Subscribe
+                  </button>
+                </div>
+                {%- if form.errors -%}
+                  <small class="newsletter-form__message form__message" id="Newsletter-error--{{ section.id }}">{% render 'icon-error' %}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</small>
+                {%- endif -%}
+              </div>
+              {%- if form.posted_successfully? -%}
+                <h3 class="newsletter-form__message newsletter-form__message--success form__message" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>{% render 'icon-success' %}{{ 'newsletter.success' | t }}</h3>
+              {%- endif -%}
+            {% endform %}
+
+      <ul class="social-share">
+        <li><a href="#"><img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/icon-facebook.svg?v=1668694194" alt="">Facebook</a></li>
+        <li><a href="#"><img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/icon-twitter.svg?v=1668694268" alt="">Twitter</a></li>
+        <li><a href="#"><img src="https://cdn.shopify.com/s/files/1/0554/7927/1557/files/icon-instagram.svg?v=1668694363" alt="">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

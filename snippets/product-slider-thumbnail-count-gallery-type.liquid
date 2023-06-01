@@ -1,0 +1,49 @@
+{% style %}
+  .thumbnail_count { position: relative; }
+  .thumbnail_count span{ position: absolute; top: 50px; z-index: 99; right: 50px; padding: 15px; cursor: pointer; color: #fff; }
+{% endstyle %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"referrerpolicy="no-referrer"></script>
+<div class="grid__item product__media-wrapper">
+      <div class="row">
+      <div class="product_feature_image buttom_feature_image_count">
+        {%- for media in product.media -%}
+          {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+            <div class="col-md-12" id="Slide-{{ section.id }}-{{ media.id }}" class="product__media-item grid__item slider__slide{% if product.selected_or_first_available_variant.featured_media == null and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+            {%- liquid
+               assign media_position = media_position | default: 0 | plus: 1
+               assign lazy_load = false
+               if media_position > 1
+                 assign lazy_load = true
+               endif
+               render 'product-thumbnail', media: media, position: media_position, loop: section.settings.enable_video_looping, modal_id: section.id, xr_button: true, media_width: media_width, lazy_load: lazy_load
+              -%}
+            </div>
+          {%- endunless -%}
+        {%- endfor -%} 
+      </div>
+      
+      <div class="thumbnail_count">
+        {% if product.media.size > 3 %}
+          <span class="js-gallery">{{ product.media.size | minus: 3 }} more</span>
+        {% endif %}
+        
+        <div class="product_thumbnail_image buttom_thumbnail_image_count">
+        {%- for media in product.media -%}
+          {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+            <div data-id="Slide-{{ section.id }}-{{ media.id }}" class="product_thumbnail product__media-item grid__item slider__slide{% if product.selected_or_first_available_variant.featured_media == null and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+              {%- liquid
+                 assign media_position = media_position | default: 0 | plus: 1
+                 assign lazy_load = false
+                 if media_position > 1
+                   assign lazy_load = true
+                 endif
+                 
+                 render 'product-thumbnail', media: media, position: media_position, loop: section.settings.enable_video_looping, modal_id: section.id, xr_button: true, media_width: media_width, lazy_load: lazy_load
+              -%}
+            </div>
+        {%- endunless -%}
+       {%- endfor -%}     
+      </div>
+    </div>  
+  </div>
+</div>

@@ -1,0 +1,30 @@
+{% if block.settings.enable_product_view != blank %}
+  {% liquid
+    assign time_random = 20000
+    assign min = 20
+    assign max = 100
+    assign sold = 6
+    assign hour = 24
+  %}
+  {% assign diff = max | minus: min %}              
+  {% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+  <div class="view_and_social_icon">
+    <div class="main_view_icon">
+      {% render 'view-icon' %} <span class="number-view">{{ randomNumber }}</span>&nbsp;people are viewing this right now 
+    </div>              
+    <div class="main_social_share">
+      {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}              
+      {% render 'social-media-sharing', permalinkURL:permalinkURL %} 
+    </div>
+  </div>
+  <script>
+    setInterval(function () {
+      function randomNumberView(min, max) { // min and max included
+        return Math.floor(Math.random() * (max - min + 1) + min)
+      }
+      let numberView = document.querySelector('.number-view');
+      const rndInt = randomNumberView({{ min }} , {{ max }})
+        numberView.innerHTML = rndInt;
+    },{{ time_random }});
+  </script>
+{% endif %}
