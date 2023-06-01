@@ -1,0 +1,40 @@
+.contact-page .custom_container .banner-form { box-shadow: none !important; }
+.contact-page .custom_container .left_content { text-align: left; padding: 0 15px; display: block; border: 1px solid #F5F5F5; border-radius: 12px; padding: 20px; }
+.contact-form-section .custom_contact .custom_left_content {  }
+.contact-form-section .left_content_title .main-title{font-weight: 500; font-size: 16px; line-height: 20px; margin-bottom: 20px;}
+.contact-form-section .left_content_title .desc{font-weight: 400; font-size: 14px; line-height: 20px; margin-bottom: 20px;}
+.contact-form-section .left_content .sub-title{margin-bottom:20px; font-weight: 500; font-size: 18px; line-height: 20px; padding:0px;}
+.contact-form-section .service-block{margin-bottom:10px; padding: 0px;}
+.contact-form-section .service-block .service-title{font-weight: 500; font-size: 12px; line-height: 16px; margin-bottom: 8px;}
+.contact-form-section .service-block .service-desc{font-weight: 500; font-size: 14px; line-height: 14px;}
+.contact-form-section .custom_left_content .left_content_title { border-bottom: 1px solid #E0E0E0; padding: 0; margin-bottom: 25px;}
+
+
+.contact-form-section .custom_contact .custom_right_content { border-left: none !important; }
+.contact-form-section .custom_right_content .main-title{font-weight: 700; font-size: 34px; line-height: 42px; margin-bottom: 12px;}
+.contact-form-section .custom_right_content .desc{font-weight: 500; font-size: 16px; line-height: 24px;}
+.contact-form-section .custom_right_content .section-header.diff-title{margin:0px 0px 40px 0px;}
+.contact-form-section .contact-form .form-control{background-color: #FAFAFA; border: 1px solid #EDE7F6; border-radius: 12px; padding: 14px 16px;}
+.contact-form-section .contact-form .form-control::placeholder{font-weight: 500; font-size: 14px; line-height: 20px; color: #212121;}
+.contact-form-section .contact-form .contact_textarea{resize:none;}
+.contact-form-section .contact-form .submit_btn button{background-color: var(--secondary_btn_hbg); border: 1px solid var(--secondary_btn_hbg); width: 100%; color:#FFFFFF; padding:14px 16px; 
+                                                       border-radius: 12px; font-weight: 500; font-size: 16px; line-height: 20px; transition:all 0.5s ease}
+.contact-form-section .contact-form .submit_btn button:hover{background-color: #FFFFFF; color:var(--secondary_btn_hbg);}
+
+.contact-form-section .follow-us-block{padding:0px;}
+.contact-form-section .follow-us-block .sub-title{ border-top: 1px solid #E0E0E0; text-align: left; padding-top: 18px; font-weight: 500; font-size: 18px;
+    line-height: 20px; margin-bottom: 20px;}
+.contact-form-section .follow-us-block .follow-content{display: flex; align-items: center; column-gap: 15px;}
+.contact-form-section .follow-us-block .follow-icon{width: 44px; height: 44px; border-radius: 12px; display: flex; justify-content: center; align-items: center;}
+
+@media (max-width: 991px) {
+  .contact-form-section .custom_contact .custom_left_content{margin-bottom:35px;}
+  .contact-form-section .custom_contact .custom_right_content{padding:0px!important;}
+}
+
+@media (max-width: 767px) {
+  .contact-page .custom_container .banner-form{padding: 0px 5px!important;}
+  .contact-form-section .custom_right_content .section-header.diff-title { margin: 0 0 30px; }
+}
+
+

@@ -1,0 +1,26 @@
+
+.product-grid.negative-margin {
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+#ProductGridContainer .product-grid.negative-margin .product-card .product-card__image-wrapper .media--transparent:not(#ProductGridContainer .template-search__results .product-grid.negative-margin .product-card .product-card__image-wrapper .media--transparent ) {
+	padding-bottom: 0 !important;
+}
+
+.title_tab_section >.row {
+  align-items: flex-end;
+}
+.title_tab_section >.row .tab_section {
+  margin-bottom: 30px;
+}
+
+
+
+@media screen and (min-width: 750px) {
+
+  .product-grid.negative-margin--small {
+    margin-bottom: calc(-1rem - var(--page-width-margin));
+  }
+}

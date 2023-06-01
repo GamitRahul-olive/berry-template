@@ -1,0 +1,82 @@
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+
+.contact-form .newsletter_popup_inner{border-radius: 12px;}
+.contact-form .subscribe_area h2.main-title{font-weight: 900; font-size: 24px; line-height: 28px; /*color: #212121;*/ margin-bottom: 8px; text-transform: inherit;}
+.contact-form .subscribe_area p{font-weight: 400; font-size: 15px; line-height: 22px; /*color: #616161*/;}
+.contact-form .subscribe_area span{font-weight: 400; font-size: 12px; line-height: 20px; /*color: #616161;*/ padding-bottom: 30px!important; display: inline-block;}
+.contact-form .subscribe-form-group{margin-top: 70px;}
+.contact-form .subscribe-form-group input.form-control{background-color:#00000006;}
+.contact-form .subscribe-form-group input.form-control::placeholder{/*color:#616161!important;*/ font-weight: 500; font-size: 14px; line-height: 20px;}
+.contact-form .signup-icon{display: flex; justify-content: space-between; padding-top: 150px;}
+.contact-form .signup-icon a{font-weight: 500; font-size: 14px; line-height: 20px; color: #212121; display: flex; align-items: center;}
+.contact-form .signup-icon a:hover{color:#2196f3; transition: all 0.5s ease;}
+.contact-form .signup-icon a:hover svg path{fill:#2196f3; transition: all 0.5s ease;}
+.contact-form .signup-icon a svg{margin-right:10px;}
+
+  @media(max-width:991px){
+    .contact-form .newsletter_popup_inner{max-height: 515px;}
+    .contact-form .signup-icon{padding-top: 60px;}
+  }
+  
+  @media(max-width:767px){
+    .contact-form .signup-icon { padding-top: 45px; }
+    .contact-form .subscribe-form-group { margin-top: 40px; }
+  }
+
+
+
+
+@media screen and (min-width: 750px) {
+  .newsletter-form {
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 0 auto;
+    max-width: 36rem;
+  }
+}
+
+.newsletter-form__field-wrapper {
+  width: 100%;
+}
+
+.newsletter-form__field-wrapper .field__input {
+  padding-right: 5rem;
+}
+
+.newsletter-form__message {
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.newsletter-form__message--success {
+  margin-top: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .newsletter-form__message {
+    justify-content: flex-start;
+  }
+
+  .newsletter-form__message--success {
+    position: absolute;
+    left: 0;
+    bottom: -65%;
+  }
+}
+
+.newsletter-form__button {
+  width: 4.4rem;
+  margin: 0;
+}
+
+.newsletter-form__button .icon {
+  width: 1.5rem;
+}
