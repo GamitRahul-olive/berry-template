@@ -1,0 +1,259 @@
+.contact img {
+  max-width: 100%;
+}
+
+.contact .form__message {
+  align-items: flex-start;
+}
+
+.contact .icon-success {
+  margin-top: 0.2rem;
+}
+
+.contact .field {
+  margin-bottom: 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .contact .field {
+    margin-bottom: 2rem;
+  }
+}
+
+.contact__button {
+  margin-top: 3rem;
+}
+
+@media screen and (min-width: 750px) {
+  .contact__button {
+    margin-top: 4rem;
+  }
+}
+
+
+/*contact page start*/
+@media (max-width: 991px) {
+    .contact-page > div {
+        padding-top: 0 !important;
+        padding-bottom: 30px !important;
+    }
+    .contact-page > div:last-child,
+    .contact-page > div:nth-child(2) {
+        padding-bottom: 0 !important;
+      margin-bottom: 0 !important;
+          margin-top: 20px !important;
+    }
+  .contact-page .map iframe {
+        height: 430px !important;
+  }
+}
+.contact-page .map iframe {
+    border: none;
+}
+.contact-page .contact-background-img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+@media (max-width: 991px) {
+    .contact-page .contact-background-img {
+      padding-bottom: 0 !important;
+      border: none !important;
+      padding-left: 15px !important;      
+      padding-right: 15px !important;
+    }
+}
+@media (min-width: 992px) {
+    .contact-page .banner-form .img_right {
+        order: 2;
+        margin-bottom: 0;
+    }
+}
+.contact-page .banner-form .img_right {
+    margin-bottom: 30px;
+}
+    .contact-page .service-img {
+      margin-bottom: 32px;
+    }
+    .contact-page .service-block {
+      margin-bottom: 50px;
+  }
+    .contact-form-section {
+          position: relative;
+    }
+.contact-form-section .service-title {
+  font-size: 18px;
+    color: #0E2640;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.contact-form-section .service-desc {
+  font-size: 16px;
+}
+.contact-page .contact-right {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.contact-page .contact-right ul li {
+    position: relative;
+    padding-left: 150px;
+    margin-top: 45px;
+    display: block;
+}
+.contact-page .contact-right ul li:first-child {
+    margin-top: 0;
+}
+.contact-page .contact-right ul li .contact-icon {
+    position: absolute;
+    left: 0;
+    text-align: center;
+    width: 130px;
+    border-right: 1px solid #ddd;
+}
+.contact-page .contact-right ul li .contact-icon i {
+    font-size: 20px;
+    color: #eee;
+}
+.contact-page .contact-right ul li .contact-icon .h6,
+.contact-page .contact-right ul li .contact-icon h6 {
+    text-transform: uppercase;
+    padding-top: 5px;
+    font-weight: 600;
+    color: #eee;
+}
+.contact-page .contact-right ul li p {
+    font-weight: 600;
+    margin-bottom: 0;
+    line-height: 30px;
+}
+
+.contact-page .field {
+	flex-wrap: wrap;
+}
+.contact-page label {
+	width: 100%;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 991px) {
+    .page-contact .diff-title {
+        margin-top: 0;
+    }
+    .page-contact .banner-form {
+        margin-top: 50px;
+    }
+  .contact-page .service-block {
+    margin-bottom: 18px;
+  }
+  .contact-page .service-img {
+    margin-bottom: 26px;
+  }
+}
+@media (max-width: 991px) {
+    .page-contact #shopify-section-logo-bar > section {
+        padding-top: 30px !important;
+    }
+}
+/*contact page end*/
+
+
+
+/* custom css for contact page */
+.contact-form-section .custom_container {
+  max-width: 700px;
+}
+.contact-form-section .banner-form {
+  box-shadow: none !important;
+}
+.contact-form-section .banner-form .contact-background-img {
+  border: none !important;
+}
+.contact-page .custom_container .section-header {
+  margin-bottom: 20px;
+}
+.contact-page .custom_container .section-header .main-title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: bold;
+  text-align: center;
+}
+.contact-page .custom_container form input {
+  background: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  font-size: 16px;
+  max-height: 70px;
+  padding-top: 30px;
+}
+.contact-page .custom_container form .first-name,
+.contact-page .custom_container form .last-name,
+.contact-page .custom_container form .email,
+.contact-page .custom_container form .field {
+  position: relative;
+}
+.contact-page .custom_container form .first-name label,
+.contact-page .custom_container form .last-name label,
+.contact-page .custom_container form .email label,
+.contact-page .custom_container form .field label {
+  position: absolute;
+  top: 9px;
+  left: 18px;
+  font-size: 12px;
+}
+.contact-page .custom_container form .contact_name {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+.contact-page .custom_container form .field .password_input {
+  width: 100%;
+}
+.contact-page .custom_container form .login_remember .login_remember_text {
+  display: flex;
+}
+.contact-page .custom_container form .login_remember .login_remember_text .login_checkbox {
+  margin-right: 10px;
+}
+.contact-page .custom_container form .submit input {
+  background: #673AB7;
+  border-radius: 10px;
+  border: 1px solid #673AB7;
+  padding: 14px;
+  width: 100%;
+}
+.contact-page .custom_container form .login_remember {
+  margin-bottom: 30px;
+}
+.contact-page .custom_container form .submit input:hover {
+  background: transparent;
+  color: #673AB7;
+  border: 1px solid #673AB7;
+} 
+.contact-page .custom_container form .signup_label .signup_label_div {
+  text-align: center;
+  margin-top: 40px;
+}
+.contact-page .custom_container form .signup_label .signup_label_div button {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #673AB7;
+  padding: 8px;
+  background: transparent;
+  border-radius: 10px;
+  color: #673AB7;
+} 
+.contact-page .custom_container form .signup_label .signup_label_div button:hover {
+  background: #673AB7;
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+

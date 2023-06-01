@@ -1,0 +1,34 @@
+.home-slider .product-wrap.product-card .prd-detail { padding: 15px!important; position: relative; flex-direction: column; text-align: left; width: 100%; height: 190px; display: flex; 
+    justify-content: space-between; background-color: transparent;}
+.home-slider .hotspot .product-grid > a { position: relative!important; width: 100%!important; margin-right: 5px; height: 190px; }
+.home-slider .hotspot .product-grid > a img { max-height: 190px; object-fit: cover; width: 100%; height:100%;}
+.home-slider .rating { display: none; }
+.home-slider .media-body a h6 { font-weight: 500; font-size: 14px; line-height: 20px; color: var(--secondary_color); margin-bottom: 8px!important; text-align: left; margin-top: 0px; }
+.home-slider .product-card .prd-btns { float: left; bottom: unset; left: unset; right: unset; }
+.home-slider .cart-btn { margin-top: 0px; }
+.home-slider .cart-icon { width: 48px!important;
+    height: 42px!important;
+    border-radius: 4px!important;
+    color: #fff!important;
+    font-size: 12px;
+    box-shadow: none!important;
+     }
+.home-slider .cart-icon a { color:#ffffff!important; }
+.home-slider .product-card .media::before { padding-bottom: 0px!important; }
+
+@media (max-width: 767px) {
+  .home-slider .hotspot.open .content{max-width: 246px; }
+  .home-slider .hotspot.open .content{z-index: 9; position: relative;}
+  .home-slider .hotspot.hotspot3.open .content{transform: translateY(-124%) translate(-32%) scale(1)!important;}
+  .home-slider .hotspot.hotspot4.open .content{transform: translate(-18%) scale(1)!important;}
+  .home-slider .hotspot .content .product-grid>a img{max-height: 114px;}
+  .home-slider .hotspot .content .media-body{padding: 8px!important;}
+  .home-slider .hotspot .content .media-body h6{font-size: 10px; line-height: 10px; margin-bottom: 4px!important;}
+  .home-slider .hotspot .content .media-body h4{font-size: 10px; line-height: 16px; margin-bottom: 4px;}
+  .home-slider .hotspot .content .media-body .cart-btn{margin-top:0px!important;}
+  .home-slider .hotspot .content .media-body .cart-icon{padding: 1px 12px!important; width: 40px!important;
+    height: 35px!important;}  
+  .home-slider .hotspot .content .media-body .cart-icon span{font-size: 10px!important;}
+  .home-slider .product-wrap.product-card .prd-detail{ height: 114px;}
+  .home-slider .hotspot .product-grid>a{height: 114px;}
+}

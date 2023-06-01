@@ -1,0 +1,85 @@
+.customer_profile .customer_profile_content {
+  padding: 60px 0;
+}
+.customer_profile_details h4 {
+  font-size: 20px;
+  color: #2196F3;
+  font-weight: bold;
+  line-height: 28px;
+}
+.customer_profile_details h3 {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 28px;
+}
+.customer_profile_details h5 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.customer_profile .customer_profile_content .customer_profile_user_details {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+}
+.customer_profile .customer_profile_content .customer_profile_user_interface {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-gap: 20px;
+  text-align: center;
+  margin-top: 50px;
+}
+.customer_profile_user_details .customer_profile_image_bar {
+  background-color: #90CAF9;
+  max-width: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.customer_profile_content .customer_profile_user_interface .customer_profile_name {
+  padding: 20px 0;
+}
+.customer_profile_user_details .customer_profile_name .customer_profile_user_name h3 {
+  margin-bottom: 0;
+  color: #212121;
+}
+.customer_profile_user_details .customer_profile_name .customer_profile_user_position h4 {
+  margin-bottom: 0;
+  color: #757575;
+}
+.customer_profile_user_details .customer_profile_position_interface .customer_profile_position_menu {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 20px;
+  text-align: center;
+}
+.customer_profile_position_interface .position_button {
+  padding: 5px;
+  border-radius: 7px;
+}
+.customer_profile_user_interface .profile_image {
+  width: 92px;
+}
+.customer_profile_user_details .customer_profile_position_interface .position_button img {
+  cursor: pointer;
+}
+
+
+/* Responsive */
+@media only screen and (max-width: 1024px) {
+  .customer_profile .customer_profile_content .customer_profile_user_interface {
+    grid-template-columns: repeat(2,1fr);  
+  }
+}
+@media only screen and (max-width: 480px) {
+  .customer_profile .customer_profile_content .customer_profile_user_interface {
+    grid-template-columns: repeat(1,1fr);  
+  }
+}
+
+
+
+
+
+
+

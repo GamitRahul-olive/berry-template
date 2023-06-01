@@ -1,0 +1,145 @@
+/* custom css for login page */
+.customer.login .customer_login_title .login_title h3,
+.template_customers-login .main-title {
+  color: #4527A0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+}
+.customer.login .customer_login_title .login_description h4,
+#CustomerLoginForm p {
+  color: #9E9E9E;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+}
+.customer.login form .field {
+  position: relative;
+}
+.customer.login form .field label {
+  position: absolute;
+  top: 9px;
+  left: 18px;
+  font-size: 12px;
+}
+.customer.login form .field input {
+  background: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  font-size: 16px;
+  max-height: 70px;
+  padding-top: 30px;
+}
+.customer.login form .login_remember .login_remember_text {
+  display: flex;
+}
+.customer.login form .login_remember .login_remember_text input.login_checkbox {
+  width: 25px;
+  margin: 0;
+}
+.customer.login form .login_remember .login_remember_text h3 {
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #212121;
+  font-weight: bold;
+}
+.customer.login form .login_remember {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.customer.login form .login_remember .login_forget_text {
+  margin-left: auto;
+}
+.customer.login form .login_remember .login_remember_anchor {
+  align-items: center;
+  display: flex;
+}
+.customer.login form .login_remember .login_remember_anchor a {
+  margin-right: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #673AB7;
+  font-weight: bold;
+}
+.customer.login form .signin_button {
+  background: #673AB7;
+  border-radius: 10px;
+  width: 100%;
+  border: 1px solid #673AB7;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 14px;
+}
+.customer.login form .signin_button:hover {
+  background: transparent;
+  color: #673AB7;
+  border: 1px solid #673AB7;
+}
+.customer.login form .signup_label .signup_label_div {
+  margin-top: 50px;
+}
+.customer.login form .signup_label .signup_label_div button {
+  color: #673AB7;
+  background: transparent;
+  border: 1px solid #673AB7;
+  border-radius: 10px;
+  width: 100%;
+  padding: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.customer.login form .signup_label .signup_label_div button:hover {
+  background: #673AB7;
+  color: #fff;
+}
+
+
+
+
+
+/* custom css for Forget password page */
+.customer.login form .reset_pass_btn {
+  display: grid;
+  align-items: center;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+.customer.login form .reset_pass_btn .submit_btn {
+  background: #673AB7;
+  border-radius: 10px;
+  border: 1px solid #673AB7;
+  padding: 14px;
+}
+.customer.login form .reset_pass_btn .submit_btn:hover {
+  background: transparent;
+  color: #673AB7;
+  border: 1px solid #673AB7;
+}
+.customer.login form .reset_pass_btn .submit_cancel_button {
+  border: 1px solid #673AB7;
+  padding: 8px;
+  border-radius: 10px;
+}
+.customer.login form .reset_pass_btn .submit_cancel_button:hover {
+  background: #673AB7;
+}
+.customer.login form .reset_pass_btn .submit_cancel_button:hover a {
+  color: #fff;
+}
+.customer.login form .reset_pass_btn .submit_cancel_button a {
+  color: #673AB7;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+

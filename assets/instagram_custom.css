@@ -1,0 +1,64 @@
+.instagram_section .instagram_content .instagram_image_bar {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-gap: 20px;
+}
+.instagram_main_content .instagram_content_image img {
+  width: 100%;
+}
+.instagram_content .instagram_pretitle_bar h4 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+.instagram_content .instagram_title_bar h3 {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 28px;
+  margin-bottom: 6px;
+}
+.instagram_content .instagram_subtitle_bar h5 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.instagram_content .instagram_main_content {
+  margin-top: 30px;
+}
+.instagram_main_content .after {
+  position: relative;
+}
+.instagram_main_content .after:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 1px solid #FFFFFF;
+  z-index: 1;
+  margin: 7px;
+  background-color: #0000001a;
+}
+
+.lookbook_hotspot_insta4 .content{ left: -115px;}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .lookbook_hotspot_insta1 .content{left: 30px;}
+  .lookbook_hotspot_insta4 .content{ left: -145px;}
+}
+
+@media (max-width: 480px) {
+  .instagram_section .instagram_content .instagram_image_bar { grid-template-columns: repeat(2,1fr); }
+  .lookbook_hotspot_insta2 .content{ left: 0px;}
+  
+}
+
+
+
+
+
+
+
+
