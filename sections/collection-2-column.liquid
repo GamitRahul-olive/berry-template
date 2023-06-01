@@ -1,0 +1,53 @@
+<div class="page-width">
+  <div class="row collection_product_layout collection_layout_2 collection_3_grid">
+  {%- for collection in collections -%}
+    {%- if collection.image -%}
+      {%- assign collection_image = collection.image -%}
+    {%- elsif collection.products.first and collection.products.first.images != empty -%}
+      {%- assign collection_image = collection.products.first.featured_image -%}
+    {%- else -%}
+      {%- assign collection_image = blank -%}
+    {%- endif -%}
+    
+    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+      <div class="collection_info">
+        <div class="collection_inner_content">
+          <div class="collection_feature_img">
+            <a href="{{ collection.url }}"><img src="{{ collection_image | img_url: 'master' }}" alt=""></a>
+          </div>
+          <div class="product_details_info">
+            <div class="product_count_title">
+              <h2>{{ collection.title }}</h2>
+              <span class="collection_product_count">{{ collection.all_products_count }} Products</span>
+            </div>
+            <div class="collection_des">{{ collection.description | strip_html }}</div>
+             <a href="{{ collection.url }}">See More
+               <svg width="16" height="8" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.01 3H0V5H12.01V8L16 4L12.01 0V3V3Z" fill="#212121"></path>
+               </svg>
+             </a>
+          </div>
+        </div> 
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.collection_2_column.name",
+    "settings": [],
+    "presets":[
+      {
+        "name":"t:sections.collection_2_column.presets.name"
+      }
+    ]    
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

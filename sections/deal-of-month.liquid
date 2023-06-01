@@ -1,0 +1,342 @@
+<link rel="stylesheet" href="{{ 'section-parallax.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-countdown.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-parallax.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'section-countdown.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div data-section-id="{{ section.id }}" data-section-type="parallax-section">
+  {% if section.settings.parallax_width == 'standard-width'  %}
+  <div class="page-width p-0">
+    {% else %}
+   <div class="container-fluid p-0">
+  {% endif %}
+  <div class="row">
+    <div id="ParallaxWrapper-{{ section.id }}" class="parallax-wrapper col" role="region" aria-label="parallax" tabindex="-1">
+      <div class="parallax {% if display_controls %} parallax--display-controls{% endif %}"
+           id="Parallax-{{ section.id }}"
+           data-autorotate="{{ section.settings.autorotate }}"
+           data-speed="{{ section.settings.autorotate_speed | times: 1000 }}"
+           data-slide-nav-a11y="{{ 'sections.parallax.load_slide' | t: slide_number: '[slide_number]' }}">
+        
+          {%- assign block_image = section.settings.image -%}
+          <div class="parallax__slide parallax__slide--{{ section.id }}" {{ section.shopify_attributes }}>
+            {% if block_image != blank %}    
+              <div
+                   {% unless block_image.alt == blank %}
+                   role="img"
+                   aria-label="{{ block_image.alt | escape }}"
+                   data-alt="{{ block_image.alt | escape }}"
+                   {% endunless %}
+                   class="parallax__image"
+                   data-bg="{{ block_image | img_url: '1920x599' }}"
+                   data-bgset="{% include 'bgset', image: block_image %}"
+                   data-sizes="auto"
+                   data-parent-fit="contain"
+                   style="padding: {{ section.settings.section_padding }};
+                          background-image: url('{{ block_image | img_url: '1920x599' }}');">
+                {% else %}
+                
+                <div class="parallax_full_back" style="padding: {{ section.settings.section_padding }}; background: linear-gradient( 90deg , {{section.settings.test_bgcolor1}} 60%, {{section.settings.test_bgcolor2}} 0%);">
+                {% endif %}
+                  <div class="parallax_inner">
+                    {% if section.settings.slide_text == true %}
+                      <div class="parallax_text_wrapper page-width {{ section.settings.position }} {{ section.settings.alignment }}">
+                        {% if section.settings.graphics_img1 != blank %}
+                        	<div class="graphics_1">
+                        	<img src="{{ section.settings.graphics_img1 | img_url: '268x897' }}" data-src="{{ img_url }}" data-widths="[180, 446, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ section.settings.graphics_img1.aspect_ratio }}" data-sizes="auto" alt="{{ section.settings.graphics_img1.alt | escape }}"/>
+                    	</div>
+                        {% endif %}
+                        {% if section.settings.graphics_img2 != blank %}
+                        	<div class="graphics_2">
+                        	<img src="{{ section.settings.graphics_img2 | img_url: '237x868' }}" data-src="{{ img_url }}" data-widths="[180, 446, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ section.settings.graphics_img2.aspect_ratio }}" data-sizes="auto" alt="{{ section.settings.graphics_img2.alt | escape }}"/>
+                    	</div>
+                        {% endif %}
+                        <div class="row">
+                          <div class="parallax_text_inner col-lg-6 col-md-12">
+                            <div class="parallax__text-content-list">
+                            {%- unless section.settings.subheading == blank -%}
+                            <div>
+                              <span class="mega-subtitle parallax__subtitle slidesub_title{{i}}" style="color: {{ section.settings.ssub_color }};">
+                                {{ section.settings.subheading }}
+                              </span>
+                            </div>
+                            {%- endunless -%}
+                            {%- unless section.settings.slide_title == blank -%}
+                            <div>
+                              <h2 class="h1 mega-title parallax__title" style="color: {{ section.settings.smain_color }};">
+                                {{ section.settings.slide_title }}
+                              </h2>
+                            </div>
+                            {%- endunless -%}
+                            {%- unless section.settings.sdate == blank and section.settings.edate -%}
+                            <div class="parallax__info_outer">
+                              <div class="mega-info parallax__info" style="color: {{ section.settings.sinfo }};">
+                                <div class="countdown">
+                                  {% assign start_date= section.settings.sdate %}
+                                  {% assign end_date= section.settings.edate %}
+
+                                  {% render 'shopify-countdown-timer', start_date: start_date, end_date: end_date%}
+                                </div>
+                              </div>
+                            </div>
+                            {%- endunless -%}
+
+                            {%- assign show_link_button = false -%}
+                            {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+                            {%- assign show_link_button = true -%}
+                            {%- endif -%}
+                            {%- if show_link_button -%}
+                            <div class="parallx_btn parallax__btn-wrapper{% if section.settings.slide_title != blank or section.settings.subheading != blank %} parallax__btn-wrapper--push{% endif %}">
+                              <a href="{{ section.settings.button_link }}" class="demotest btn btn-link parallax__btn{{i}}" {% if section.settings.btn_space == false %}style="padding: 0;"{% endif %}>
+                                {{ section.settings.button_label | escape }}
+                                {% if section.settings.btn_arrow == true %}
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                {% endif %}
+                              </a>
+                            </div>
+                            {%- endif -%}
+                          </div>                    
+                          </div>
+                          <div class="col-lg-5 banner_img" style="text-align: right;">
+                            {% if section.settings.pattern_img != blank %}
+                              <img src="{{ section.settings.pattern_img | img_url: '446x440' }}" data-src="{{ img_url }}" data-widths="[180, 446, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ section.settings.pattern_img.aspect_ratio }}" data-sizes="auto"  alt="{{ section.settings.pattern_img.alt | escape }}">
+                            {% endif %}
+                          </div>
+                    	</div>
+                      </div>
+                    {% endif %}
+                  </div>
+              </div>
+            
+            <noscript>
+              <div class="parallax__image"{% if block_image %}{% unless block_image.alt == blank %} role="img" aria-label="{{ block_image.alt | escape }}"{% endunless %} style="padding: {{ section.settings.section_padding }}; background-image: url('{{ block_image | img_url: '2048x' }}');"{% endif %}>
+                {% if block_image == blank %}
+                  <div class="placeholder-background">
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </div>
+            </noscript>
+            
+            {%- assign text_alignments = section.settings.text_alignment | split: ' ' -%}
+            {%- assign text_horizontal_alignment = text_alignments.first -%}
+            {%- assign text_vertical_alignment = text_alignments.last | strip -%}
+          </div>
+      </div>
+    </div>
+  </div>
+  {% if section.settings.parallax_width == 'standard-width'  %}
+    </div>
+    {% else %}
+  </div>
+  {% endif %}
+</div>
+                                    
+{% schema %}
+{
+  "name": "t:sections.deal-of-month.name",
+  "class": "index-section bottom-space-0 index-section--parallax",
+  "settings": [    
+    {
+      "type": "text",
+      "id": "section_padding",
+      "label": "t:sections.deal-of-month.settings.section_padding.label",
+      "default": "0px 0px 0px 0px"
+    },
+    {
+     "type":"select",
+     "id":"parallax_width",
+     "label":"t:sections.deal-of-month.settings.parallax_width.label",
+     "options":[
+        {
+           "value":"full-width",
+           "label":"t:sections.deal-of-month.settings.parallax_width.option_1.label"
+        },
+        {
+           "value":"standard-width",
+           "label":"t:sections.deal-of-month.settings.parallax_width.option_2.label"
+        }
+     ],
+     "default":"full-width"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.deal-of-month.settings.image.label"
+    },
+	{
+      "type": "color",
+      "id": "test_bgcolor1",
+      "label": "t:sections.deal-of-month.settings.test_bgcolor1.label",
+      "default": "#ffffff"
+    },
+	{
+      "type": "color",
+      "id": "test_bgcolor2",
+      "label": "t:sections.deal-of-month.settings.test_bgcolor2.label",
+      "default": "#FBEDEB"
+    },
+  	{
+      "type": "color",
+      "id": "pralx_inner_back",
+      "label": "t:sections.deal-of-month.settings.pralx_inner_back.label",
+      "default": "#F2F2F2"
+    },
+  	{
+      "type": "image_picker",
+      "id": "pattern_img",
+      "label": "t:sections.deal-of-month.settings.pattern_img.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "graphics_img1",
+      "label": "t:sections.deal-of-month.settings.graphics_img1.label"
+    },
+  	{
+      "type": "image_picker",
+      "id": "graphics_img2",
+      "label": "t:sections.deal-of-month.settings.graphics_img2.label"
+    },
+  	{
+      "type": "checkbox",
+      "id": "slide_text",
+      "label": "t:sections.deal-of-month.settings.slide_text.label",
+      "default": false
+    },
+    {
+     "type":"select",
+     "id":"alignment",
+     "label":"t:sections.deal-of-month.settings.alignment.label",
+     "options":[
+        {
+           "value":"text-left",
+           "label":"t:sections.deal-of-month.settings.alignment.options_1.label"
+        },
+        {
+           "value":"text-center",
+           "label":"t:sections.deal-of-month.settings.alignment.options_2.label"
+        },
+        {
+           "value":"text-right",
+           "label":"t:sections.deal-of-month.settings.alignment.options_3.label"
+        }
+     ],
+     "default":"text-center"
+    },
+    {
+       "type":"select",
+       "id":"position",
+       "label":"t:sections.deal-of-month.settings.position.label",
+       "options":[
+          {
+             "value":"p-left",
+             "label":"t:sections.deal-of-month.settings.position.options_1.label"
+          },
+          {
+             "value":"p-center",
+             "label":"t:sections.deal-of-month.settings.position.options_2.label"
+          },
+          {
+             "value":"p-right",
+             "label":"t:sections.deal-of-month.settings.position.options_3.label"
+          }
+       ],
+       "default":"p-center"
+    },
+    {
+      "type": "text",
+      "id": "slide_title",
+      "label": "t:sections.deal-of-month.settings.slide_title.label",
+      "default": "Main Title"
+    },
+    {
+      "type": "color",
+      "id": "smain_color",
+      "label": "t:sections.deal-of-month.settings.smain_color.label",
+      "default": "#ea394e"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.deal-of-month.settings.subheading.label",
+      "default": "Sub Title"
+    },
+    {
+      "type": "color",
+      "id": "ssub_color",
+      "label": "t:sections.deal-of-month.settings.ssub_color.label",
+      "default": "#000"
+    },
+	{
+      "type": "text",
+      "id": "sdate",
+      "label": "t:sections.deal-of-month.settings.sdate.label",
+      "default": "Jun 01, 2021",
+      "info": "t:sections.deal-of-month.settings.sdate.info"
+    },
+    {
+      "type": "text",
+      "id": "edate",
+      "label": "t:sections.deal-of-month.settings.edate.label",
+      "default": "Jun 30, 2021",
+      "info": "t:sections.deal-of-month.settings.edate.info"
+    },
+	{
+      "type": "color",
+      "id": "sinfo",
+      "label": "t:sections.deal-of-month.settings.sinfo.label",
+      "default": "#0e2640"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.deal-of-month.settings.button_label.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_arrow",
+      "label": "t:sections.deal-of-month.settings.btn_arrow.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_space",
+      "label": "t:sections.deal-of-month.settings.btn_space.label",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.deal-of-month.settings.button_link.label"
+    },
+    {
+    "type": "header",
+      "content": "t:sections.deal-of-month.settings.hed-parallax.content"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "t:sections.deal-of-month.settings.button_bg_color.label",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.deal-of-month.settings.button_text_color.label",
+      "default": "#fff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.deal-of-month.presets.name"
+    }
+  ]
+}
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

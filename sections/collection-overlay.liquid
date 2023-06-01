@@ -1,0 +1,53 @@
+<style>
+  .collection_info { position: relative; }
+  .overlay_section { position: absolute; z-index: 1; top: 10px; }
+  .collection_feature_img{ padding-bottom: 20px; }
+  .collection_feature_img img { height: 500px;width: 450px; object-fit:cover; }
+  .overlay_section {position: absolute;z-index: 1;top: 10px;position: absolute;width: 339px;height: 425px;padding: 20px;top: 40px;left: 50px; background: rgb(0 0 0 / 10%); border-radius: 12px;}
+</style>
+<div class="page-width">
+  <div class="row collection_product_layout collection_overlay">
+  {%- for collection in collections -%}
+    {%- if collection.image -%}
+      {%- assign collection_image = collection.image -%}
+    {%- elsif collection.products.first and collection.products.first.images != empty -%}
+      {%- assign collection_image = collection.products.first.featured_image -%}
+    {%- else -%}
+      {%- assign collection_image = blank -%}
+    {%- endif -%}
+    
+    <div class="col-md-6 col-lg-4 col-sm-6 col-xs-4">
+      <div class="collection_info">
+        <div class="collection_feature_img">
+          <a href="{{ collection.url }}"><img src="{{ collection_image | img_url: 'master' }}" alt=""></a>
+        </div>
+        <div class="overlay_section">
+          <span class="collection_product_count">{{ collection.all_products_count }} Products</span>
+          <h2>{{ collection.title }}</h2>
+          <div class="collection_des">{{ collection.description | strip_html }}</div>
+          <a href="{{ collection.url }}">See Collection</a>
+        </div> 
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.collection_overlay.name",
+    "settings": [],
+    "presets":[
+      {
+        "name":"t:sections.collection_overlay.presets.name"
+      }
+    ]    
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

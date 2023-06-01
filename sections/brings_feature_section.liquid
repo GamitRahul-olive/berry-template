@@ -1,0 +1,119 @@
+{{ 'brings_features_section.css' | asset_url | stylesheet_tag }}
+
+<div class="brings_features_{{ section.id }}">
+  <div class="brings_features_main_container page-width">
+    <div class="brings_features_content">
+      <div class="brings_features_details">
+        {% if section.settings.brings_features_pretitle != blank %}
+          <div class="brings_features_pretitle_bar">
+            <h4>{{ section.settings.brings_features_pretitle }}</h4>
+          </div>
+        {% endif %}
+        {% if section.settings.brings_features_maintitle != blank %}
+          <div classs="brings_features_maintitle_bar">
+            <h3>{{ section.settings.brings_features_maintitle }}</h3>
+          </div>
+        {% endif %}
+        {% if section.settings.brings_features_subtitle != blank %}
+          <div classs="brings_features_subtitle_bar">
+            <h5>{{ section.settings.brings_features_subtitle }}</h5>
+          </div>
+        {% endif %}
+      </div>
+      <div class="brings_features_main_content">
+        <div class="brings_features_main_content_details">
+          <div class="brings_features_bars">
+            {% for block in section.blocks %}
+              <div class="brings_features_content_bar">
+                {% if  block.settings.brings_features_image != blank %}
+                  <div class="brings_features_image_bar" style="background-color:{{ block.settings.image_background_color }};">
+                    <img src="{{ block.settings.brings_features_image | img_url: 'master' }}" class="brings_features_image">
+                  </div>
+                {% endif %}
+                <div class="brings_features_image_personal_detail">
+                  {% if  block.settings.brings_features_image_title != blank %}
+                    <div class="brings_features_image_title">
+                      <h3>{{ block.settings.brings_features_image_title }}</h3>
+                    </div>
+                  {% endif %}
+                  {% if  block.settings.brings_features_image_subtitle != blank %}
+                    <div class="brings_features_image_subtitle">
+                      <h4>{{ block.settings.brings_features_image_subtitle }}</h4>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Brings Feature",
+    "settings": [
+      {
+        "type":"text",
+        "id":"brings_features_pretitle",
+        "label":"Pre Title"
+      },
+      {
+        "type":"text",
+        "id":"brings_features_maintitle",
+        "label":"Main Title"
+      },
+      {
+        "type":"color",
+        "id":"brings_features_maintitle_color",
+        "label":"Title Color"
+      },
+      {
+        "type":"textarea",
+        "id":"brings_features_subtitle",
+        "label":"Sub Title"
+      }
+    ],
+    "max_blocks": 3,
+    "blocks": [
+      {
+        "type":"Content",
+        "name":"Content",
+        "settings": [
+          {
+            "type":"image_picker",
+            "id":"brings_features_image",
+            "label":"Image"
+          },
+          {
+            "type":"color",
+            "id":"image_background_color",
+            "label":"Image Background Color"
+          },
+          {
+            "type":"text",
+            "id":"brings_features_image_title",
+            "label":"Title"
+          },
+          {
+            "type":"textarea",
+            "id":"brings_features_image_subtitle",
+            "label":"Sub Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name":"Brings Feature"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

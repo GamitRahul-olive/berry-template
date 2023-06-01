@@ -1,0 +1,46 @@
+<div class="page-width">
+  <div class="compare_product_section compare-product">
+    <div class="final_compare_product js-product-list" id="final_compare_product"></div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var $compareContainer = $('#final_compare_product');
+    //final_compare_product
+    var compareObject = JSON.parse(localStorage.getItem('Compare_product')) || [];
+    NloadCompare();
+    
+    function NloadCompare(){
+      var compareGrid;
+      $compareContainer.html('');
+      if (compareObject.length > 0){
+        if( $('.js-compare-content').find('.d-inline-block').length ){
+          $('.js-compare-content').find('.d-inline-block').remove();
+        }
+        compareGrid = compareObject.length === 1? 'col-md-12 col-sm-12' : 'col';
+        for (var i = 0; i < compareObject.length; i++) {
+          var productHandle = compareObject[i];
+          // Example: /products/your-unique-product-handle?view=product-card
+          var productTileTemplateUrl = '/products/' + productHandle + '?view=card_compare';
+          console.log(productTileTemplateUrl);
+          var resultPromise = fetch(productTileTemplateUrl).then(function (res) {
+            return res.text();
+          });
+          
+          resultPromise.then(function (response) {
+            if (response && response.trim() != '') {              
+              $('.js-product-list').append(response.trim());
+            }
+          }).catch(function(error) {
+            addErrorStyles('Failed to perform search. Check your internet connection and try again.');
+          });        
+      }
+    }else{
+      //loadCompare();
+      $compareContainer.html(`<div class="alert alert-warning d-inline-block">No result found </div>`);
+    }
+    }
+  });
+  
+</script>

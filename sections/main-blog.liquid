@@ -1,0 +1,335 @@
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- paginate blog.articles by 6 -%}
+  <div class="main-blog page-width section-{{ section.id }}-padding">
+    <div class="blog_article_main_bar {% if section.settings.content_selection == 'content_right' %}content_right{% endif %}">
+      <div class="blog-articles ">
+        <div class="blog_page_title_bar">
+          <div class="blog_page_bar">
+            {% if section.settings.blog_pre_title != blank %}
+              <h4 class="blog_pre_title">{{ section.settings.blog_pre_title }}</h4>
+            {% endif %}
+            {% if section.settings.blog_title != blank %}
+              <h3 class="blog_title">{{ section.settings.blog_title }}</h3>
+            {% endif %}
+            {% if section.settings.blog_subtitle != blank %}
+              <h5 class="blog_subtitle">{{ section.settings.blog_subtitle }}</h5>
+            {% endif %}
+          </div>
+        </div>
+        <div class="custom_bog_content {% if section.settings.blog_layout == 'grid_1' %}blog_article_one{% elsif section.settings.blog_layout == 'grid_2' %} blog_article_two{% else %}blog_article_three{% endif %}">
+          {%- for article in blog.articles -%}
+            <div class="blog-articles__article article">
+              {%- render 'article-card',
+                article: article,
+                media_height: section.settings.image_height,
+                media_aspect_ratio: article.image.aspect_ratio,
+                show_image: section.settings.show_image,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_excerpt: true 
+              -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="blog_article_default">
+        <div class="blog_article_path">
+          {% for block in section.blocks %}
+            {% if block.type == 'tags' %}
+              <div clas="blog_article__bar">
+                <div class="blog_article_title">
+                  <h4>Tags</h4>
+                </div>
+                <div class="blog_article_content">
+                   {%- for tag in blog.all_tags -%}
+                     <span>{{ tag }}</span>
+                   {%- endfor -%}
+                </div>
+              </div>
+            {% elsif block.type == 'instagram' %}
+              <div class="blog_insta_bar">
+                <div class="blog_insta_title_bar">
+                  <h4>{{ block.settings.instagram_title }}</h4>
+                </div>
+                <div class="blog_insta_images">
+                  <div class="after">
+                    <a src="{{ block.settings.image_url1 }}"><img src="{{ block.settings.instagram_image1 | img_url: 'master' }}" class="blog_instagram_image"></a>
+                  </div>
+                  <div class="after">
+                    <a src="{{ block.settings.image_url2 }}"><img src="{{ block.settings.instagram_image2 | img_url: 'master' }}" class="blog_instagram_image"></a>
+                  </div>
+                  <div class="after">
+                    <a src="{{ block.settings.image_url3 }}"><img src="{{ block.settings.instagram_image3 | img_url: 'master' }}" class="blog_instagram_image"></a>
+                  </div>
+                  <div class="after">
+                    <a src="{{ block.settings.image_url4 }}"><img src="{{ block.settings.instagram_image4 | img_url: 'master' }}" class="blog_instagram_image"></a>
+                  </div>
+                </div>
+              </div>
+            {% elsif block.type == 'recentblogs' %}
+              <div class="recent_blogs">
+                <div class="recent_blogs_bar">
+                    <h4>Recent Posts</h4>
+                    <ul>
+                     {% for article in blogs['news'].articles limit: 3 %}
+                      <li>
+                        <div class="recent_post_image">
+                          <img src="{{ article.image | img_url: 'master' }}">
+                        </div>
+                        <div class="recent_post_image_content">
+                          <div>
+                            <a href="{{ blog.url }}" class="blog_title">{{ blog.title }}</a><BR>
+                          </div>
+                          <div class="recent_post_div">
+                            <a href="{{ article.url }}" class="article_title">{{ article.title | truncate: 80 }}</a><br>
+                          </div>
+                          <div class="circle_divider_right">
+                            <span class="circle-divider">{{ article.published_at | time_tag: format: 'date' }}</span>
+                          </div>
+                        </div>
+                      </li>
+                     {% endfor %}
+                    </ul>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "blog_layout",
+      "options": [
+        {
+          "value": "grid_1",
+          "label": "Content 1"
+        },
+        {
+          "value": "grid_2",
+          "label": "Content 2"
+        },
+        {
+          "value": "grid_3",
+          "label": "Content 3"
+        }
+      ],
+      "default": "grid_2",
+      "label": "layout Select"
+    },
+    {
+      "type": "select",
+      "id": "content_selection",
+      "options": [
+        {
+          "value": "content_right",
+          "label": "Content Right"
+        },
+        {
+          "value": "content_left",
+          "label": "Content Left"
+        }
+      ],
+      "default": "content_left",
+      "label": "Position Select"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-blog.settings.image_height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.main-blog.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.main-blog.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.main-blog.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.main-blog.settings.image_height.label",
+      "info": "t:sections.main-blog.settings.image_height.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-blog.settings.paragraph.content"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type":"header",
+      "content":"Article Detail"
+    },
+    {
+      "type":"text",
+      "id":"blog_pre_title",
+      "label":"Pre Title"
+    },
+    {
+      "type":"text",
+      "id":"blog_title",
+      "label":"Title"
+    },
+    {
+      "type":"textarea",
+      "id":"blog_subtitle",
+      "label":"Sub Title"
+    }
+  ],
+  "blocks": [
+    {
+      "type":"tags",
+      "name":"Tags",
+      "settings": []
+    },
+    {
+      "type":"recentblogs",
+      "name":"Recent Blogs",
+      "settings": [
+        {
+          "type": "range",
+          "id": "recent_blogs_selection",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "label": "Select Blogs",
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type":"instagram",
+      "name":"Instagram",
+      "settings": [
+        {
+          "type":"text",
+          "id":"instagram_title",
+          "label":"Label"
+        },
+        {
+          "type":"image_picker",
+          "id":"instagram_image1",
+          "label":"Image"
+        },
+        {
+          "type":"url",
+          "id":"image_url1",
+          "label":"Image Url"
+        },
+        {
+          "type":"image_picker",
+          "id":"instagram_image2",
+          "label":"Image"
+        },
+        {
+          "type":"url",
+          "id":"image_url2",
+          "label":"Image Url"
+        },
+        {
+          "type":"image_picker",
+          "id":"instagram_image3",
+          "label":"Image"
+        },
+        {
+          "type":"url",
+          "id":"image_url3",
+          "label":"Image Url"
+        },
+        {
+          "type":"image_picker",
+          "id":"instagram_image4",
+          "label":"Image"
+        },
+        {
+          "type":"url",
+          "id":"image_url4",
+          "label":"Image Url"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

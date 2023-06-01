@@ -1,0 +1,122 @@
+<section class="page-width">
+  <div class="">
+    <h3>{{ section.settings.categories_title  }}</h3>
+    <h2>{{ section.settings.categories_main_title  }}</h2>
+    {{ section.settings.categories_description }}
+    
+      <div class="section-header">
+        {% if section.settings.sub_title != blank %}
+          <h4 class="sub-title">{{ section.settings.sub_title | escape }}</h4>
+        {% endif %}
+        <h2 class="main-title">{{ section.settings.title | escape }}</h2>
+        <p>{{ section.settings.description }}</p>
+      </div>
+    
+    <div class="">
+      {% if section.blocks.size > 0 %}
+        <ul class="row">
+          {% for block in section.blocks %}
+            <li class="col-md-3">
+              <img src="{{ block.settings.background-image | img_url:'master' }}">
+              <h4>{{ block.settings.cate_title }}</h4>
+              {{ block.settings.tb-featured-list-detail }}
+              <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_label }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if section.settings.explore_tyles %}
+         <div class="explore_tyles"><a href="{{ section.settings.explore_styles_url }}">{{ section.settings.explore_tyles }}</a></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "t:sections.latest-categories.name",
+    "settings": [
+      {
+        "type":"header",
+        "content":"t:sections.latest-categories.settings.cat_header.content"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.latest-categories.settings.title.label",
+        "default": "Latest Categories"
+      },
+      {
+        "type": "text",
+        "id": "sub_title",
+        "label": "t:sections.latest-categories.settings.sub_title.label",
+        "default": "Trendy Styles"
+      },
+      {
+        "type":"richtext",
+        "id":"description",
+        "label":"t:sections.latest-categories.settings.description.label"
+      },
+      {
+        "type":"text",
+        "id":"explore_tyles",
+        "label":"t:sections.latest-categories.settings.explore_tyles.label",
+        "default":"Explore Styles"
+      },
+      {
+        "type":"url",
+        "id":"explore_styles_url",
+        "label":"t:sections.latest-categories.settings.explore_styles_url.label"
+      }
+    ],
+    "blocks" : [
+      {
+        "name" : "t:sections.latest-categories.blocks.latest_categories.name",
+        "type" : "latest_categories",
+        "settings": [
+          {
+            "type" : "color",
+            "id" : "icon-bg_color",
+            "label" : "t:sections.latest-categories.blocks.latest_categories.settings.icon-bg_color.label",
+            "default" : "#efefef"
+          },
+          {
+            "type" : "image_picker",
+            "id" : "background-image",
+            "label" : "t:sections.latest-categories.blocks.latest_categories.settings.background-image.label"
+          },
+          {
+            "type" : "text",
+            "id" : "cate_title",
+            "label" : "t:sections.latest-categories.blocks.latest_categories.settings.cate_title.label",
+            "default" : "Title"
+          },
+          {
+            "type" : "textarea",
+            "id" : "tb-featured-list-detail",
+            "label" : "t:sections.latest-categories.blocks.latest_categories.settings.tb-featured-list-detail.label",
+            "default" : "Set List Detail"
+          },
+          {
+            "type":"text",
+            "id":"btn_label",
+            "label":"t:sections.latest-categories.blocks.latest_categories.settings.btn_label.label"
+          },
+          {
+            "type":"url",
+            "id":"btn_url",
+            "label":"t:sections.latest-categories.blocks.latest_categories.settings.btn_url.label"
+          }
+      ]
+    }
+  ],
+    "presets" : [{
+      "name": "t:sections.latest-categories.presets.name"
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

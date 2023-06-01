@@ -1,0 +1,265 @@
+<link rel="stylesheet" href="{{ 'section-service.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-service.css' | asset_url }}</noscript>
+
+{% if section.settings.full_section  %}
+  <div class="brand_logo_{{ section.id }} brand-logo-outer">
+    <div class="{% if section.settings.section_width == 'standard-width' %}page-width{% else %}container-fluid{% endif %}">
+
+      {% if section.settings.title != blank %}
+        <div class="section-header text-center diff-title">
+          {% if section.settings.sub_title != blank %}
+            <h4 class="sub-title">{{ section.settings.sub_title | escape }}</h4>
+          {% endif %}
+          <h2 class="main-title">{{ section.settings.title | escape }}</h2>
+        </div>
+      {% endif %}
+
+      <div class="row brand" role="list" 
+        data-blogs_id ="{{ section.id }}" 
+        id="Blogs-{{ section.id }}" 
+        data-count="{{ section.settings.grid }}" 
+        data-row="{{ section.settings.rows }}" 
+        data-autoplay="{{ section.settings.use_autoplay }}" 
+        data-autoSpeed="{{ section.settings.slider_speed }}000" 
+        data-infinite="{{section.settings.use_loop}}" 
+        data-arrows="{{section.settings.use_arrows}}" 
+        data-dots="{{section.settings.use_dots}}" 
+        data-lgup="{{ section.settings.slidetoshow }}" 
+        data-lgdown="{{ section.settings.slidetoshow_1200}}" 
+        data-mddown="{{ section.settings.slidetoshow_992}}" 
+        data-smdown="{{ section.settings.slidetoshow_768}}" 
+        data-mobile="{{ section.settings.slidetoshow_543 }}" 
+        data-slidersection
+        >
+        {% for block in section.blocks %}
+        {% capture blockId %}{{ block.id }}{% endcapture %}
+
+        <div class="col brand-block  grid__item">
+          <a href="{{block.settings.brand_link}}" class="mediafa">
+            {% if block.settings.active_brand_image != blank %}            
+              <div class="brand-img">
+                <img class="lazyload img-fluid active_img" src="{{ block.settings.active_brand_image | img_url: 'master' }}"  alt="{{ block.settings.active_brand_image }}">
+              </div>
+            {% endif %}
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% style %}
+  .brand_logo_{{ section.id }}{
+    padding: {{ section.settings.section_padding }};
+  }
+  
+  @media (max-width: 767px) {
+   .brand_logo_{{ section.id }}{
+      padding: {{ section.settings.m_section_padding }} !important;
+   }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+   "name":"t:sections.brand_logo_section.name",
+   "max_blocks": 25,
+   "settings":[
+   {
+      "type": "checkbox",
+      "id": "full_section",
+      "label": "t:sections.brand_logo_section.settings.enable_sec.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_padding",
+      "label": "t:sections.brand_logo_section.settings.sec_pad.label",
+      "default": "70px 15px 0px 15px"
+    },
+    {
+      "type": "text",
+      "id": "m_section_padding",
+      "label": "t:sections.brand_logo_section.settings.m_section_padding.label",
+      "default": "20px 10px 0px 10px"
+    }, 
+    {
+       "type":"select",
+       "id":"section_width",
+       "label":"t:sections.brand_logo_section.settings.sec_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.brand_logo_section.settings.sec_width.options__1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.brand_logo_section.settings.sec_width.options__2.label"
+          }
+       ],
+       "default":"standard-width"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.brand_logo_section.settings.mtitle.label"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "t:sections.brand_logo_section.settings.stitle.label"
+    },
+    {
+    "type":"header",     
+       "content":"t:sections.brand_logo_section.settings.header_slider.content"
+     },   
+    {
+       "type":"checkbox",
+       "id": "use_arrows",
+         "label": "t:sections.brand_logo_section.settings.use_arrows.label",
+          "default": true
+    },
+     {
+       "type":"checkbox",
+       "id": "use_dots",
+          "default": false,
+          "label": "t:sections.brand_logo_section.settings.use_dots.label"
+    },
+    {
+       "type":"checkbox",
+       "id": "use_autoplay",
+          "label": "t:sections.brand_logo_section.settings.use_autoplay.label",
+          "default": true
+    },
+    {
+       "type":"checkbox",
+       "id": "use_loop",
+          "label": "t:sections.brand_logo_section.settings.use_loop.label",
+          "default": false
+    },
+    {
+       "type": "range",
+          "id": "slider_speed",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slider_speed.label",
+          "unit": "sec",
+          "default": 12
+    },
+   {
+       "type": "range",
+       "id": "products_to_show",
+       "min": 1,
+       "max": 12,
+       "step": 1,
+       "default": 4,
+       "label": "t:sections.featured-collection.settings.products_to_show.label"
+     },
+    {
+          "type": "range",
+          "id": "slidetoshow",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slidetoshow.label",
+          "default": 4
+     },
+     {
+          "type": "header",
+          "content": "t:sections.brand_logo_section.settings.header_break1.content"
+     },
+     {
+          "type": "range",
+          "id": "slidetoshow_1200",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slidetoshow_1200.label",
+          "default": 3
+     },
+     {
+          "type": "header",
+          "content": "t:sections.brand_logo_section.settings.header_break2.content"
+     },
+     {
+          "type": "range",
+          "id": "slidetoshow_992",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slidetoshow_992.label",
+          "default": 2
+     },
+     {
+          "type": "header",
+          "content": "t:sections.brand_logo_section.settings.header_break3.content"
+     },
+     {
+          "type": "range",
+          "id": "slidetoshow_768",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slidetoshow_768.label",
+          "default": 2
+     },
+     {
+          "type": "header",
+          "content": "t:sections.brand_logo_section.settings.header_break4.content"
+     },
+     {
+          "type": "range",
+          "id": "slidetoshow_543",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "t:sections.brand_logo_section.settings.slidetoshow_543.label",
+          "default": 1
+     }
+   ],
+   "blocks":[
+      {
+         "type":"brand",
+         "name":"t:sections.brand_logo_section.blocks.brand.name",
+         "settings":[
+            {
+               "type":"image_picker",
+               "id":"active_brand_image",
+               "label":"t:sections.brand_logo_section.blocks.brand.settings.active_brand_image.label"
+            },            
+            {
+               "type":"url",
+               "id":"brand_link",
+               "label":"t:sections.brand_logo_section.blocks.brand.settings.brand_link.label"
+            }
+         ]
+      }
+   ],
+   "presets":[
+      {
+         "name":"t:sections.brand_logo_section.presets.name",
+         "category":"brand logo",
+         "blocks":[
+            {
+               "type":"brand"
+            },
+            {
+               "type":"brand"
+            },
+            {
+               "type":"brand"
+            }
+         ]
+      }
+   ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

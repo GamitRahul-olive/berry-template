@@ -1,0 +1,73 @@
+<style>
+   
+.main-box-wrapper .card-box { display: flex; flex-wrap: wrap; align-items: center; padding-top: 50px; }
+.main-box-wrapper .card-box .for-right-padd { padding-right: 40px; }
+.main-box-wrapper .card-box .inner-img img { width: 100%; }
+.main-box-wrapper .card-box h4 { color: #212121; font-size: 16px; line-height: 19px; font-weight: 500; margin-bottom: 0; }
+.main-box-wrapper .card-box span { color: #616161; font-size: 12px; line-height: 20px; font-weight: 400; display: block; padding: 10px 0 20px 0;  }
+.main-box-wrapper .card-box p { color: #616161; font-size: 12px; line-height: 20px; font-weight: 400; margin-bottom: 50px; }
+.main-box-wrapper .card-box a.btn-collection { color: #212121; font-size: 14px; line-height: 20px; font-weight: 500; padding: 15px 18px; border: 1px solid #616161; border-radius: 4px; }
+  
+</style>
+<div class="page-width">
+  <div class="row collection_product_layout collection_timeline">
+    <div class="main-box-wrapper">
+   {%- for collection in collections -%} 
+     {%- if collection.image -%}
+      {%- assign collection_image = collection.image -%}
+     {%- elsif collection.products.first and collection.products.first.images != empty -%}
+      {%- assign collection_image = collection.products.first.featured_image -%}
+     {%- else -%}
+      {%- assign collection_image = blank -%}
+     {%- endif -%}  
+     
+     {% capture check_even_odd %}{% cycle 'odd', 'even' %}{% endcapture %}
+     {% if check_even_odd == 'odd' %}
+       <div class="card-box">
+        <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12 col-left for-right-padd"> 
+           <h4>{{ collection.title }}</h4>
+           <span>{{ collection.all_products_count }} products are avaialbe</span>
+           <p>{{ collection.description | strip_html }}</p>
+           <a href="{{ collection.url }}" class="btn-collection">See Trendy Collection</a>
+        </div>
+        <div class="col-md-6 col-lg-8 col-sm-12 col-xs-12 col-right inner-img">
+          <a href="{{ collection.url }}"><img src="{{ collection_image | img_url: 'master' }}" alt=""></a>
+        </div>      
+      </div>
+     {% else %}  
+        <div class="card-box">
+          <div class="col-md-6 col-lg-8 col-sm-12 col-xs-12 col-right inner-img for-right-padd">
+            <a href="{{ collection.url }}"><img src="{{ collection_image | img_url: 'master' }}" alt=""></a>
+          </div>
+          <div class="col-md-6 col-lg-4 col-sm-12 col-xs-12 col-left"> 
+             <h4>{{ collection.title }}</h4>
+             <span>{{ collection.all_products_count }} products are avaialbe</span>
+    
+             <p>{{ collection.description | strip_html }}</p>
+             <a href="{{ collection.url }}" class="btn-collection">See Trendy Collection</a>
+          </div>
+        </div>
+     {% endif %}
+    {% endfor %}    
+  </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.collection_timeline.name",
+    "settings": [],
+    "presets":[
+      {
+        "name":"t:sections.collection_timeline.name"
+      }
+    ]    
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

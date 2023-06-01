@@ -1,0 +1,49 @@
+<div class="page-width">
+  <div class="row collection_product_layout collection_3_grid collection_list_3_column">
+  {%- for collection in collections -%}
+    {%- if collection.image -%}
+      {%- assign collection_image = collection.image -%}
+    {%- elsif collection.products.first and collection.products.first.images != empty -%}
+      {%- assign collection_image = collection.products.first.featured_image -%}
+    {%- else -%}
+      {%- assign collection_image = blank -%}
+    {%- endif -%}
+    
+    <div class="col-md-4 col-lg-4 col-sm-6 col-xs-4">
+      <div class="collection_info">
+        <div class="collection_inner_content">
+          <div class="collection_feature_img">
+            <a href="{{ collection.url }}"><img src="{{ collection_image | img_url: 'master' }}" alt=""></a>
+          </div>
+          <div class="product_details_info">
+            <div class="product_count_title">
+              <h2>{{ collection.title }}</h2>
+              <span class="collection_product_count">{{ collection.all_products_count }} Products</span>
+            </div>
+            <div class="collection_des">{{ collection.description | strip_html }}</div>
+             <a href="{{ collection.url }}">See Collection</a>
+          </div>
+        </div> 
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.collection_3_column.name",
+    "settings": [],
+    "presets":[
+      {
+        "name":"t:sections.collection_3_column.presets.name"
+      }
+    ]    
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

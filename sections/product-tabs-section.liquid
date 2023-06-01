@@ -1,0 +1,251 @@
+<div class="model-tab-section">
+  <div class="page-width">
+    <div class="prd-page-tab">
+    
+    {% if section.blocks.size > 0 %}
+      <ul class="nav nav-tabs" role="tablist">
+        {% for block in section.blocks %}
+          {% if block.type == "tab_section" %}
+            {% if block.settings.tab_title != blank %}
+              <li class="nav-item">
+                <a class="nav-link {% if forloop.index == 1 %} active {% endif %}" data-bs-toggle="tab" href="#tabs-{{ forloop.index }}" role="tab">{{ block.settings.tab_title }}</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul><!-- Tab panes -->
+    {% endif %} 
+    
+    {% if section.blocks.size > 0 %}
+    <div class="tab-content">      
+      {% for block in section.blocks %}
+        {% if block.type == "tab_section" %}          
+          <div class="tab-pane {% if forloop.index == 1 %} active {% endif %}" id="tabs-{{ forloop.index }}" role="tabpanel">
+            <div  class="row">
+             {% if block.settings.type == "all" %}
+               <div class="product__description rte quick-add-hidden"> 
+                 {{ product.description }}
+               </div>
+             {% elsif block.settings.type == "show_cutomize_information" %}  
+               {% if block.settings.page != blank %}
+                <div class="page_content_des">{{ block.settings.page.content }}</div>
+               {% endif %} 
+               
+               {% if block.settings.content_img != blank %}
+                <div class="col-xxl-4 col-xl-3 col-lg-3 col-md-3 col-sm-4 col-12">
+                  <div class="modal-img">
+                    <img src="{{ block.settings.content_img | img_url : 'master' }}" alt="">
+                  </div>
+                </div>
+               {% endif %}          
+               
+               {%- capture colum_class -%} 
+                {% if block.settings.content_img != blank %}col-xxl-8 col-xl-9 col-lg-9 col-md-9 col-sm-8 col-12{% else %}col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12{% endif %} 
+               {%- endcapture -%} 
+            
+                <div class="{{ colum_class }}">
+                  {% if block.settings.main_description != blank %}
+                    <div class="modal-tab-content pb-1">
+                      {{ block.settings.main_description }}
+                    </div>
+                  {% endif %}
+  
+                  {% if block.settings.first_title != blank or block.settings.table_content != blank %}
+                    <div class="modal-table">
+                      {% if block.settings.first_title != blank %} 
+                        <h4>{{ block.settings.first_title }}</h4>
+                      {% endif %} 
+                      {% if block.settings.table_content != blank %}
+                         <div class="table_content">{{ block.settings.table_content }}</div>  
+                      {% endif %}  
+                    </div>  
+                  {% endif %} 
+            
+                  {% if block.settings.second_title != blank or block.settings.description_1 != blank %}
+                    <div class="modal-tab-text pb-1">
+                      {% if block.settings.second_title != blank %}
+                        <h4>{{ block.settings.second_title }}</h4>
+                      {% endif %}
+                      
+                      {% if block.settings.description_1 != blank %}
+                        <p> {{ block.settings.description_1 }} </p>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+            
+                  {% if block.settings.wash_care_title_1 != blank %}
+                     <div class="modal-tab-wash-care">
+                       <h6 class="pb-1">{{ block.settings.wash_care_title_1  }}</h6>
+                       
+                       {% if block.settings.wash_care_sub_title_1 != blank %}
+                         <p class="mb-2">{{ block.settings.wash_care_sub_title_1 }}</p>
+                       {% endif %} 
+      
+                       {% if block.settings.wash_care_img_1 != blank %}
+                         <div class="do-img mb-2">
+                           <img src="{{ block.settings.wash_care_img_1 | image_url }}">
+                         </div>  
+                       {% endif %}
+                             
+                       {% if block.settings.wash_care_sub_title_2 != blank %}
+                         <p class="mb-2">{{ block.settings.wash_care_sub_title_2 }}</p>
+                       {% endif %}
+                    
+                       {% if block.settings.wash_care_img_2 != blank %}
+                         <div class="do-img mb-2">
+                           <img src="{{ block.settings.wash_care_img_2 | image_url }}">
+                         </div>  
+                       {% endif %}              
+                     </div>                
+                  {% endif %}
+  
+                  {% if block.settings.note_title != blank %}
+                    <div class="modal-tab-text pb-0 mb-0">
+                      <h6>{{ block.settings.note_title }}</h6>
+                      {% if block.settings.note_description != blank %}
+                        {{ block.settings.note_description }}
+                      {% endif %}              
+                    </div>
+                   {% endif %}             
+                </div>
+               
+              {% else %}
+               {% if block.settings.key_label_metafield != blank and block.settings.product_tab_key_metafield != blank %}
+                 {% assign PnameSpace = block.settings.key_label_metafield %}
+                 {% assign Pkey = block.settings.product_tab_key_metafield %}
+                 {% assign metafields = product.metafields.namespace %}
+                                        
+                 {%- if product.metafields.berry != blank -%}
+                   {%- for field in product.metafields.berry -%}
+                     {% assign meta_key = field | first | downcase %}
+                     {%- if meta_key == Pkey -%}
+                     <div class="product__description rte quick-add-hidden"> {{ field | last }} </div>
+                     {%- endif -%}  
+                    {%- endfor -%}
+                 {%- endif -%}    
+               {% endif %}               
+              {% endif %}          
+            </div>
+          </div>          
+        {% endif %}                        
+      {% endfor %}      
+     </div><!-- Tab panes content -->
+   {% endif %}
+  </div>     
+ </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.product-tab.name",
+    "settings": [
+      {
+        "type":"header",
+        "content":"t:sections.product-tab.settings.header.content"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      },       
+      {
+        "type":"tab_section",
+        "name":"tab & Content",
+        "settings":[
+          {
+            "type":"header",
+            "content":"t:sections.product-tab.blocks.tab_section.settings.header.content"
+          },
+          {
+            "type":"text",
+            "id":"tab_title",
+            "label":"t:sections.product-tab.blocks.tab_section.settings.tab_title.label"
+          },
+          {
+            "type": "select",
+            "id": "type",
+            "label": "t:sections.product-tab.blocks.tab_section.settings.type.label",
+            "default": "all",
+            "options": [
+              {
+                "value": "all",
+                "label": "t:sections.product-tab.blocks.tab_section.settings.type.options__1.label"
+              },
+              {
+                "value": "metafield",
+                "label": "t:sections.product-tab.blocks.tab_section.settings.type.options__2.label"
+              },
+              {
+                "value": "show_cutomize_information",
+                "label": "t:sections.product-tab.blocks.tab_section.settings.type.options__3.label"
+              }
+            ]
+          },
+          {
+            "type":"header",
+            "content":"t:sections.product-tab.blocks.tab_section.settings.meta_header.content"
+          },
+          {
+            "type": "text",
+            "id": "key_label_metafield",
+            "label": "t:sections.product-tab.blocks.tab_section.settings.key_label_metafield.label",
+            "default": "berry",            
+            "info": "t:sections.product-tab.blocks.tab_section.settings.key_label_metafield.info"
+          },
+          {
+            "type": "text",
+            "id": "product_tab_key_metafield",
+            "label": "t:sections.product-tab.blocks.tab_section.settings.tab_meta.label",
+            "info": "t:sections.product-tab.blocks.tab_section.settings.tab_meta.info"
+          },
+          {
+            "type":"header",
+            "content":"t:sections.product-tab.blocks.tab_section.settings.row_header.content"
+          },
+          {
+            "type": "page",
+            "id": "page",
+            "label": "t:sections.main-product.blocks.collapsible_tab.settings.page.label"
+          },
+          {
+            "type":"header",
+            "content":"t:sections.product-tab.blocks.tab_section.settings.tab_header.content"
+          },
+          {
+            "type":"image_picker",
+            "id":"content_img",
+            "label":"t:sections.product-tab.blocks.tab_section.settings.content_img.label"
+          },
+          {
+            "type":"richtext",
+            "id":"main_description",
+            "label":"t:sections.product-tab.blocks.tab_section.settings.main_description.label"            
+          }
+        ]
+      },
+      {
+        "type":"Review",
+        "name":"t:sections.product-tab.blocks.tab_section.settings.review.name",
+        "settings":[
+          {
+            "type":"checkbox",
+            "id":"review_show",
+            "label":"t:sections.product-tab.blocks.tab_section.settings.review_show.label",
+            "default":false
+          }
+        ]       
+      }      
+    ],
+    "presets": [
+      {
+        "name": "t:sections.product-tab.presets.name"        
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,46 @@
+{{ 'jquery.instagram.js' | asset_url | script_tag }}
+
+<div class="instagram-section">
+  <h2>{{ 'layout.homepage.instagram' | t }}</h2>
+  <h4>@instagram_handle</h4>
+  <hr/>
+  {% assign link = '{{link}}' %}
+  {% assign url = '{{image}}' %}
+  {% assign caption = '{{caption}}' %}
+  <div id="instafeed" data-access-token="{{ settings.instagram_access_token }}" data-client-id="{{ settings.instagram_user_id }}" class="grid"></div>
+</div>
+
+<script>
+    var insta = document.getElementById('instafeed')
+
+    var feed = new Instafeed({
+        get: 'user',
+        userId: insta.getAttribute('data-user-id'),
+        accessToken: insta.getAttribute('data-access-token'),
+        template: '<a class="fancybox grid__item one-sixth medium-down--one-third padded" href="{{ link }}" title="{{ caption }}"><img class="instagram-image" src="{{ url }}" /></a></div>'
+    });
+    feed.run();
+</script>
+
+{% schema %}
+  {
+    "name": "t:sections.instagram_feed.name",
+    "settings": [
+      {
+        "type":"header",
+        "content":"t:sections.instagram_feed.settings.header_insta.content"
+     }
+    ],
+    "presets": [
+    {
+      "name": "t:sections.instagram_feed.presets.name"      
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

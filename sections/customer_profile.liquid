@@ -1,0 +1,184 @@
+{{ 'customer_profile.css' | asset_url | stylesheet_tag }}
+
+<div class="customer_profile_{{ section.id }}">
+  <div class="customer_profile" style="background-color:{{ section.settings.section_bg_color }};">
+    <div class="customer_profile_main_container page-width">
+      <div class="customer_profile_content">
+        <div class="customer_profile_details">
+          {% if section.settings.customer_profile_pretitle != blank %}
+            <div class="customer_profile_title_bar">
+              <h4>{{ section.settings.customer_profile_pretitle }}</h4>
+            </div>
+          {% endif %}
+          {% if section.settings.customer_profile_maintitle != blank %}
+            <div class="customer_profile_maintitle">
+              <h3>{{ section.settings.customer_profile_maintitle }}</h3>
+            </div>
+          {% endif %}
+          {% if section.settings.customer_profile_subtitle != blank %}
+            <div class="customer_profile_subtitle">
+              <h5>{{ section.settings.customer_profile_subtitle }}</h5>
+            </div>
+          {% endif %}
+        </div>
+        <div class="customer_profile_user_interface">
+          {% for block in section.blocks %}
+            <div class="customer_profile_user_details">
+              {% if block.settings.profile_image != blank %}
+                <div class="customer_profile_image_bar">
+                  <img src=" {{ block.settings.profile_image | img_url: 'master' }}" class="profile_image">
+                </div>
+              {% endif %}
+              <div class="customer_profile_name">
+                {% if block.settings.customer_profile_user_name != blank %}
+                  <div class="customer_profile_user_name">
+                    <h3>{{ block.settings.customer_profile_user_name }}</h3>
+                  </div>
+                {% endif %}
+                {% if block.settings.customer_profile_user_position != blank %}
+                  <div class="customer_profile_user_position">
+                    <h4>{{ block.settings.customer_profile_user_position }}</h4>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="customer_profile_position_interface">
+                <div class="customer_profile_position_menu">
+                  <div class="customer_profile_first_position position_button" style="background-color:{{ block.settings.position_html1_bgcolor }};">
+                    <a href="{{ block.settings.position_image1_url }}">
+                      <img src="{{ block.settings.position_image1 | img_url: 'master' }}">
+                    </a>
+                  </div>
+                  <div class="customer_profile_second_position position_button" style="background-color:{{ block.settings.position_html2_bgcolor }};">
+                    <a href="{{ block.settings.position_image2_url }}">
+                      <img src="{{ block.settings.position_image2 | img_url: 'master' }}">
+                    </a>
+                  </div>
+                  <div class="customer_profile_third_position position_button" style="background-color:{{ block.settings.position_html3_bgcolor }};">
+                    <a href="{{ block.settings.position_image3_url }}">
+                      <img src="{{ block.settings.position_image3 | img_url: 'master' }}">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Customer Profile",
+    "settings": [
+      {
+        "type":"color",
+        "id":"section_bg_color",
+        "label":"Section Background Color"
+      },
+      {
+        "type":"text",
+        "id":"customer_profile_pretitle",
+        "label":"Pre Title"
+      },
+      {
+        "type":"text",
+        "id":"customer_profile_maintitle",
+        "label":"Title"
+      },
+      {
+        "type":"textarea",
+        "id":"customer_profile_subtitle",
+        "label":"Sub Title"
+      }
+    ],
+    "blocks": [
+      {
+        "type":"Profile",
+        "name":"Profile",
+        "settings": [
+          {
+            "type":"header",
+            "content":"User Personal Details"
+          },
+          {
+            "type":"image_picker",
+            "id":"profile_image",
+            "label":"User Image"
+          },
+          {
+            "type":"text",
+            "id":"customer_profile_user_name",
+            "label":"User Name"
+          },
+          {
+            "type":"text",
+            "id":"customer_profile_user_position",
+            "label":"User Position"
+          },
+          {
+            "type":"header",
+            "content":"User Positions"
+          },
+          {
+            "type":"image_picker",
+            "id":"position_image1",
+            "label":"User Position1"
+          },
+          {
+            "type":"url",
+            "id":"position_image1_url",
+            "label":"User URL"
+          },
+          {
+            "type":"color",
+            "id":"position_html1_bgcolor",
+            "label":"User Position Background Color"
+          },
+          {
+            "type":"image_picker",
+            "id":"position_image2",
+            "label":"User Position2"
+          },
+          {
+            "type":"url",
+            "id":"position_image2_url",
+            "label":"User URL"
+          },
+          {
+            "type":"color",
+            "id":"position_html2_bgcolor",
+            "label":"User Position Background Color"
+          },
+          {
+            "type":"image_picker",
+            "id":"position_image3",
+            "label":"User Position3"
+          },
+          {
+            "type":"url",
+            "id":"position_image3_url",
+            "label":"User URL"
+          },
+          {
+            "type":"color",
+            "id":"position_html3_bgcolor",
+            "label":"User Position Background Color"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name":"Customer Profile"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

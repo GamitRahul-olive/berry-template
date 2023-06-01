@@ -1,0 +1,184 @@
+{{ 'instagram_custom.css' | asset_url | stylesheet_tag }}
+{{ 'lookbook_offer.css' | asset_url | stylesheet_tag }}
+
+<div class="instagram_{{ section.id }}">
+  <div class="instagram_section">
+    <div class="instagram_container page-width">
+      <div class="instagram_content">
+        <div class="instagram_custom_bar">
+          {% if section.settings.instagram_pretitle != blank %}
+            <div class="instagram_pretitle_bar">
+              <h4>{{ section.settings.instagram_pretitle }}</h4>
+            </div>
+          {% endif %}
+          {% if section.settings.instagram_title != blank %}
+            <div class="instagram_title_bar">
+              <h3>{{ section.settings.instagram_title }}</h3>
+            </div>
+          {% endif %}
+          {% if section.settings.instagram_subtitle != blank %}
+          <div class="instagram_subtitle_bar">
+            <h5>{{ section.settings.instagram_subtitle }}</h5>
+          </div>
+          {% endif %}
+        </div>
+        <div class="instagram_main_content">
+          <div class="instagram_image_bar">
+            {% for block in section.blocks %}
+              <div class="instagram_content_image after">
+                {% assign pro_select = block.settings.select_product1 %}               
+               
+                {% assign class_name = 'lookbook_hotspot_insta' | append:forloop.index %} 
+                {% render 'lookbook_custom_button' class: class_name, pro_select:pro_select, block: block  %}
+                {% assign i = i | plus: 1 %}
+  
+                <img src="{{ block.settings.instagram_content_image | img_url: 'master' }}">
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  
+  {% assign i = 1 %}
+  {% for block in section.blocks %}
+      
+        {% assign Top = block.settings.button1_position_top %}
+        {% assign Left = block.settings.button1_position_left %}
+      
+      .lookbook_hotspot_insta{{forloop.index}} {
+        top: {{ Top }}%;		
+        left: {{ Left }}%;
+        right: auto;
+      }
+  {% endfor %}
+  
+  .instagram_{{ section.id }} .instagram_section {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  } 
+  .instagram_{{ section.id }} .instagram_content .instagram_pretitle_bar h4 {
+    color: {{ section.settings.pretitle_color }};
+  }
+  .instagram_{{ section.id }} .instagram_content .instagram_title_bar h3 {
+    color: {{ section.settings.title_color }};
+  }
+  .instagram_{{ section.id }} .instagram_content .instagram_subtitle_bar h5 {
+    color: {{ section.settings.subtitle_color }};
+  }
+{% endstyle %}
+  
+{% schema %}
+  {
+    "name": "instagram",
+    "settings": [
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Section Space top",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Section Space Bottom",
+        "default": 16
+      },
+      {
+        "type":"header",
+        "content":"Setion Title"
+      },
+      {
+        "type":"text",
+        "id":"instagram_pretitle",
+        "label":"Section Pretitle"
+      },
+      {
+        "type":"color",
+        "id":"pretitle_color",
+        "label":"Pre Title Color"
+      },
+      {
+        "type":"text",
+        "id":"instagram_title",
+        "label":"Section Title"
+      },
+      {
+        "type":"color",
+        "id":"title_color",
+        "label":"Title Color"
+      },
+      {
+        "type":"richtext",
+        "id":"instagram_subtitle",
+        "label":"Section Subtitle"
+      },
+      {
+        "type":"color",
+        "id":"subtitle_color",
+        "label":"Sub Title Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type":"instagram",
+        "name":"Instagram",
+        "settings": [
+          {
+            "type":"image_picker",
+            "id":"instagram_content_image",
+            "label":"Image"
+          },
+          {
+            "type": "product",
+            "id": "select_product1",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button1_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name":"Instagram"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,548 @@
+<link rel="stylesheet" href="{{ 'section-service.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-service.css' | asset_url }}</noscript>
+
+{{ 'contact_page.css' | asset_url | stylesheet_tag }}
+
+<!--section start-->
+{% if section.settings.contact_enable %}
+<div class="page-contact">
+  <section class="contact-page section-b-space">
+    <div class="contact-form-section">
+    <div class="page-width custom_container">
+    <div class="row banner-form contact-background-img pet-parallax lazyload custom_contact" data-bgset="{% include 'bgset', image: section.settings.test_back_img %}" data-sizes="auto" data-parent-fit="cover" style="margin: 0; padding: {{ section.settings.section_padding }}; {% if section.settings.test_back_img == blank %}background: {{ section.settings.test_back_color }};{% endif %} {% if section.settings.shadow == true %} box-shadow: 0 0 14px 6px rgba(0,0,0,0.08);{% endif %}">
+  
+        {% if section.settings.banner_img == true %}
+        <div class="col-xl-6 col-lg-6 col-md-12 text-center {% if section.settings.img_pos == "right" %}img_right{% endif %}">
+          <a href="#" class="image-about lazyload">
+            {% assign block_image = section.settings.image %}
+            {% assign img_url = block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+            {% if section.settings.image == blank %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% else %}
+              <img src="{{ block_image | img_url: '660x660' }}" 
+               data-src="{{ img_url }}" 
+               data-widths="[157, 270, 303, 370, 377, 670, 570, 720, 900, 1080, 1296, 1512, 1728, 2048]" 
+               data-aspectratio="{{ block_image.aspect_ratio }}" 
+               data-sizes="auto" 
+               class="about-img1 lazyload {% if settings.enable_blur_lazy_load %} blur-up {% endif %} img-fluid {% if section.settings.img_width == "full" %} w-100{% endif %}" alt="{{block_image.alt}}">
+            {% endif %} 
+          </a>
+        </div>
+        {% endif %}
+  
+        {% if section.settings.service_section == true %}
+          <div class="custom_left_content col-xl-4 col-lg-6 col-md-12 text-center {% if section.settings.Service_pos == "right" %}img_right{% endif %}">
+            <div class="row left_content">          
+              {% if section.settings.stitle != blank %}
+                <div class="section-header left_content_title">
+                  <h2 class="main-title {{ section.settings.service_alignment }}" style="color: {{ section.settings.ser_title_color }};">{{ section.settings.ser_title | escape }}</h2>
+                  <div class="description"><p class="desc" style="color: {{ section.settings.sdesc_color }};">{{ section.settings.sdesc }}</p></div>
+                </div>
+              {% endif %}
+              {% if section.settings.ssub_title != blank %}
+                    <h4 class="sub-title" style="color: {{ section.settings.sstitle_color }};">{{ section.settings.ssub_title | escape }}</h4>
+                  {% endif %}
+              {% for block in section.blocks %}
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 service-block">
+                  <a href="{{block.settings.services_link}}" class="media">
+                    <div class="service-img {% if block.settings.services_image2 != blank %}service-hover{% endif %}">
+                      {% if block.settings.services_image %}
+                        <img class="lazyload {% if settings.enable_blur_lazy_load %} blur-up {% endif %} img-fluid" src="{{ block.settings.services_image | img_url: 'master' }}"  alt="{{ block.settings.services_title }}">
+                      {% endif %}
+                      {% if block.settings.services_image2 %}
+                        <img class="img-hover lazyload {% if settings.enable_blur_lazy_load %} blur-up {% endif %} img-fluid" src="{{ block.settings.services_image2 | img_url: 'master' }}"  alt="{{ block.settings.services_title }}">
+                      {% endif %}
+                    </div>
+      
+                    <div class="media-body">
+                      {% if block.settings.services_title != blank %}
+                      <h4 class="service-title">
+                        {{ block.settings.services_title }}
+                      </h4>
+                      {% endif %}
+                      {% if block.settings.services_desc != blank %}
+                      <p class="service-desc">
+                        {{ block.settings.services_desc }}
+                      </p>
+                      {% endif %}
+                    </div>
+                  </a>
+                </div>
+              {% endfor %}
+          
+              <div class="follow-us-block">
+                <h4 class="sub-title" style="color:{{ section.settings.follow_title_color }};">{{ section.settings.follow_sub_title }}</h4>
+                <div class="follow-content">
+                  <div class="follow-icon" style="background-color:{{ section.settings.follow_background_1 }};">
+                     <img src="{{ section.settings.follow_img_1 | img_url: 'master' }}">
+                  </div>
+                  <div class="follow-icon" style="background-color:{{ section.settings.follow_background_2 }};">
+                     <img src="{{ section.settings.follow_img_2 | img_url: 'master' }}">
+                  </div>
+                  <div class="follow-icon" style="background-color:{{ section.settings.follow_background_3 }};">
+                     <img src="{{ section.settings.follow_img_3 | img_url: 'master' }}">
+                  </div>
+                </div>
+              </div>
+            </div>   
+          </div>
+        {% endif %}
+    
+  
+        <div class="custom_right_content contact-background-img pet-parallax lazyload {% if section.settings.banner_img == true or section.settings.service_section == true %}col-xl-8 col-lg-6 col-md-12{% else %}col-sm-12{% endif %}" data-bgset="{% include 'bgset', image: section.settings.f_back_img %}" data-sizes="auto" data-parent-fit="cover" 
+           style="padding: {{ section.settings.section_fpadding }}; {% if section.settings.f_back_img == blank %}background: {{ section.settings.f_back_color }};{% endif %} border-width: {{ section.settings.contact_border_width }}; border-style: solid; border-color: {{ section.settings.contact_border_color }};">
+  
+          <div style="width: {{ section.settings.input_width }}%; margin: auto; text-align: {{ section.settings.alignment }} !important">
+            {% if section.settings.title != blank %}
+              <div class="section-header diff-title">
+                {% if section.settings.sub_title != blank %}
+                  <h4 class="sub-title" style="color: {{ section.settings.stitle_color }};">{{ section.settings.sub_title | escape }}</h4>
+                {% endif %}
+                <h2 class="main-title title-sprite {{ section.settings.alignment }}" style="color: {{ section.settings.title_color }};">{{ section.settings.title | escape }}</h2>
+                <p class="desc" style="color: {{ section.settings.desc_color }};">{{ section.settings.desc }}</p>
+              </div>
+            {% endif %}
+            {% form 'contact', id: 'ContactForm01' %}
+              {%- if form.posted_successfully? -%}
+                <div class="form-status form-status-list form__message" tabindex="-1" autofocus>{% render 'icon-success' %} {{ 'templates.contact.form.post_success' | t }}</div>
+              {%- elsif form.errors -%}
+                <div class="form__message">
+                  <h2 class="form-status caption-large" role="alert" tabindex="-1" autofocus>{% render 'icon-error' %} {{ 'templates.contact.form.error_heading' | t }}</h2>
+                </div>
+                <ul class="form-status-list caption-large" role="list">
+                  <li>
+                    <a href="#ContactForm-email" class="link">
+                      {{ form.errors | default_errors }}
+                    </a>
+                  </li>
+                </ul>
+              {%- endif -%}
+  
+              <div class="contact_name">
+                <div class="first-name">
+                  <input type="text" placeholder="Name" name="contact[first_name]" id="first-name" class="field__input form-control">
+                </div>
+              </div>
+          
+              <div class="email">
+                <input type="email" placeholder="Email" name="contact[email]" id="email" class="field__input form-control">
+              </div>
+  
+              <div class="message">
+                <textarea  placeholder="Message" class="contact_textarea form-control" rows="6"></textarea>
+              </div>
+  
+              <div class="submit_btn">
+                <button>Submit</button>
+              </div>
+            {% endform %}
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+    {% if section.settings.google_map_iframe != blank %}
+    <div class="" style="padding: {{ section.settings.section_mpadding }}; margin: {{ section.settings.section_mapmrg }};">
+      <div class="row">
+        <div class="col-md-12 map">
+          {{ section.settings.google_map_iframe }}
+        </div>
+      </div>    
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endif %}
+<!--Section ends-->
+
+{% schema %}
+  {
+    "name": "t:sections.contact_us.name",
+    "settings": [
+    {
+       "type":"checkbox",
+       "id":"contact_enable",
+       "label":"t:sections.contact_us.settings.contact_enable.label",
+       "default":true
+    },
+    {
+       "type":"header",
+       "content":"t:sections.contact_us.settings.header_info.content"
+    },
+    {
+       "type": "text",
+       "id": "section_spadding",
+       "label": "t:sections.contact_us.settings.section_spadding.label",
+       "default": "0px 15px 70px 15px"
+    },
+    {
+       "type":"select",
+       "id":"section_width",
+       "label":"t:sections.contact_us.settings.section_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.contact_us.settings.section_width.options_1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.contact_us.settings.section_width.options_2.label"
+          }
+       ],
+       "default":"standard-width"
+    },
+    {
+      "type": "text",
+      "id": "stitle",
+      "label": "t:sections.contact_us.settings.stitle.label",
+      "default": "Get In Tuch"
+    },
+    {
+      "type": "text",
+      "id": "sub_stitle",
+      "label": "t:sections.contact_us.settings.sub_stitle.label"
+    },
+    {
+       "type":"header",
+       "content":"t:sections.contact_us.settings.header_map.content"
+    },
+    {
+       "type": "html",
+       "id": "google_map_iframe",
+       "label": "t:sections.contact_us.settings.google_map_iframe.label"
+   },
+   {
+       "type": "text",
+       "id": "section_mpadding",
+       "label": "t:sections.contact_us.settings.section_mpadding.label",
+       "default": "0px 0px 70px 0px"
+    },
+	{
+       "type": "text",
+       "id": "section_mapmrg",
+       "label": "t:sections.contact_us.settings.section_mapmrg.label",
+       "default": "-230px 0px 0px 0px"
+    },
+   {
+       "type":"header",
+       "content":"t:sections.contact_us.settings.header_back_opt.content"
+    },
+    {
+       "type": "text",
+       "id": "section_padding",
+       "label": "t:sections.contact_us.settings.section_padding.label",
+       "default": "0px 0px 0px 0px"
+    },
+    {
+       "type":"image_picker",
+       "id":"test_back_img",
+       "label":"t:sections.contact_us.settings.test_back_img.label"
+    },
+    {
+      "type": "color",
+      "id": "test_back_color",
+      "label": "t:sections.contact_us.settings.test_back_color.label",
+      "default": "#fff"
+    },
+	{
+       "type":"checkbox",
+       "id":"shadow",
+       "label":"t:sections.contact_us.settings.shadow.label",
+       "default":false
+    },
+    {
+       "type":"header",
+       "content":"t:sections.contact_us.settings.header_inner_back.content"
+    },
+    {
+       "type": "text",
+       "id": "section_fpadding",
+       "label": "t:sections.contact_us.settings.section_fpadding.label",
+       "default": "0px 15px 0px 15px"
+    },
+    {
+       "type":"image_picker",
+       "id":"f_back_img",
+       "label":"t:sections.contact_us.settings.f_back_img.label"
+    },
+    {
+      "type": "color",
+      "id": "f_back_color",
+      "label": "t:sections.contact_us.settings.f_back_color.label",
+      "default": "#fff"
+    },
+	{
+        "type": "text",
+        "id": "contact_border_width",
+        "label": "t:sections.contact_us.settings.contact_border_width.label",
+        "default": "0px 0px 0px 1px"
+      },
+      {
+        "type": "color",
+        "id": "contact_border_color",
+        "label": "t:sections.contact_us.settings.contact_border_color.label",
+        "default": "#0E2640"
+      },
+    {
+      "type": "range",
+      "id": "input_width",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "label": "t:sections.contact_us.settings.input_width.label",
+      "default": 42
+    },
+    {
+     "type":"select",
+     "id":"alignment",
+     "label":"t:sections.contact_us.settings.alignment.label",
+     "options":[
+        {
+           "value":"left",
+           "label":"t:sections.contact_us.settings.alignment.options_1.label"
+        },
+        {
+           "value":"center",
+           "label":"t:sections.contact_us.settings.alignment.options_2.label"
+        },
+        {
+           "value":"right",
+           "label":"t:sections.contact_us.settings.alignment.options_3.label"
+        }
+     ],
+     "default":"left"
+  },
+  {
+         "type":"header",
+         "content":"t:sections.contact_us.settings.header_text.content"
+    },
+   {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.contact_us.settings.title.label",
+      "default": "Send US An E-mail"
+    },
+   {
+         "type":"color",
+         "id":"title_color",
+         "label":"t:sections.contact_us.settings.title_color.label",
+         "default":"#222"
+    },    
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "t:sections.contact_us.settings.sub_title.label",
+      "default": "Our Contact"
+    },
+    {
+       "type":"color",
+       "id":"stitle_color",
+       "label":"t:sections.contact_us.settings.stitle_color.label",
+       "default":"#888"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "t:sections.contact_us.settings.desc.label",
+      "default": "Get in Contact with us by filling out our Contact Form"
+    },
+    {
+       "type":"color",
+       "id": "desc_color",
+       "label":"t:sections.contact_us.settings.desc_color.label",
+       "default":"#888"
+    },
+    {
+         "type":"header",
+         "content":"t:sections.contact_us.settings.header_contact.content"
+    },
+    {
+       "type":"checkbox",
+       "id":"banner_img",
+       "label":"t:sections.contact_us.settings.banner_img.label",
+       "default":false
+    },    
+    {
+      "type": "select",
+      "id": "img_pos",
+      "label": "t:sections.contact_us.settings.img_pos.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.contact_us.settings.img_pos.options_1.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.contact_us.settings.img_pos.options_2.label"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.contact_us.settings.image.label",
+        "info": "Size:- 660x660"
+    },
+    {
+         "type":"header",
+         "content":"t:sections.contact_us.settings.header_service.content"
+    },
+    {
+       "type":"checkbox",
+       "id":"service_section",
+       "label":"t:sections.contact_us.settings.service_section.label",
+       "default":false
+    },    
+    {
+      "type": "select",
+      "id": "Service_pos",
+      "label": "t:sections.contact_us.settings.Service_pos.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.contact_us.settings.Service_pos.options_1.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.contact_us.settings.Service_pos.options_2.label"
+        }
+      ],
+      "default": "left"
+    },
+  {
+      "type": "text",
+      "id": "ser_title",
+      "label": "t:sections.contact_us.settings.ser_title.label",
+      "default": "Send US An E-mail"
+    },
+   {
+         "type":"color",
+         "id":"ser_title_color",
+         "label":"t:sections.contact_us.settings.ser_title_color.label",
+         "default":"#222"
+    },    
+    {
+      "type": "textarea",
+      "id": "sdesc",
+      "label": "t:sections.contact_us.settings.sdesc.label",
+      "default": "Get in Contact with us by filling out our Contact Form"
+    },
+    {
+       "type":"color",
+       "id": "sdesc_color",
+       "label":"t:sections.contact_us.settings.sdesc_color.label",
+       "default":"#888"
+    },
+    {
+      "type": "text",
+      "id": "ssub_title",
+      "label": "t:sections.contact_us.settings.ssub_title.label",
+      "default": "Our Contact"
+    },
+    {
+       "type":"color",
+       "id":"sstitle_color",
+       "label":"t:sections.contact_us.settings.sstitle_color.label",
+       "default":"#888"
+    },
+    {
+      "type":"text",
+      "id":"follow_sub_title",
+      "label":"Follow Us Title",
+      "default": "Follow us"
+    },
+     {
+      "type":"color",
+      "id":"follow_title_color",
+      "label":"Follow Us Title Color",
+      "default": "#212121"
+    },
+    {
+      "type":"image_picker",
+      "id":"follow_img_1",
+      "label":"Social Icon"
+    },
+    {
+      "type":"color",
+      "id":"follow_background_1",
+      "label":"Icon Background Color"
+    },
+    {
+      "type":"image_picker",
+      "id":"follow_img_2",
+      "label":"Social Icon"
+    },
+    {
+      "type":"color",
+      "id":"follow_background_2",
+      "label":"Icon Background Color"
+    },
+    {
+      "type":"image_picker",
+      "id":"follow_img_3",
+      "label":"Social Icon"
+    },
+    {
+      "type":"color",
+      "id":"follow_background_3",
+      "label":"Icon Background Color"
+    }
+  ],
+  "blocks":[
+      {
+         "type":"Service",
+         "name":"t:sections.contact_us.blocks.Service.name",
+         "settings":[
+            {
+               "type":"image_picker",
+               "id":"services_image",
+               "label":"t:sections.contact_us.blocks.Service.settings.services_image.label"
+            },
+            {
+               "type":"image_picker",
+               "id":"services_image2",
+               "label":"t:sections.contact_us.blocks.Service.settings.services_image2.label"
+            },
+            {
+               "type":"text",
+               "id":"services_title",
+               "label":"t:sections.contact_us.blocks.Service.settings.services_title.label",
+               "default":"Our Address"
+            },
+            {
+               "type":"text",
+               "id":"services_desc",
+               "label":"t:sections.contact_us.blocks.Service.settings.services_desc.label",
+               "default":"313, Royal Square, Utran Bridge,<br> VIP Circle"
+            },
+            {
+               "type":"url",
+               "id":"services_link",
+               "label":"t:sections.contact_us.blocks.Service.settings.services_link.label"
+            }
+         ]
+      }
+   ],
+  "presets":[
+      {
+         "name":"t:sections.contact_us.presets.name",
+         "category":"Contact Us",
+         "blocks":[
+            {
+               "type":"Service"
+            }
+         ]
+      }
+   ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

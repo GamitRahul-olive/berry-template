@@ -1,0 +1,479 @@
+{{ 'lookbook_offer.css' | asset_url | stylesheet_tag }}
+
+<div class="lookbook_offer_{{ section.id }}">
+  <div class="lookbook_offer">
+    <div class="lookbook_offer_main_container">
+      <div class="lookbook_offer_content">
+        <div class="lookbook_offer_details">
+          {% for block in section.blocks %}
+            {% if block.type == 'layout_full' %}
+              {% assign i = 1 %}
+              {% for j in (1..3) %}
+                {% if j == 1 %}
+                  {% assign pro_select = block.settings.select_product1 %}
+                {% elsif j == 2 %}
+                  {% assign pro_select = block.settings.select_product2 %}                  
+                {% else %}
+                  {% assign pro_select = block.settings.select_product3 %}                  
+                {% endif %}
+
+                
+                {% assign class_name = 'lookbook_hotspot' | append: i %} 
+                {% render 'lookbook_custom_button' i:i, class: class_name, pro_select:pro_select, block: block  %}
+                {% assign i = i | plus: 1 %}
+              {% endfor %}
+              <div class="lookbook_offer_layout_full">
+                <div class="lookbook_offer_layout_full_content">
+                  {% if block.settings.lookbook_offer_full_image != blank %}
+                    <div class="lookbook_offer_image_bar">
+                      <img src="{{ block.settings.lookbook_offer_full_image | img_url: 'master' }}" class="lookbook_offer_full_image">
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% elsif block.type == 'layout_two' %}
+              {% assign i = 1 %}
+              {% for j in (1..2) %}
+                {% if j == 1 %}
+                  {% assign pro_select = block.settings.select_product1 %}
+                {% elsif j == 2 %}
+                  {% assign pro_select = block.settings.select_product2 %}                  
+                {% else %}
+                  {% assign pro_select = block.settings.select_product2 %}                  
+                {% endif %}
+                
+                {% assign class_name = 'lookbook_hotspot_layout_two' | append: i %}              
+                {% render 'lookbook_custom_button', i:i, class: class_name, pro_select:pro_select %}
+                {% assign i = i | plus: 1 %}
+              {% endfor %}
+              <div class="lookbook_offer_layout_two page-width">
+                <div class="lookbook_offer_layout_two_content">
+                  <div class="lookbook_offer_image_bar">
+                    {% if block.settings.lookbook_offer_first_image != blank %}
+                      <div class="layout_two_first_image">
+                        <img src="{{ block.settings.lookbook_offer_first_image | img_url: 'master' }}" class="lookbook_offer_layout_two_image">
+                      </div>
+                    {% endif %}
+                    {% if block.settings.lookbook_offer_second_image != blank %}
+                      <div class="layout_two_second_image">
+                        <img src="{{ block.settings.lookbook_offer_second_image | img_url: 'master' }}" class="lookbook_offer_layout_two_iamge">
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% elsif block.type == 'layout_three' %}
+              <div class="lookbook_offer_layout_three page-width">
+                <div class="lookbook_offer_layout_three_content">
+                  <div class="lookbook_offer_image_bar">
+                    {% if block.settings.grid_three_image1 != blank %}
+                       {% assign pro_select = block.settings.select_product1 %}
+                      <div class="layout_three_first_image">
+                        <img src="{{ block.settings.grid_three_image1 | img_url: 'master' }}" class="lookbook_offer_layout_three_image">
+                        {% assign class_name = 'layout_three' | append: 1 %}
+                        {% render 'lookbook_custom_button',class: class_name, pro_select:pro_select %}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.grid_three_image2 != blank %}
+                      {% assign pro_select = block.settings.select_product2 %}
+                      <div class="layout_three_second_image">
+                        <img src="{{ block.settings.grid_three_image2 | img_url: 'master' }}" class="lookbook_offer_layout_three_image">
+                        {% assign class_name = 'layout_three' | append: 2 %}
+                        {% render 'lookbook_custom_button',class: class_name, pro_select:pro_select %}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.grid_three_image3 != blank %}
+                       {% assign pro_select = block.settings.select_product3 %}
+                      <div class="layout_three_third_image">
+                        <img src="{{ block.settings.grid_three_image3 | img_url: 'master' }}" class="lookbook_offer_layout_three_image">
+                        {% assign class_name = 'layout_three' | append: 3 %}
+                        {% render 'lookbook_custom_button',class: class_name, pro_select:pro_select %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            {% assign i = i | plus: 1 %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  {% assign i = 1 %}
+  {% for block in section.blocks %}
+    {% if block.type == 'layout_full' %}
+      {% for j in (1..3) %}
+        {% if j == 1 %}
+          {% assign Top = block.settings.button1_position_top %}
+          {% assign Left = block.settings.button1_position_left %}
+        {% elsif j == 2 %}
+          {% assign Top = block.settings.button2_position_top %}
+          {% assign Left = block.settings.button2_position_left %}
+        {% else %}
+          {% assign Top = block.settings.button3_position_top %}
+          {% assign Left = block.settings.button3_position_left %}
+        {% endif %}
+        .lookbook_hotspot{{j}} {
+          top: {{ Top }}%;		
+          left: {{ Left }}%;
+          right: auto;
+        }
+      {% endfor %}
+    {% elsif block.type =='layout_two' %}
+      {% for j in (1..2) %}
+        {% if j == 1 %}
+          {% assign Top = block.settings.button1_position_top %}
+          {% assign Left = block.settings.button1_position_left %}
+        {% elsif j == 2 %}
+          {% assign Top = block.settings.button2_position_top %}
+          {% assign Left = block.settings.button2_position_left %}
+        {% else %}
+          {% assign Top = block.settings.button1_position_top %}
+          {% assign Left = block.settings.button1_position_left %}
+        {% endif %}
+        .lookbook_hotspot_layout_two{{j}} {
+          top: {{ Top }}%;		
+          left: {{ Left }}%;
+          right: auto;
+        }
+      {% endfor %}
+    {% else %}
+      {% for j in (1..3) %}
+        {% if j == 1 %}
+          {% assign Top = block.settings.button1_position_top %}
+          {% assign Left = block.settings.button1_position_left %}
+        {% elsif j == 2 %}
+          {% assign Top = block.settings.button2_position_top %}
+          {% assign Left = block.settings.button2_position_left %}
+        {% else %}
+          {% assign Top = block.settings.button3_position_top %}
+          {% assign Left = block.settings.button3_position_left %}
+        {% endif %}
+        .layout_three{{j}} {
+          top: {{ Top }}%;		
+          left: {{ Left }}%;
+          right: auto;
+        }
+      {% endfor %}
+    {% endif %}
+    {% assign i = i | plus: 1 %}
+  {% endfor %}
+{% endstyle %}
+
+{% schema %}
+  {
+    "name": "Lookbook Offer",
+    "settings": [],
+    "blocks": [
+      {
+        "type":"layout_full",
+        "name":"Layout Full",
+        "settings": [
+          {
+            "type":"image_picker",
+            "id":"lookbook_offer_full_image",
+            "label":"Image"
+          },
+    	  {
+            "type": "header",
+            "content": "SET BUTTON 1 HOTSPOT POSITION"
+          },
+          {
+            "type": "select",
+            "id": "lookbook_content_style",
+            "label": "Content Style",
+            "options": [
+              {
+                "value": "style_one",
+                "label": "Style One"
+              },
+              {
+                "value": "style_two",
+                "label": "Style Two"
+              }
+            ],
+            "default": "style_one"
+          },
+          {
+            "type": "product",
+            "id": "select_product1",
+            "label": "Product"
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 2 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product2",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button2_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button2_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 3 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product3",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button3_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button3_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "type":"layout_two",
+        "name":"Layout Two",
+        "settings": [
+          {
+            "type":"image_picker",
+            "id":"lookbook_offer_first_image",
+            "label":"Image 1"
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 1 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product1",
+            "label": "Product"
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          },
+          {
+            "type":"image_picker",
+            "id":"lookbook_offer_second_image",
+            "label":"Image 2"
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 2 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product2",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button2_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button2_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          }
+        ]
+      },
+      {
+        "type":"layout_three",
+        "name":"Layout Three",
+        "settings": [
+          {
+            "type":"image_picker",
+            "id":"grid_three_image1",
+            "label":"Image 1"
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 1 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product1",
+            "label": "Product"
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button1_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          },
+          {
+            "type":"image_picker",
+            "id":"grid_three_image2",
+            "label":"Image 2"
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 2 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product2",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button2_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button2_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          },
+          {
+            "type":"image_picker",
+            "id":"grid_three_image3",
+            "label":"Image 3"
+          },
+          {
+            "type": "header",
+            "content": "SET BUTTON 3 HOTSPOT POSITION"
+          },
+          {
+            "type": "product",
+            "id": "select_product3",
+            "label": "Product"
+          },
+          {
+            "type": "range",
+            "id": "button3_position_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Top Position",
+            "default": 0
+          },
+  		  {
+            "type": "range",
+            "id": "button3_position_left",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Left Position",
+            "default": 0
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name":"Lookbook Offer"
+      }
+    ]
+  }
+{% endschema %}
+
+
+{% javascript %}
+{% endjavascript %}

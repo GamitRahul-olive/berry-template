@@ -1,0 +1,341 @@
+{{ "offer-hotspot.css" | asset_url | stylesheet_tag }}
+
+{% assign i = 1 %}
+
+<div class="product_hotspot_main small_product_main sidebar-section {% if section.settings.slider_width == "standard-width" %}page-width{% else %}container-fluid{% endif %}" style="padding: {{ section.settings.section_padding }};">
+  <div class="our-product-section">
+    <div class="hots theme-card sidebar-prd">
+      <div id="prd_hotspot{{i}}" class="banner_outer banner_custome banner_v2_section parllax_banner_main offer_hotspot_section" >
+      {% for block in section.blocks %}
+          {% capture blockId %}{{ block.id }}{% endcapture %}
+          {% if block.type == 'Banner' %}
+            <div class="banner-section p-center-center col" style="background: url({{ block.settings.image1 | img_url: 'master' }}) no-repeat; padding: {{ section.settings.back_img_padding }};" data-type="background" data-speed="30">
+              <div class="banner-img"></div>            
+
+              {% if block.settings.show_text == true %}
+                <div class="page-width offer-box">
+                  {%- if block.settings.heading != blank -%}
+                      <h4 class="main-title" style="color: {{ block.settings.heading_color }}; background-color: {{ block.settings.desc_color }};" >
+                        <span>{{ block.settings.heading }}</span>
+                      </h4>
+                    {%- endif -%}
+                </div>                  
+              {% endif %}
+            </div>
+          {% endif %}
+      	
+          {% if block.type == 'Product' %}
+            <div class="hotspot hotspot{{i}} {{ block.settings.pop_pos }} {% if block.settings.show_mobile == false %}mobile_no_show{{i}}{% endif %}" >
+              <div class="icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_3304_8288)">
+                    <path d="M13 7H11V11H7V13H11V17H13V13H17V11H13V7ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="#2196F3"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_3304_8288">
+                    <rect width="24" height="24" fill="white"/>
+                    </clipPath>
+                    </defs>
+                  </svg>
+              </div>
+              <div class="content {% if block.settings.offer_hotspot == 'style_two' %}offer_hotspot_style_two{% endif %}">
+                {% if block.type == "Product" %}
+                  <div class="col">
+                      {% assign col_prd = block.settings.select_new_pro_coll %}
+                      <div class="offer-slider slide-1">
+                        <div>
+                          {% if col_prd.empty? %}
+                          {% capture current %}{% cycle 1,2,3,4,1,2 %}{% endcapture %}
+                            {% for i in (1..0) %}
+                            <div class="media">
+                              <a href="#">
+                                {{ "col_prd-" | append: i | placeholder_svg_tag: "placeholder-svg" }}
+                              </a>
+                              <div class="media-body align-self-center">
+                                <div class="rating">
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                  <i class="fa fa-star"></i>
+                                </div>
+                                <a href="#"><h6>{{ "homepage.onboarding.product_title" | t }}</h6> </a>
+                                <h4>{{ "$20.00" }}</h4>
+                              </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                              <div class="product-wrap product-card">
+                                  <div class="media product-grid">
+                                <a href="{{ col_prd.url | within: product }}" >
+                                  <img class="lazyload img-fluid" src="{{ col_prd.featured_image | img_url:"master" }}" alt="{{ col_prd.title | split: "|" | first }}" >
+                                </a>
+                                <div class="media-body prd-detail align-self-center">
+                                  <div>
+                                    <div class="rating">
+                                      <span class="shopify-product-reviews-badge" data-id="{{ col_prd.id }}"></span>
+                                    </div>
+                                    <a href="{{ col_prd.url | within: collection }}">
+                                      {% assign cat_title = col_prd.title | split: "|" | first %}
+                                      {% assign cat_ltitle = col_prd.title | split: "|" | last %}
+                                      <h6>
+                                        {{ col_prd.title | truncatewords: 10 }}
+                                      </h6>
+                                    </a>  
+                                    <div class="p_description">{{ col_prd.description }}</div>
+                                  </div>
+                                  <div class="price-cart-content">
+                                    <h4> <span class="money"> {{ col_prd.price | money }} </span> </h4>
+                                    <div class="prd-btns bottom">
+                                      <div class="cart-btn">                                                                              
+                                        <button type="submit" value="" class="btn cart-icon cart-text shopify-buy__btn btn-secondary {% if col_prd.variants.size <= 1 %} AddToCart {% endif %}" data-product_id="{{ col_prd.variants.first.id }}" >
+                                          <a href="{{ col_prd.url }}">
+                                            <span class="hide set_loader" data-loader>
+                                              {% render 'icon-spinner' %}
+                                            </span>
+                                              {% render "icon-add-cart" %}  
+                                          </a>
+                                        </button>             
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% assign i = i | plus: 1 %}
+      {% endfor %}
+	  </div>
+    </div>
+  </div>
+</div>
+{% style %}
+	{% assign i = 1 %}
+	{% for block in section.blocks %}
+      #shopify-section-{{ section.id }} .hotspot{{i}} {
+          top: {{ block.settings.top }}%;		
+          left: {{ block.settings.left }}%;
+		  right: auto;
+      }
+
+	@media (max-width: 767px) {
+	  #shopify-section-{{ section.id }} .hotspot{{i}} {
+          top: {{ block.settings.topm }}%;		
+          left: {{ block.settings.leftm }}%;
+		  right: auto;
+      }
+      .mobile_no_show{{i}} {
+          display: none;
+      }
+    }
+		{% assign i = i | plus: 1 %}
+	{% endfor %}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "t:sections.offer-hotspot.name",
+  "tag": "section",
+  "class": "spaced-section--full-width parallax_main_outer",
+  "settings": [
+	{
+      "type": "text",
+      "id": "section_padding",
+      "label": "t:sections.offer-hotspot.settings.section_padding.label",
+      "default": "60px 15px 0px 15px"
+    },
+    {
+       "type": "select",
+       "id": "slider_width",
+       "label": "t:sections.offer-hotspot.settings.slider_width.label",
+       "options":[
+          {
+             "value":"full-width",
+             "label":"t:sections.offer-hotspot.settings.slider_width.options_1.label"
+          },
+          {
+             "value":"standard-width",
+             "label":"t:sections.offer-hotspot.settings.slider_width.options_2.label"
+          }
+       ],
+       "default": "standard-width"
+    },
+    {
+      "type": "text",
+      "id": "back_img_padding",
+      "label": "t:sections.offer-hotspot.settings.back_img_padding.label",
+      "default": "40px 0px 40px 0px"
+    }
+  ],
+  "blocks":[
+    {
+     "type":"Product",
+     "name":"t:sections.offer-hotspot.blocks.Product.name",
+     "settings":[
+        {
+          "type": "product",
+          "id": "select_new_pro_coll",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.select_new_pro_coll.label"
+        },
+		{
+          "type": "header",
+          "content": "t:sections.offer-hotspot.blocks.Product.settings.header_position.content"
+        },
+		{
+          "type": "range",
+          "id": "top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.top.label",
+          "default": 0
+        },
+		{
+          "type": "range",
+          "id": "left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.left.label",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "offer_hotspot",
+          "options": [
+            {
+              "value": "style_one",
+              "label": "Offer hotspot Style 1"
+            },
+            {
+              "value": "style_two",
+              "label": "Offer hotspot Style 2"
+            }
+          ],
+          "default": "style_one",
+          "label": "Offer hotspot Styles"
+        },
+		{
+           "type": "select",
+           "id": "pop_pos",
+           "label": "t:sections.offer-hotspot.blocks.Product.settings.pop_pos.label",
+           "options":[
+              {
+                 "value":"top",
+                 "label":"t:sections.offer-hotspot.blocks.Product.settings.pop_pos.option_1.label"
+              },
+              {
+                 "value":"bottom",
+                 "label":"t:sections.offer-hotspot.blocks.Product.settings.pop_pos.option_2.label"
+              },
+			  {
+                 "value":"left",
+                 "label":"t:sections.offer-hotspot.blocks.Product.settings.pop_pos.option_3.label"
+              },
+              {
+                 "value":"right",
+                 "label":"t:sections.offer-hotspot.blocks.Product.settings.pop_pos.option_4.label"
+              }
+           ],
+           "default": "bottom"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.offer-hotspot.blocks.Product.settings.header_mobile.content"
+        },
+		{
+          "type": "checkbox",
+          "id": "show_mobile",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.show_mobile.label",
+          "default": true
+        },
+		{
+          "type": "range",
+          "id": "topm",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.topm.label",
+          "default": 0
+        },
+		{
+          "type": "range",
+          "id": "leftm",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.offer-hotspot.blocks.Product.settings.leftm.label",
+          "default": 0
+        }
+      ]
+    },
+    {
+     "type":"Banner",
+     "name":"t:sections.offer-hotspot.blocks.banner.name",
+     "settings":[
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.image1.label"
+        },
+        {
+          "type": "url",
+          "id": "link1",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.link1.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_text",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.show_text.label",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "showm_text",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.showm_text.label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Main Title",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.heading.label"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.heading_color.label",
+          "default": "#ffffff"
+        },
+		{
+          "type": "color",
+          "id": "desc_color",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.desc_color.label",
+          "default": "#0E2640"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "t:sections.offer-hotspot.blocks.banner.settings.button_link_1.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.offer-hotspot.presets.name"
+    }
+  ]
+}
+{% endschema %}
